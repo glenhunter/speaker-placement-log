@@ -143,13 +143,7 @@ export function Sidebar({ measurements, updateMeasurement, deleteMeasurement }) 
   };
 
   return (
-    <aside
-      className="w-96 p-6 border-l overflow-y-auto"
-      style={{
-        backgroundColor: "var(--color-muted)",
-        borderColor: "var(--color-border)",
-      }}
-    >
+    <>
       {measurements.length > 0 ? (
         <div className="space-y-6">
           {/* Export Button */}
@@ -192,6 +186,6 @@ export function Sidebar({ measurements, updateMeasurement, deleteMeasurement }) 
           No measurements stored yet. Submit the form to save values.
         </div>
       )}
-    </aside>
+    </>
   );
 }
