@@ -107,6 +107,7 @@ function App() {
                 type="number"
                 value={distanceFromFrontWall}
                 onChange={(e) => setDistanceFromFrontWall(e.target.value)}
+                className="distance-input"
               />
             </div>
             <div className="space-y-2">
@@ -116,6 +117,7 @@ function App() {
                 type="number"
                 value={distanceFromSideWall}
                 onChange={(e) => setDistanceFromSideWall(e.target.value)}
+                className="distance-input"
               />
             </div>
             <div className="space-y-3">
@@ -157,11 +159,7 @@ function App() {
       <Sheet>
         <SheetTrigger asChild>
           <button
-            className="fixed right-0 top-1/2 -translate-y-1/2 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1"
-            style={{
-              backgroundColor: 'var(--color-primary)',
-              padding: '12px 8px',
-            }}
+            className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 sheet-trigger-tab"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

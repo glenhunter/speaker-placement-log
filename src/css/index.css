@@ -31,3 +31,13 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
 }
+
+.distance-input {
+  width: 100px;
+}
+
+.sheet-trigger-tab {
+  background-color: var(--color-primary);
+  padding: 12px 8px;
+  top: 100px;
+}
