@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { Sidebar } from "@/components/Sidebar";
 
@@ -94,7 +95,7 @@ function App() {
       </header>
 
       {/* Main Content Area */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative">
         {/* Main Content */}
         <main className="flex-1 p-8">
           <div className="max-w-2xl mx-auto">
@@ -152,11 +153,40 @@ function App() {
         </div>
       </main>
 
-      <Sidebar
-        measurements={measurements}
-        updateMeasurement={updateMeasurement}
-        deleteMeasurement={deleteMeasurement}
-      />
+      {/* Sheet Trigger Tab */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <button
+            className="fixed right-0 top-1/2 -translate-y-1/2 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1"
+            style={{
+              backgroundColor: 'var(--color-primary)',
+              padding: '12px 8px',
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ color: 'var(--color-primary-foreground)' }}
+            >
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+        </SheetTrigger>
+        <SheetContent className="w-96 overflow-y-auto" side="right">
+          <Sidebar
+            measurements={measurements}
+            updateMeasurement={updateMeasurement}
+            deleteMeasurement={deleteMeasurement}
+          />
+        </SheetContent>
+      </Sheet>
       </div>
     </div>
   );
