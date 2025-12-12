@@ -1,43 +1,54 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export function Sidebar({ measurements, updateMeasurement, deleteMeasurement }) {
+export function Sidebar({
+  measurements,
+  updateMeasurement,
+  deleteMeasurement,
+}) {
   const exportToMarkdown = () => {
     let markdown = "# Speaker Placement Log\n\n";
     markdown += `Generated on: ${new Date().toLocaleString()}\n\n`;
     markdown += `Total Measurements: ${measurements.length}\n\n`;
     markdown += "---\n\n";
 
-    measurements.slice().reverse().forEach((measurement, index) => {
-      const sum =
-        (parseInt(measurement.bass) || 0) +
-        (parseInt(measurement.treble) || 0) +
-        (parseInt(measurement.vocals) || 0) +
-        (parseInt(measurement.soundstage) || 0);
+    measurements
+      .slice()
+      .reverse()
+      .forEach((measurement, index) => {
+        const sum =
+          (parseInt(measurement.bass) || 0) +
+          (parseInt(measurement.treble) || 0) +
+          (parseInt(measurement.vocals) || 0) +
+          (parseInt(measurement.soundstage) || 0);
 
-      markdown += `## Measurement ${measurements.length - index}\n\n`;
-      markdown += `**Score:** ${sum}\n\n`;
-      markdown += `**Distance:**\n`;
-      markdown += `- Front Wall: ${measurement.distanceFromFrontWall}\n`;
-      markdown += `- Side Wall: ${measurement.distanceFromSideWall}\n\n`;
-      markdown += `**Ratings:**\n`;
-      markdown += `- Bass: ${measurement.bass}\n`;
-      markdown += `- Treble: ${measurement.treble}\n`;
-      markdown += `- Vocals: ${measurement.vocals}\n`;
-      markdown += `- Soundstage: ${measurement.soundstage}\n\n`;
-      markdown += `**Date:** ${new Date(measurement.createdAt).toLocaleString()}\n`;
-      if (measurement.isFavorite) {
-        markdown += `⭐ **Favorite**\n`;
-      }
-      markdown += "\n---\n\n";
-    });
+        markdown += `## Measurement ${measurements.length - index}\n\n`;
+        markdown += `**Score:** ${sum}\n\n`;
+        markdown += `**Distance:**\n`;
+        markdown += `- Front Wall: ${measurement.distanceFromFrontWall}\n`;
+        markdown += `- Side Wall: ${measurement.distanceFromSideWall}\n\n`;
+        markdown += `**Ratings:**\n`;
+        markdown += `- Bass: ${measurement.bass}\n`;
+        markdown += `- Treble: ${measurement.treble}\n`;
+        markdown += `- Vocals: ${measurement.vocals}\n`;
+        markdown += `- Soundstage: ${measurement.soundstage}\n\n`;
+        markdown += `**Date:** ${new Date(
+          measurement.createdAt
+        ).toLocaleString()}\n`;
+        if (measurement.isFavorite) {
+          markdown += `⭐ **Favorite**\n`;
+        }
+        markdown += "\n---\n\n";
+      });
 
     // Create blob and download
     const blob = new Blob([markdown], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `speaker-placement-log-${new Date().toISOString().split('T')[0]}.md`;
+    a.download = `speaker-placement-log-${
+      new Date().toISOString().split("T")[0]
+    }.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -147,7 +158,7 @@ export function Sidebar({ measurements, updateMeasurement, deleteMeasurement }) 
       {measurements.length > 0 ? (
         <div className="space-y-6">
           {/* Export Button */}
-          <div className="flex justify-end">
+          <div className="flex justify-start">
             <Button onClick={exportToMarkdown} variant="outline" size="sm">
               Export to Markdown
             </Button>

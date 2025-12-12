@@ -36,6 +36,11 @@ body {
   width: 100px;
 }
 
+.distance-label {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
 .sheet-trigger-tab {
   background-color: var(--color-primary);
   padding: 12px 8px;
