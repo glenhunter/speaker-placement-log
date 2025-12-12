@@ -77,11 +77,27 @@ function App() {
   );
 
   return (
-    <div className="flex min-h-screen">
-      {/* Main Content */}
-      <main className="flex-1 p-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Distance Measurement Form</h1>
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <header
+        className="flex items-center px-8"
+        style={{
+          backgroundColor: '#000',
+          height: '80px',
+          minHeight: '80px',
+          maxHeight: '80px',
+        }}
+      >
+        <h1 className="text-2xl font-bold" style={{ color: '#fff' }}>
+          Speaker Placement Log
+        </h1>
+      </header>
+
+      {/* Main Content Area */}
+      <div className="flex flex-1">
+        {/* Main Content */}
+        <main className="flex-1 p-8">
+          <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="frontWall">Distance from front wall:</Label>
@@ -141,6 +157,7 @@ function App() {
         updateMeasurement={updateMeasurement}
         deleteMeasurement={deleteMeasurement}
       />
+      </div>
     </div>
   );
 }
