@@ -16,6 +16,7 @@ function App() {
   const navigate = useNavigate();
   const [distanceFromFrontWall, setDistanceFromFrontWall] = useState("");
   const [distanceFromSideWall, setDistanceFromSideWall] = useState("");
+  const [listeningPosition, setListeningPosition] = useState("");
   const [bass, setBass] = useState([0]);
   const [treble, setTreble] = useState([0]);
   const [vocals, setVocals] = useState([0]);
@@ -37,6 +38,7 @@ function App() {
     const measurementData = {
       distanceFromFrontWall,
       distanceFromSideWall,
+      listeningPosition,
       bass: bass[0],
       treble: treble[0],
       vocals: vocals[0],
@@ -48,6 +50,7 @@ function App() {
     // Clear the form after submission
     setDistanceFromFrontWall("");
     setDistanceFromSideWall("");
+    setListeningPosition("");
     setBass([0]);
     setTreble([0]);
     setVocals([0]);
@@ -72,7 +75,7 @@ function App() {
               {baseline ? (
                 <Card>
                   <CardContent className="p-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className={`grid ${baseline.values?.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} gap-4`}>
                       {baseline.values?.map((item, index) => (
                         <div key={index} className="space-y-1">
                           <p className="text-xs text-gray-600">{item.label}</p>
@@ -102,7 +105,7 @@ function App() {
             </div>
             <h2 className="text-3xl font-bold mb-4">Modifications</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="frontWall" className="distance-label">
                     Front Wall
@@ -124,6 +127,18 @@ function App() {
                     type="number"
                     value={distanceFromSideWall}
                     onChange={(e) => setDistanceFromSideWall(e.target.value)}
+                    className="distance-input"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="listeningPosition" className="distance-label">
+                    Listening Position
+                  </Label>
+                  <Input
+                    id="listeningPosition"
+                    type="number"
+                    value={listeningPosition}
+                    onChange={(e) => setListeningPosition(e.target.value)}
                     className="distance-input"
                   />
                 </div>
