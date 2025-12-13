@@ -79,7 +79,15 @@ function App() {
             <div className="mb-8">
               <h2 className="text-3xl font-bold mb-4">Baseline</h2>
               {baseline ? (
-                <Card>
+                <Card className="relative">
+                  {baseline.methodName && (
+                    <div
+                      className="absolute top-2 right-2"
+                      style={{ fontSize: "10px", color: "#666" }}
+                    >
+                      {baseline.methodName}
+                    </div>
+                  )}
                   <CardContent className="p-4">
                     <div
                       className={`grid ${
