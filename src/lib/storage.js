@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'distance-measurements';
+const BASELINE_KEY = 'speaker-baseline';
 
 export const storage = {
   getAll: () => {
@@ -38,5 +39,21 @@ export const storage = {
 
   clear: () => {
     localStorage.removeItem(STORAGE_KEY);
+  },
+};
+
+export const baselineStorage = {
+  get: () => {
+    const data = localStorage.getItem(BASELINE_KEY);
+    return data ? JSON.parse(data) : null;
+  },
+
+  save: (baseline) => {
+    localStorage.setItem(BASELINE_KEY, JSON.stringify(baseline));
+    return baseline;
+  },
+
+  clear: () => {
+    localStorage.removeItem(BASELINE_KEY);
   },
 };
