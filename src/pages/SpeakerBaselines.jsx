@@ -18,37 +18,60 @@ export function SpeakerBaselines() {
   const [roomHeight, setRoomHeight] = useState("");
   const [speakerType, setSpeakerType] = useState("conventional");
 
-  const handleUseAsBaseline = () => {
+  const handleUseAsBaseline = (calculationType = "cardas-golden-ratio") => {
     const baselineData = {
-      calculationType: "cardas-golden-ratio",
+      calculationType,
       speakerType,
       values: [],
     };
 
-    if (speakerType === "conventional" && roomWidth) {
-      const sideWallDistance = feetToFraction(parseFloat(roomWidth) * 0.276);
-      const frontWallDistance = feetToFraction(parseFloat(roomWidth) * 0.447);
+    if (calculationType === "cardas-golden-ratio") {
+      if (speakerType === "conventional" && roomWidth) {
+        const sideWallDistance = feetToFraction(parseFloat(roomWidth) * 0.276);
+        const frontWallDistance = feetToFraction(parseFloat(roomWidth) * 0.447);
+
+        baselineData.values = [
+          {
+            label: "Front Wall",
+            value: frontWallDistance,
+            formula: `Room Width × 0.447 (${roomWidth} × 0.447)`,
+          },
+          {
+            label: "Side Wall",
+            value: sideWallDistance,
+            formula: `Room Width × 0.276 (${roomWidth} × 0.276)`,
+          },
+        ];
+      } else if (speakerType === "planar" && roomHeight) {
+        const frontWallDistance = feetToFraction(parseFloat(roomHeight) * 0.618);
+
+        baselineData.values = [
+          {
+            label: "Front Wall",
+            value: frontWallDistance,
+            formula: `Ceiling Height × 0.618 (${roomHeight} × 0.618)`,
+          },
+        ];
+      }
+    } else if (calculationType === "planar-edge" && roomLength) {
+      const frontWallDistance = feetToFraction(parseFloat(roomLength) * 0.4);
+      const listeningPosition = feetToFraction(parseFloat(roomLength) * 0.8);
 
       baselineData.values = [
         {
           label: "Front Wall",
           value: frontWallDistance,
-          formula: `Room Width × 0.447 (${roomWidth} × 0.447)`,
+          formula: `Room Length × 0.4 (${roomLength} × 0.4)`,
         },
         {
           label: "Side Wall",
-          value: sideWallDistance,
-          formula: `Room Width × 0.276 (${roomWidth} × 0.276)`,
+          value: '6"',
+          formula: "Fixed value",
         },
-      ];
-    } else if (speakerType === "planar" && roomHeight) {
-      const frontWallDistance = feetToFraction(parseFloat(roomHeight) * 0.618);
-
-      baselineData.values = [
         {
-          label: "Front Wall",
-          value: frontWallDistance,
-          formula: `Ceiling Height × 0.618 (${roomHeight} × 0.618)`,
+          label: "Listening Position",
+          value: listeningPosition,
+          formula: `Room Length × 0.8 (${roomLength} × 0.8)`,
         },
       ];
     }
@@ -137,7 +160,7 @@ export function SpeakerBaselines() {
           <Tabs defaultValue="tab1" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="tab1">Cardas Golden Ratio</TabsTrigger>
-              <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+              <TabsTrigger value="tab2">Planar Edge Method</TabsTrigger>
               <TabsTrigger value="tab3">Tab 3</TabsTrigger>
               <TabsTrigger value="tab4">Tab 4</TabsTrigger>
             </TabsList>
@@ -209,8 +232,50 @@ export function SpeakerBaselines() {
               </div>
             </TabsContent>
             <TabsContent value="tab2" className="mt-6">
-              <div className="p-4 border rounded-md">
-                <p>Tab 2 content will go here</p>
+              <div className="p-4 border rounded-md space-y-4">
+                <h4 className="font-semibold text-lg">Planar Edge Method</h4>
+                {roomLength ? (
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Front Wall (Speaker Position):
+                      </p>
+                      <p className="text-2xl font-bold">
+                        {feetToFraction(parseFloat(roomLength) * 0.4)}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Room Length × 0.4 ({roomLength} × 0.4)
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Side Wall (Speaker Position):
+                      </p>
+                      <p className="text-2xl font-bold">6"</p>
+                      <p className="text-xs text-gray-500 mt-1">Fixed value</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Listening Position:
+                      </p>
+                      <p className="text-2xl font-bold">
+                        {feetToFraction(parseFloat(roomLength) * 0.8)}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Room Length × 0.8 ({roomLength} × 0.8)
+                      </p>
+                    </div>
+                    <div className="pt-4 border-t">
+                      <Button onClick={() => handleUseAsBaseline("planar-edge")}>
+                        Use as Baseline
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">
+                    Enter room length to see Planar Edge Method calculations.
+                  </p>
+                )}
               </div>
             </TabsContent>
             <TabsContent value="tab3" className="mt-6">

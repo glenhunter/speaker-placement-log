@@ -39,8 +39,11 @@ export function Sidebar({
         markdown += `**Score:** ${sum}\n\n`;
         markdown += `**Distance:**\n`;
         markdown += `- Front Wall: ${measurement.distanceFromFrontWall}\n`;
-        markdown += `- Side Wall: ${measurement.distanceFromSideWall}\n\n`;
-        markdown += `**Ratings:**\n`;
+        markdown += `- Side Wall: ${measurement.distanceFromSideWall}\n`;
+        if (measurement.listeningPosition) {
+          markdown += `- Listening Position: ${measurement.listeningPosition}\n`;
+        }
+        markdown += `\n**Ratings:**\n`;
         markdown += `- Bass: ${measurement.bass}\n`;
         markdown += `- Treble: ${measurement.treble}\n`;
         markdown += `- Vocals: ${measurement.vocals}\n`;
@@ -86,6 +89,7 @@ export function Sidebar({
               <div>
                 FW: {measurement.distanceFromFrontWall}, SW:{" "}
                 {measurement.distanceFromSideWall}
+                {measurement.listeningPosition && `, LP: ${measurement.listeningPosition}`}
               </div>
               <div>
                 B: {measurement.bass}, T: {measurement.treble}, V:{" "}
