@@ -172,8 +172,18 @@ function App() {
                       />
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-4">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => adjustRating(bass, setBass, -1)}
+                        disabled={bass <= -10}
+                      >
+                        Worse
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
                       <h3 className="text-2xl font-semibold">Bass</h3>
                       <span
                         className="text-2xl font-semibold"
@@ -184,15 +194,7 @@ function App() {
                         {bass}
                       </span>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(bass, setBass, -1)}
-                        disabled={bass <= -10}
-                      >
-                        Worse
-                      </Button>
+                    <div className="flex justify-end">
                       <Button
                         type="button"
                         variant="outline"
@@ -203,8 +205,18 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-4">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => adjustRating(treble, setTreble, -1)}
+                        disabled={treble <= -10}
+                      >
+                        Worse
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
                       <h3 className="text-2xl font-semibold">Treble</h3>
                       <span
                         className="text-2xl font-semibold"
@@ -216,15 +228,7 @@ function App() {
                         {treble}
                       </span>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(treble, setTreble, -1)}
-                        disabled={treble <= -10}
-                      >
-                        Worse
-                      </Button>
+                    <div className="flex justify-end">
                       <Button
                         type="button"
                         variant="outline"
@@ -235,8 +239,18 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-4">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => adjustRating(vocals, setVocals, -1)}
+                        disabled={vocals <= -10}
+                      >
+                        Worse
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
                       <h3 className="text-2xl font-semibold">Vocals</h3>
                       <span
                         className="text-2xl font-semibold"
@@ -248,15 +262,7 @@ function App() {
                         {vocals}
                       </span>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(vocals, setVocals, -1)}
-                        disabled={vocals <= -10}
-                      >
-                        Worse
-                      </Button>
+                    <div className="flex justify-end">
                       <Button
                         type="button"
                         variant="outline"
@@ -267,8 +273,20 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-4">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() =>
+                          adjustRating(soundstage, setSoundstage, -1)
+                        }
+                        disabled={soundstage <= -10}
+                      >
+                        Worse
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
                       <h3 className="text-2xl font-semibold">Soundstage</h3>
                       <span
                         className="text-2xl font-semibold"
@@ -284,17 +302,7 @@ function App() {
                         {soundstage}
                       </span>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() =>
-                          adjustRating(soundstage, setSoundstage, -1)
-                        }
-                        disabled={soundstage <= -10}
-                      >
-                        Worse
-                      </Button>
+                    <div className="flex justify-end">
                       <Button
                         type="button"
                         variant="outline"
