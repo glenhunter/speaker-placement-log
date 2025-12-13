@@ -6,6 +6,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { Sidebar } from "@/components/Sidebar";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 function App() {
   const [distanceFromFrontWall, setDistanceFromFrontWall] = useState("");
@@ -51,20 +53,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header
-        className="flex items-center px-8"
-        style={{
-          backgroundColor: "#000",
-          height: "80px",
-          minHeight: "80px",
-          maxHeight: "80px",
-        }}
-      >
-        <h1 className="text-2xl font-bold" style={{ color: "#fff" }}>
-          Speaker Placement Log
-        </h1>
-      </header>
+      <Header />
 
       {/* Main Content Area */}
       <div className="flex flex-1 relative">
@@ -72,7 +61,7 @@ function App() {
         <main className="flex-1 p-8">
           <div className="max-w-2xl mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="frontWall" className="distance-label">
                   Distance from front wall:
                 </Label>
@@ -84,7 +73,7 @@ function App() {
                   className="distance-input"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="sideWall" className="distance-label">
                   Distance from side wall:
                 </Label>
@@ -188,6 +177,8 @@ function App() {
           </SheetContent>
         </Sheet>
       </div>
+
+      <Footer />
     </div>
   );
 }
