@@ -5,11 +5,24 @@ export function Sidebar({
   measurements,
   updateMeasurement,
   deleteMeasurement,
+  baseline,
 }) {
   const exportToMarkdown = () => {
     let markdown = "# Speaker Placement Log\n\n";
     markdown += `Generated on: ${new Date().toLocaleString()}\n\n`;
     markdown += `Total Measurements: ${measurements.length}\n\n`;
+
+    // Add baseline if it exists
+    if (baseline?.values) {
+      markdown += "## Baseline\n\n";
+      markdown += `**Calculation Type:** ${baseline.calculationType?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n\n`;
+      markdown += `**Speaker Type:** ${baseline.speakerType?.charAt(0).toUpperCase() + baseline.speakerType?.slice(1)}\n\n`;
+      baseline.values.forEach((item) => {
+        markdown += `**${item.label}:** ${item.value}\n`;
+        markdown += `- ${item.formula}\n\n`;
+      });
+    }
+
     markdown += "---\n\n";
 
     measurements
