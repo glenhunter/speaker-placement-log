@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { useBaseline } from "@/hooks/useBaseline";
 import { Sidebar } from "@/components/Sidebar";
@@ -172,6 +173,7 @@ function App() {
                       />
                     </div>
                   </div>
+                  <Separator className="bg-gray-700" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -205,6 +207,7 @@ function App() {
                       </Button>
                     </div>
                   </div>
+                  <Separator className="bg-gray-300" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -239,6 +242,7 @@ function App() {
                       </Button>
                     </div>
                   </div>
+                  <Separator className="bg-gray-300" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -273,6 +277,7 @@ function App() {
                       </Button>
                     </div>
                   </div>
+                  <Separator className="bg-gray-300" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
