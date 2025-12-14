@@ -155,6 +155,8 @@ export function SpeakerBaselines() {
                       value={roomLength}
                       onChange={(e) => setRoomLength(e.target.value)}
                       placeholder="ft"
+                      min="0"
+                      step="0.01"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -165,6 +167,8 @@ export function SpeakerBaselines() {
                       value={roomWidth}
                       onChange={(e) => setRoomWidth(e.target.value)}
                       placeholder="ft"
+                      min="0"
+                      step="0.01"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -175,6 +179,8 @@ export function SpeakerBaselines() {
                       value={roomHeight}
                       onChange={(e) => setRoomHeight(e.target.value)}
                       placeholder="ft"
+                      min="0"
+                      step="0.01"
                     />
                   </div>
                 </div>
@@ -217,7 +223,7 @@ export function SpeakerBaselines() {
               <TabsTrigger value="tab1">Cardas Golden Ratio</TabsTrigger>
               <TabsTrigger value="tab2">Planar Edge Method</TabsTrigger>
               <TabsTrigger value="tab3">Rule of 1/3's</TabsTrigger>
-              <TabsTrigger value="tab4">Equilateral Triangle</TabsTrigger>
+              <TabsTrigger value="tab4">Nearfield Listening</TabsTrigger>
             </TabsList>
             <TabsContent value="tab1" className="mt-6">
               <div className="p-4 border rounded-md space-y-4">
@@ -279,7 +285,9 @@ export function SpeakerBaselines() {
                 {((speakerType === "conventional" && roomWidth) ||
                   (speakerType === "planar" && roomHeight)) && (
                   <div className="pt-4 border-t">
-                    <Button onClick={handleUseAsBaseline}>
+                    <Button
+                      onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
+                    >
                       Use as Baseline
                     </Button>
                   </div>
@@ -395,6 +403,8 @@ export function SpeakerBaselines() {
                     onChange={(e) => setSidewallDistance(e.target.value)}
                     placeholder="ft"
                     className="w-1/4"
+                    min="0"
+                    step="0.01"
                   />
                 </div>
                 {roomWidth && sidewallDistance ? (
