@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useBaseline } from "@/hooks/useBaseline";
-import { feetToFraction } from "@/lib/utils";
+import { feetToFraction, parseNumericInput } from "@/lib/utils";
 
 export function SpeakerBaselines() {
   const navigate = useNavigate();
@@ -35,10 +35,15 @@ export function SpeakerBaselines() {
       values: [],
     };
 
+    const parsedWidth = parseNumericInput(roomWidth);
+    const parsedHeight = parseNumericInput(roomHeight);
+    const parsedLength = parseNumericInput(roomLength);
+    const parsedSidewall = parseNumericInput(sidewallDistance);
+
     if (calculationType === "cardas-golden-ratio") {
-      if (speakerType === "conventional" && roomWidth) {
-        const sideWallDistance = feetToFraction(parseFloat(roomWidth) * 0.276);
-        const frontWallDistance = feetToFraction(parseFloat(roomWidth) * 0.447);
+      if (speakerType === "conventional" && parsedWidth !== null) {
+        const sideWallDistance = feetToFraction(parsedWidth * 0.276);
+        const frontWallDistance = feetToFraction(parsedWidth * 0.447);
 
         baselineData.values = [
           {
@@ -52,10 +57,8 @@ export function SpeakerBaselines() {
             formula: `Room Width × 0.276 (${roomWidth} × 0.276)`,
           },
         ];
-      } else if (speakerType === "planar" && roomHeight) {
-        const frontWallDistance = feetToFraction(
-          parseFloat(roomHeight) * 0.618
-        );
+      } else if (speakerType === "planar" && parsedHeight !== null) {
+        const frontWallDistance = feetToFraction(parsedHeight * 0.618);
 
         baselineData.values = [
           {
@@ -65,9 +68,9 @@ export function SpeakerBaselines() {
           },
         ];
       }
-    } else if (calculationType === "planar-edge" && roomLength) {
-      const frontWallDistance = feetToFraction(parseFloat(roomLength) * 0.4);
-      const listeningPosition = feetToFraction(parseFloat(roomLength) * 0.8);
+    } else if (calculationType === "planar-edge" && parsedLength !== null) {
+      const frontWallDistance = feetToFraction(parsedLength * 0.4);
+      const listeningPosition = feetToFraction(parsedLength * 0.8);
 
       baselineData.values = [
         {
@@ -86,9 +89,9 @@ export function SpeakerBaselines() {
           formula: `Room Length × 0.8 (${roomLength} × 0.8)`,
         },
       ];
-    } else if (calculationType === "rule-of-thirds" && roomLength) {
-      const frontWallDistance = feetToFraction(parseFloat(roomLength) * 0.3333);
-      const listeningPosition = feetToFraction(parseFloat(roomLength) * 0.66);
+    } else if (calculationType === "rule-of-thirds" && parsedLength !== null) {
+      const frontWallDistance = feetToFraction(parsedLength * 0.3333);
+      const listeningPosition = feetToFraction(parsedLength * 0.66);
 
       baselineData.values = [
         {
@@ -104,11 +107,10 @@ export function SpeakerBaselines() {
       ];
     } else if (
       calculationType === "equilateral-triangle" &&
-      roomWidth &&
-      sidewallDistance
+      parsedWidth !== null &&
+      parsedSidewall !== null
     ) {
-      const speakerSeparation =
-        parseFloat(roomWidth) - parseFloat(sidewallDistance) * 2;
+      const speakerSeparation = parsedWidth - parsedSidewall * 2;
       const listeningPosition = feetToFraction(
         (speakerSeparation * Math.sqrt(3)) / 2
       );
@@ -116,7 +118,7 @@ export function SpeakerBaselines() {
       baselineData.values = [
         {
           label: "Side Wall",
-          value: feetToFraction(parseFloat(sidewallDistance)),
+          value: feetToFraction(parsedSidewall),
           formula: `Input value (${sidewallDistance})`,
         },
         {
