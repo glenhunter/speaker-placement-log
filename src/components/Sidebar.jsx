@@ -1,6 +1,30 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+/**
+ * Safely converts a rating value to a number.
+ * Ratings should already be numbers, but handle string coercion from storage.
+ */
+function toRatingNumber(value) {
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    return value;
+  }
+  const parsed = Number(value);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+/**
+ * Calculates the sum of all rating values for a measurement.
+ */
+function calculateScore(measurement) {
+  return (
+    toRatingNumber(measurement.bass) +
+    toRatingNumber(measurement.treble) +
+    toRatingNumber(measurement.vocals) +
+    toRatingNumber(measurement.soundstage)
+  );
+}
+
 export function Sidebar({
   measurements,
   updateMeasurement,
@@ -29,11 +53,7 @@ export function Sidebar({
       .slice()
       .reverse()
       .forEach((measurement, index) => {
-        const sum =
-          (parseInt(measurement.bass) || 0) +
-          (parseInt(measurement.treble) || 0) +
-          (parseInt(measurement.vocals) || 0) +
-          (parseInt(measurement.soundstage) || 0);
+        const sum = calculateScore(measurement);
 
         markdown += `## Measurement ${measurements.length - index}\n\n`;
         markdown += `**Score:** ${sum}\n\n`;
@@ -72,11 +92,7 @@ export function Sidebar({
   };
 
   const renderMeasurementCard = (measurement) => {
-    const sum =
-      (parseInt(measurement.bass) || 0) +
-      (parseInt(measurement.treble) || 0) +
-      (parseInt(measurement.vocals) || 0) +
-      (parseInt(measurement.soundstage) || 0);
+    const sum = calculateScore(measurement);
 
     return (
       <Card key={measurement.id} className="relative">
