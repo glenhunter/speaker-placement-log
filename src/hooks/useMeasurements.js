@@ -12,43 +12,45 @@ export const useMeasurements = () => {
 
   // Mutation to save a new measurement
   const saveMutation = useMutation({
-    mutationFn: (measurementData) => {
-      return Promise.resolve(storage.save(measurementData));
-    },
+    mutationFn: (measurementData) => storage.save(measurementData),
     onSuccess: () => {
-      // Invalidate and refetch measurements after saving
       queryClient.invalidateQueries({ queryKey: ['measurements'] });
+    },
+    onError: (error) => {
+      console.error('Failed to save measurement:', error);
     },
   });
 
   // Mutation to update a measurement
   const updateMutation = useMutation({
-    mutationFn: ({ id, updates }) => {
-      return Promise.resolve(storage.update(id, updates));
-    },
+    mutationFn: ({ id, updates }) => storage.update(id, updates),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['measurements'] });
+    },
+    onError: (error) => {
+      console.error('Failed to update measurement:', error);
     },
   });
 
   // Mutation to delete a single measurement
   const deleteMutation = useMutation({
-    mutationFn: (id) => {
-      return Promise.resolve(storage.delete(id));
-    },
+    mutationFn: (id) => storage.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['measurements'] });
+    },
+    onError: (error) => {
+      console.error('Failed to delete measurement:', error);
     },
   });
 
   // Mutation to clear all measurements
   const clearMutation = useMutation({
-    mutationFn: () => {
-      storage.clear();
-      return Promise.resolve();
-    },
+    mutationFn: () => storage.clear(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['measurements'] });
+    },
+    onError: (error) => {
+      console.error('Failed to clear measurements:', error);
     },
   });
 
@@ -63,5 +65,9 @@ export const useMeasurements = () => {
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
     isClearing: clearMutation.isPending,
+    saveError: saveMutation.error,
+    updateError: updateMutation.error,
+    deleteError: deleteMutation.error,
+    clearError: clearMutation.error,
   };
 };
