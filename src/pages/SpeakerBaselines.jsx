@@ -295,6 +295,26 @@ export function SpeakerBaselines() {
                   </div>
                 )}
               </div>
+              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
+              <Card>
+                <CardContent className="p-4">
+                  <p className="text-sm">
+                    I've been using the Cardas website for about as long as it
+                    has existed I think. I picked his Golden Ratio method
+                    because I think it's interesting and a little different from
+                    the others. There are several more methods on the{" "}
+                    <a
+                      href="https://www.cardas.com/system-setup"
+                      target="_blank"
+                      external
+                    >
+                      Cardas website
+                    </a>{" "}
+                    including some for square rooms and positioning on the long
+                    wall.
+                  </p>
+                </CardContent>
+              </Card>
             </TabsContent>
             <TabsContent value="tab2" className="mt-6">
               <div className="p-4 border rounded-md space-y-4">
@@ -344,6 +364,23 @@ export function SpeakerBaselines() {
                   </p>
                 )}
               </div>
+              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
+              <Card>
+                <CardContent className="p-4">
+                  <p className="text-sm">
+                    This method is based on{" "}
+                    <a
+                      href="https://forum.audiogon.com/discussions/planar-speaker-placement"
+                      external
+                      target="_blank"
+                    >
+                      this Audiogon forum thread
+                    </a>
+                    . I simplified it a little bit, this is how I have my
+                    speakers set up now.
+                  </p>
+                </CardContent>
+              </Card>
             </TabsContent>
             <TabsContent value="tab3" className="mt-6">
               <div className="p-4 border rounded-md space-y-4">
@@ -386,6 +423,16 @@ export function SpeakerBaselines() {
                   </p>
                 )}
               </div>
+              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
+              <Card>
+                <CardContent className="p-4">
+                  <p className="text-sm">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </p>
+                </CardContent>
+              </Card>
             </TabsContent>
             <TabsContent value="tab4" className="mt-6">
               <div className="p-4 border rounded-md space-y-4">
@@ -460,6 +507,16 @@ export function SpeakerBaselines() {
                   </p>
                 )}
               </div>
+              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
+              <Card>
+                <CardContent className="p-4">
+                  <p className="text-sm">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </p>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
