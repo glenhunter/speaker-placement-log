@@ -141,6 +141,8 @@ function App() {
                           setDistanceFromFrontWall(e.target.value)
                         }
                         className="distance-input"
+                        min="0"
+                        step="0.01"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -155,6 +157,8 @@ function App() {
                           setDistanceFromSideWall(e.target.value)
                         }
                         className="distance-input"
+                        min="0"
+                        step="0.01"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -170,6 +174,8 @@ function App() {
                         value={listeningPosition}
                         onChange={(e) => setListeningPosition(e.target.value)}
                         className="distance-input"
+                        min="0"
+                        step="0.01"
                       />
                     </div>
                   </div>

@@ -5,7 +5,25 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
+/**
+ * Validates and parses a numeric input value.
+ * Returns the parsed number or null if invalid.
+ */
+export function parseNumericInput(value) {
+  if (value === "" || value === null || value === undefined) {
+    return null;
+  }
+  const parsed = parseFloat(value);
+  if (Number.isNaN(parsed) || parsed < 0) {
+    return null;
+  }
+  return parsed;
+}
+
 export function feetToFraction(decimalFeet) {
+  if (decimalFeet === null || decimalFeet === undefined || Number.isNaN(decimalFeet)) {
+    return "—";
+  }
   const totalInches = decimalFeet * 12;
   const roundedInches = Math.round(totalInches * 4) / 4; // Round to nearest quarter inch
 
