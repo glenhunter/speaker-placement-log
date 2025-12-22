@@ -1,23 +1,45 @@
-# Speaker Placement Calculator - Development Guide
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Development Commands
+
+- **Start dev server**: `npm run dev` (runs on http://localhost:5173/speaker-placement-log/)
+- **Build for production**: `npm run build` (output to `dist/`)
+- **Preview production build**: `npm run preview`
 
 ## Tech Stack
 
 - **Framework**: React 18 with Vite
 - **Styling**: Tailwind CSS 4 with CSS variables for theming
 - **UI Components**: shadcn/ui (custom implementation, not installed via CLI)
-- **Routing**: React Router DOM
-- **State**: React hooks (useState, custom hooks)
+- **Routing**: React Router DOM (basename: `/speaker-placement-log`)
+- **State**: React Query (@tanstack/react-query) for measurements, useState for UI
+- **Storage**: localStorage via custom storage utilities
 
-## Project Structure
+## Architecture Overview
 
-src/
-├── components/
-│ ├── ui/ # shadcn/ui components (button, card, input, etc.)
-│ └── [other] # App-specific components (Header, Footer, Sidebar)
-├── pages/ # Route components
-├── hooks/ # Custom React hooks (useMeasurements, useBaseline)
-├── lib/ # Utilities (utils.js with cn and feetToFraction)
-└── css/ # Global styles (index.css)
+### Routing Structure
+- Two routes: `/` (main app) and `/speaker-baselines` (baseline calculator)
+- Configured in `main.jsx` with BrowserRouter basename `/speaker-placement-log`
+- React Query wraps entire app for state management
+
+### Data Flow
+1. **Measurements**: TanStack Query manages localStorage-backed measurements
+   - Hook: `useMeasurements` → Storage: `storage` object in `lib/storage.js`
+   - Query key: `['measurements']`
+   - Mutations: save, update, delete, clear (all trigger query invalidation)
+
+2. **Baseline**: Simple useState + localStorage (no React Query)
+   - Hook: `useBaseline` → Storage: `baselineStorage` in `lib/storage.js`
+   - Single baseline stored (methodName, values array with label/value/formula)
+
+### Key Architectural Decisions
+- **TanStack Query**: Used for measurements only (not baseline) to practice async state management
+- **Custom shadcn**: Components copied manually, not installed via CLI
+- **Path alias**: `@/` maps to `./src` (configured in vite.config.js)
+- **No TypeScript**: Plain JavaScript with .jsx extensions
+- **GitHub Pages deployment**: Base path `/speaker-placement-log/` configured in vite.config.js
 
 ## Component Conventions
 
@@ -94,11 +116,19 @@ When a shadcn component is missing:
 4. Add tab with TabsContent component
 5. Include Acknowledgements section below calculations
 
-### State Management
+### Data Persistence Pattern
 
-- Simple useState for form inputs
-- Custom hooks for persistent data (localStorage-backed)
-- No global state management needed
+**Measurements** (src/hooks/useMeasurements.js):
+- Uses TanStack Query with mutations for CRUD operations
+- Query key: `['measurements']`
+- Storage: `storage.getAll()`, `storage.save()`, `storage.update()`, `storage.delete()`
+- Each mutation invalidates queries to trigger refetch
+- IDs: timestamp-based (`Date.now()`)
+
+**Baseline** (src/hooks/useBaseline.js):
+- Simple useState + useEffect pattern
+- Storage: `baselineStorage.get()`, `baselineStorage.save()`, `baselineStorage.clear()`
+- Structure: `{ methodName, values: [{ label, value, formula }] }`
 
 ## Git Workflow
 
