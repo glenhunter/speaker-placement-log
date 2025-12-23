@@ -29,11 +29,10 @@ export default function LoginPage() {
         navigate('/')
       } else {
         await signUp(email, password)
-        setMessage(
-          'Check your email for a confirmation link to complete signup.'
-        )
+        setMessage('Account created successfully!')
         setEmail('')
         setPassword('')
+        setTimeout(() => setIsLogin(true), 1500)
       }
     } catch (err) {
       setError(err.message || 'An error occurred')
@@ -43,93 +42,91 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-      <Card className="w-full max-w-md p-6 bg-gray-800 border-gray-700">
-        <h1 className="text-2xl font-bold text-white mb-6 text-center">
-          {isLogin ? 'Sign In' : 'Sign Up'}
-        </h1>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="email" className="text-white">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="mt-1 bg-gray-700 border-gray-600 text-white"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="password" className="text-white">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-1 bg-gray-700 border-gray-600 text-white"
-              placeholder="••••••••"
-              minLength={6}
-            />
-          </div>
-
-          {error && (
-            <div className="text-red-500 text-sm bg-red-900/20 p-3 rounded">
-              {error}
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <Card className="p-6">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col items-center gap-2 text-center">
+              <h1 className="text-2xl font-bold">
+                {isLogin ? 'Welcome back' : 'Create an account'}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {isLogin
+                  ? 'Enter your email to sign in to your account'
+                  : 'Enter your email below to create your account'}
+              </p>
             </div>
-          )}
 
-          {message && (
-            <div className="text-green-500 text-sm bg-green-900/20 p-3 rounded">
-              {message}
-            </div>
-          )}
+            <form onSubmit={handleSubmit} className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="m@example.com"
+                  required
+                />
+              </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : isLogin ? 'Sign In' : 'Sign Up'}
-          </Button>
-        </form>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                  {isLogin && (
+                    <button
+                      type="button"
+                      onClick={() => navigate('/reset-password')}
+                      className="ml-auto text-sm underline-offset-4 hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+              </div>
 
-        <div className="mt-4 text-center space-y-2">
-          <button
-            type="button"
-            onClick={() => {
-              setIsLogin(!isLogin)
-              setError('')
-              setMessage('')
-            }}
-            className="text-blue-400 hover:text-blue-300 text-sm"
-          >
-            {isLogin
-              ? "Don't have an account? Sign up"
-              : 'Already have an account? Sign in'}
-          </button>
+              {error && (
+                <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                  {error}
+                </div>
+              )}
 
-          {isLogin && (
-            <div>
+              {message && (
+                <div className="text-sm text-green-600 bg-green-50 dark:bg-green-950 p-3 rounded-md">
+                  {message}
+                </div>
+              )}
+
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? 'Loading...' : isLogin ? 'Sign in' : 'Sign up'}
+              </Button>
+            </form>
+
+            <div className="text-center text-sm">
+              {isLogin ? "Don't have an account? " : 'Already have an account? '}
               <button
                 type="button"
-                onClick={() => navigate('/reset-password')}
-                className="text-blue-400 hover:text-blue-300 text-sm"
+                onClick={() => {
+                  setIsLogin(!isLogin)
+                  setError('')
+                  setMessage('')
+                }}
+                className="underline underline-offset-4 hover:text-primary"
               >
-                Forgot password?
+                {isLogin ? 'Sign up' : 'Sign in'}
               </button>
             </div>
-          )}
-        </div>
-      </Card>
+          </div>
+        </Card>
+      </div>
     </div>
   )
 }

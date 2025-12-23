@@ -74,115 +74,107 @@ export default function PasswordResetPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-      <Card className="w-full max-w-md p-6 bg-gray-800 border-gray-700">
-        <h1 className="text-2xl font-bold text-white mb-6 text-center">
-          {isUpdating ? 'Update Password' : 'Reset Password'}
-        </h1>
-
-        {isUpdating ? (
-          <form onSubmit={handleUpdatePassword} className="space-y-4">
-            <div>
-              <Label htmlFor="newPassword" className="text-white">
-                New Password
-              </Label>
-              <Input
-                id="newPassword"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                className="mt-1 bg-gray-700 border-gray-600 text-white"
-                placeholder="••••••••"
-                minLength={6}
-              />
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <Card className="p-6">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col items-center gap-2 text-center">
+              <h1 className="text-2xl font-bold">
+                {isUpdating ? 'Update your password' : 'Reset your password'}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {isUpdating
+                  ? 'Enter your new password below'
+                  : 'Enter your email to receive a password reset link'}
+              </p>
             </div>
 
-            <div>
-              <Label htmlFor="confirmPassword" className="text-white">
-                Confirm Password
-              </Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="mt-1 bg-gray-700 border-gray-600 text-white"
-                placeholder="••••••••"
-                minLength={6}
-              />
+            {isUpdating ? (
+              <form onSubmit={handleUpdatePassword} className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input
+                    id="newPassword"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
+                </div>
+
+                {error && (
+                  <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                    {error}
+                  </div>
+                )}
+
+                {message && (
+                  <div className="text-sm text-green-600 bg-green-50 dark:bg-green-950 p-3 rounded-md">
+                    {message}
+                  </div>
+                )}
+
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Updating...' : 'Update password'}
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleRequestReset} className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="m@example.com"
+                    required
+                  />
+                </div>
+
+                {error && (
+                  <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                    {error}
+                  </div>
+                )}
+
+                {message && (
+                  <div className="text-sm text-green-600 bg-green-50 dark:bg-green-950 p-3 rounded-md">
+                    {message}
+                  </div>
+                )}
+
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Sending...' : 'Send reset email'}
+                </Button>
+              </form>
+            )}
+
+            <div className="text-center text-sm">
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Back to sign in
+              </button>
             </div>
-
-            {error && (
-              <div className="text-red-500 text-sm bg-red-900/20 p-3 rounded">
-                {error}
-              </div>
-            )}
-
-            {message && (
-              <div className="text-green-500 text-sm bg-green-900/20 p-3 rounded">
-                {message}
-              </div>
-            )}
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? 'Updating...' : 'Update Password'}
-            </Button>
-          </form>
-        ) : (
-          <form onSubmit={handleRequestReset} className="space-y-4">
-            <div>
-              <Label htmlFor="email" className="text-white">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="mt-1 bg-gray-700 border-gray-600 text-white"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            {error && (
-              <div className="text-red-500 text-sm bg-red-900/20 p-3 rounded">
-                {error}
-              </div>
-            )}
-
-            {message && (
-              <div className="text-green-500 text-sm bg-green-900/20 p-3 rounded">
-                {message}
-              </div>
-            )}
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? 'Sending...' : 'Send Reset Email'}
-            </Button>
-          </form>
-        )}
-
-        <div className="mt-4 text-center">
-          <button
-            type="button"
-            onClick={() => navigate('/login')}
-            className="text-blue-400 hover:text-blue-300 text-sm"
-          >
-            Back to Sign In
-          </button>
-        </div>
-      </Card>
+          </div>
+        </Card>
+      </div>
     </div>
   )
 }

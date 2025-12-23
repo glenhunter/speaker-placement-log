@@ -1,7 +1,16 @@
 import { supabase } from './supabase'
 
+const STORAGE_KEY = 'distance-measurements'
+
 export const storage = {
-  getAll: async () => {
+  getAll: async (userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      const data = localStorage.getItem(STORAGE_KEY)
+      return data ? JSON.parse(data) : []
+    }
+
+    // Use Supabase if logged in
     const { data, error } = await supabase
       .from('measurements')
       .select('*')
@@ -24,6 +33,21 @@ export const storage = {
   },
 
   save: async (measurement, userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      const measurements = await storage.getAll(null)
+      const newMeasurement = {
+        ...measurement,
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+        isFavorite: false,
+      }
+      measurements.push(newMeasurement)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(measurements))
+      return newMeasurement
+    }
+
+    // Use Supabase if logged in
     const { data, error } = await supabase
       .from('measurements')
       .insert([{
@@ -56,7 +80,19 @@ export const storage = {
     }
   },
 
-  update: async (id, updates) => {
+  update: async (id, updates, userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      const measurements = await storage.getAll(null)
+      const index = measurements.findIndex(m => m.id === id)
+      if (index !== -1) {
+        measurements[index] = { ...measurements[index], ...updates }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(measurements))
+      }
+      return measurements
+    }
+
+    // Use Supabase if logged in
     const dbUpdates = {}
     if ('distanceFromFrontWall' in updates) dbUpdates.distance_from_front_wall = updates.distanceFromFrontWall
     if ('distanceFromSideWall' in updates) dbUpdates.distance_from_side_wall = updates.distanceFromSideWall
@@ -74,10 +110,19 @@ export const storage = {
 
     if (error) throw error
 
-    return storage.getAll()
+    return storage.getAll(userId)
   },
 
-  delete: async (id) => {
+  delete: async (id, userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      const measurements = await storage.getAll(null)
+      const filtered = measurements.filter(m => m.id !== id)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
+      return filtered
+    }
+
+    // Use Supabase if logged in
     const { error } = await supabase
       .from('measurements')
       .delete()
@@ -85,10 +130,17 @@ export const storage = {
 
     if (error) throw error
 
-    return storage.getAll()
+    return storage.getAll(userId)
   },
 
-  clear: async () => {
+  clear: async (userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      localStorage.removeItem(STORAGE_KEY)
+      return
+    }
+
+    // Use Supabase if logged in
     const { error } = await supabase
       .from('measurements')
       .delete()
@@ -98,8 +150,17 @@ export const storage = {
   },
 }
 
+const BASELINE_KEY = 'speaker-baseline'
+
 export const baselineStorage = {
-  get: async () => {
+  get: async (userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      const data = localStorage.getItem(BASELINE_KEY)
+      return data ? JSON.parse(data) : null
+    }
+
+    // Use Supabase if logged in
     const { data, error } = await supabase
       .from('baselines')
       .select('*')
@@ -123,6 +184,13 @@ export const baselineStorage = {
   },
 
   save: async (baseline, userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      localStorage.setItem(BASELINE_KEY, JSON.stringify(baseline))
+      return baseline
+    }
+
+    // Use Supabase if logged in
     const { data, error } = await supabase
       .from('baselines')
       .insert([{
@@ -145,7 +213,14 @@ export const baselineStorage = {
     }
   },
 
-  clear: async () => {
+  clear: async (userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      localStorage.removeItem(BASELINE_KEY)
+      return
+    }
+
+    // Use Supabase if logged in
     const { error } = await supabase
       .from('baselines')
       .delete()

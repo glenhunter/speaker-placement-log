@@ -7,35 +7,23 @@ import App from './App.jsx';
 import { SpeakerBaselines } from './pages/SpeakerBaselines.jsx';
 import LoginPage from './components/LoginPage.jsx';
 import PasswordResetPage from './components/PasswordResetPage.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
 import './css/index.css';
 
 const queryClient = new QueryClient();
+
+// Use basename only in production (GitHub Pages)
+const basename = import.meta.env.MODE === 'production' ? '/speaker-placement-log' : '';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter basename="/speaker-placement-log">
+        <BrowserRouter basename={basename}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/reset-password" element={<PasswordResetPage />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <App />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/speaker-baselines"
-              element={
-                <ProtectedRoute>
-                  <SpeakerBaselines />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/" element={<App />} />
+            <Route path="/speaker-baselines" element={<SpeakerBaselines />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
