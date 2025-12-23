@@ -8,16 +8,15 @@ export const useMeasurements = () => {
 
   // Query to fetch all measurements
   const { data: measurements = [], isLoading } = useQuery({
-    queryKey: ['measurements'],
-    queryFn: () => storage.getAll(),
-    enabled: !!user,
+    queryKey: ['measurements', user?.id],
+    queryFn: () => storage.getAll(user?.id),
   });
 
   // Mutation to save a new measurement
   const saveMutation = useMutation({
-    mutationFn: (measurementData) => storage.save(measurementData, user.id),
+    mutationFn: (measurementData) => storage.save(measurementData, user?.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['measurements'] });
+      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
     onError: (error) => {
       console.error('Failed to save measurement:', error);
@@ -26,9 +25,9 @@ export const useMeasurements = () => {
 
   // Mutation to update a measurement
   const updateMutation = useMutation({
-    mutationFn: ({ id, updates }) => storage.update(id, updates),
+    mutationFn: ({ id, updates }) => storage.update(id, updates, user?.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['measurements'] });
+      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
     onError: (error) => {
       console.error('Failed to update measurement:', error);
@@ -37,9 +36,9 @@ export const useMeasurements = () => {
 
   // Mutation to delete a single measurement
   const deleteMutation = useMutation({
-    mutationFn: (id) => storage.delete(id),
+    mutationFn: (id) => storage.delete(id, user?.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['measurements'] });
+      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
     onError: (error) => {
       console.error('Failed to delete measurement:', error);
@@ -48,9 +47,9 @@ export const useMeasurements = () => {
 
   // Mutation to clear all measurements
   const clearMutation = useMutation({
-    mutationFn: () => storage.clear(),
+    mutationFn: () => storage.clear(user?.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['measurements'] });
+      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
     onError: (error) => {
       console.error('Failed to clear measurements:', error);

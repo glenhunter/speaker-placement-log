@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
+import { STORAGE_KEYS, getBaseUrl, getErrorMessage } from '@/lib/constants'
 
 const AuthContext = createContext({})
 
@@ -14,6 +15,8 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [migrating, setMigrating] = useState(false)
+  const migrationAttempted = useRef(false)
 
   useEffect(() => {
     // Restore session on mount
@@ -21,8 +24,9 @@ export const AuthProvider = ({ children }) => {
       setUser(session?.user ?? null)
       setLoading(false)
 
-      // Migrate localStorage data on first login
-      if (session?.user) {
+      // Migrate localStorage data on first login (only on mount, not on every login)
+      if (session?.user && !migrationAttempted.current) {
+        migrationAttempted.current = true
         migrateLocalStorageData(session.user.id)
       }
     })
@@ -39,17 +43,33 @@ export const AuthProvider = ({ children }) => {
 
   const migrateLocalStorageData = async (userId) => {
     // Check if already migrated
-    const migrated = localStorage.getItem('supabase-migrated')
+    const migrated = localStorage.getItem(STORAGE_KEYS.MIGRATION_FLAG)
     if (migrated) return
 
+    setMigrating(true)
+
     try {
-      // Retrieve localStorage data
-      const measurements = JSON.parse(
-        localStorage.getItem('distance-measurements') || '[]'
-      )
-      const baseline = JSON.parse(
-        localStorage.getItem('speaker-baseline') || 'null'
-      )
+      let measurements = []
+      let baseline = null
+
+      // Safely parse localStorage data
+      try {
+        const measurementsData = localStorage.getItem(STORAGE_KEYS.MEASUREMENTS)
+        if (measurementsData) {
+          measurements = JSON.parse(measurementsData)
+        }
+      } catch (parseError) {
+        console.error('Failed to parse measurements from localStorage:', parseError)
+      }
+
+      try {
+        const baselineData = localStorage.getItem(STORAGE_KEYS.BASELINE)
+        if (baselineData) {
+          baseline = JSON.parse(baselineData)
+        }
+      } catch (parseError) {
+        console.error('Failed to parse baseline from localStorage:', parseError)
+      }
 
       // Upload measurements to Supabase with user_id
       if (measurements.length > 0) {
@@ -80,9 +100,12 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Mark as migrated
-      localStorage.setItem('supabase-migrated', 'true')
+      localStorage.setItem(STORAGE_KEYS.MIGRATION_FLAG, 'true')
     } catch (error) {
       console.error('Error migrating localStorage data:', error)
+      // Don't block login if migration fails
+    } finally {
+      setMigrating(false)
     }
   }
 
@@ -104,10 +127,8 @@ export const AuthProvider = ({ children }) => {
 
     if (error) throw error
 
-    // Migrate localStorage data on first successful login
-    if (data.user) {
-      await migrateLocalStorageData(data.user.id)
-    }
+    // Migration will be handled by onAuthStateChange or session restore
+    // Don't duplicate migration here to avoid race condition
 
     return data
   }
@@ -118,8 +139,9 @@ export const AuthProvider = ({ children }) => {
   }
 
   const resetPassword = async (email) => {
+    const baseUrl = getBaseUrl()
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/speaker-placement-log/reset-password`,
+      redirectTo: `${window.location.origin}${baseUrl}/reset-password`,
     })
 
     if (error) throw error
@@ -138,6 +160,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    migrating,
     signUp,
     signIn,
     signOut,

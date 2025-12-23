@@ -8,16 +8,15 @@ export function useBaseline() {
 
   // Query to fetch baseline
   const { data: baseline = null, isLoading } = useQuery({
-    queryKey: ['baseline'],
-    queryFn: () => baselineStorage.get(),
-    enabled: !!user,
+    queryKey: ['baseline', user?.id],
+    queryFn: () => baselineStorage.get(user?.id),
   });
 
   // Mutation to save baseline
   const saveMutation = useMutation({
-    mutationFn: (baselineData) => baselineStorage.save(baselineData, user.id),
+    mutationFn: (baselineData) => baselineStorage.save(baselineData, user?.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['baseline'] });
+      queryClient.invalidateQueries({ queryKey: ['baseline', user?.id] });
     },
     onError: (error) => {
       console.error('Failed to save baseline:', error);
@@ -26,9 +25,9 @@ export function useBaseline() {
 
   // Mutation to clear baseline
   const clearMutation = useMutation({
-    mutationFn: () => baselineStorage.clear(),
+    mutationFn: () => baselineStorage.clear(user?.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['baseline'] });
+      queryClient.invalidateQueries({ queryKey: ['baseline', user?.id] });
     },
     onError: (error) => {
       console.error('Failed to clear baseline:', error);
