@@ -6,6 +6,8 @@ A web application for tracking and comparing speaker placement measurements to h
 
 ## Features
 
+- **User Authentication**: Secure email/password authentication with password reset
+- **Cloud Storage**: Data syncs across devices via Supabase PostgreSQL
 - **Track Measurements**: Record speaker distance from front and side walls
 - **Rate Audio Quality**: Use intuitive sliders (0-10) to rate:
   - Bass response
@@ -14,7 +16,7 @@ A web application for tracking and comparing speaker placement measurements to h
   - Soundstage width
 - **Compare Results**: View all measurements in a convenient sidebar
 - **Export Data**: Export your measurements to Markdown format
-- **Persistent Storage**: All data is saved locally in your browser
+- **Data Migration**: Automatically migrates existing localStorage data on first login
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 
 ## Installation
@@ -23,6 +25,7 @@ A web application for tracking and comparing speaker placement measurements to h
 
 - [Node.js](https://nodejs.org/) (version 20 or higher recommended)
 - npm (comes with Node.js)
+- Supabase account and project (free tier available)
 
 ### Setup
 
@@ -37,23 +40,36 @@ A web application for tracking and comparing speaker placement measurements to h
    npm install
    ```
 
-3. Start the development server:
+3. Create a `.env.local` file with your Supabase credentials:
+   ```bash
+   VITE_SUPABASE_URL=your_supabase_project_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. Configure Supabase:
+   - Run the database schema (see `/docs/supabase-implementation-plan.md`)
+   - Configure authentication redirect URLs in Supabase dashboard
+   - Enable email provider authentication
+
+5. Start the development server:
    ```bash
    npm run dev
    ```
 
-4. Open your browser and navigate to:
+6. Open your browser and navigate to:
    ```
    http://localhost:5173/speaker-placement-log/
    ```
 
 ## Usage
 
-1. **Enter Distance Measurements**: Input the distance of your speakers from the front and side walls
-2. **Rate Audio Qualities**: Use the sliders to rate bass, treble, vocals, and soundstage (0-10)
-3. **Submit**: Click the Submit button to save your measurement
-4. **View History**: Click the sidebar tab (right edge of screen) to view all measurements
-5. **Export**: Use the "Export to Markdown" button in the sidebar to download your data
+1. **Sign Up/Sign In**: Create an account or sign in with email/password
+2. **Enter Distance Measurements**: Input the distance of your speakers from the front and side walls
+3. **Rate Audio Qualities**: Use the sliders to rate bass, treble, vocals, and soundstage (0-10)
+4. **Submit**: Click the Submit button to save your measurement to the cloud
+5. **View History**: Click the sidebar tab (right edge of screen) to view all measurements
+6. **Export**: Use the "Export to Markdown" button in the sidebar to download your data
+7. **Sign Out**: Click the Sign Out button in the header when done
 
 ## Build for Production
 
@@ -77,7 +93,10 @@ npm run preview
 - **Build Tool**: [Vite](https://vitejs.dev/) 5
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) 4
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (Radix UI primitives)
-- **State Management**: React hooks with local storage persistence
+- **Routing**: [React Router DOM](https://reactrouter.com/)
+- **State Management**: [TanStack Query](https://tanstack.com/query) (React Query)
+- **Authentication**: [Supabase Auth](https://supabase.com/docs/guides/auth) (email/password)
+- **Database**: [Supabase](https://supabase.com/) PostgreSQL with Row Level Security
 - **Deployment**: GitHub Pages with GitHub Actions
 
 ## Project Structure
@@ -86,20 +105,30 @@ npm run preview
 speaker-placement-log/
 ├── src/
 │   ├── components/
-│   │   ├── ui/          # shadcn/ui components
-│   │   └── Sidebar.jsx  # Measurement history sidebar
+│   │   ├── ui/                  # shadcn/ui components
+│   │   ├── Header.jsx           # Header with user info and logout
+│   │   ├── Sidebar.jsx          # Measurement history sidebar
+│   │   ├── LoginPage.jsx        # Authentication page
+│   │   ├── PasswordResetPage.jsx # Password reset flow
+│   │   └── ProtectedRoute.jsx   # Route protection wrapper
+│   ├── contexts/
+│   │   └── AuthContext.jsx      # Authentication state and methods
 │   ├── hooks/
-│   │   └── useMeasurements.js  # Measurement data management
+│   │   ├── useMeasurements.js   # Measurement data with React Query
+│   │   └── useBaseline.js       # Baseline data with React Query
 │   ├── lib/
-│   │   ├── storage.js   # Local storage utilities
-│   │   └── utils.js     # Helper functions
+│   │   ├── supabase.js          # Supabase client initialization
+│   │   ├── storage.js           # Supabase storage utilities
+│   │   └── utils.js             # Helper functions
+│   ├── pages/
+│   │   └── SpeakerBaselines.jsx # Baseline calculator page
 │   ├── css/
-│   │   └── index.css    # Global styles
-│   ├── App.jsx          # Main application component
-│   └── main.jsx         # Application entry point
+│   │   └── index.css            # Global styles
+│   ├── App.jsx                  # Main application component
+│   └── main.jsx                 # Application entry point
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml   # GitHub Pages deployment
+│       └── deploy.yml           # GitHub Pages deployment
 └── package.json
 ```
 
