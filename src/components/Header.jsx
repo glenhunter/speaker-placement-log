@@ -1,8 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Lightbulb } from "lucide-react";
 
-export function Header() {
+export function Header({ onHelpClick }) {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,6 +35,17 @@ export function Header() {
       </h1>
       {!isAuthPage && (
         <div className="flex items-center gap-4">
+          {onHelpClick && (
+            <Button
+              onClick={onHelpClick}
+              variant="outline"
+              size="sm"
+              className="bg-gray-700 border-gray-600 text-black hover:bg-gray-600 flex items-center gap-2"
+            >
+              <Lightbulb className="w-4 h-4" />
+              Help
+            </Button>
+          )}
           {user ? (
             <>
               <span className="text-sm text-gray-300">{user.email}</span>
