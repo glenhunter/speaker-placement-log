@@ -1,18 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { storage } from '@/lib/storage';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const useMeasurements = () => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   // Query to fetch all measurements
   const { data: measurements = [], isLoading } = useQuery({
     queryKey: ['measurements'],
     queryFn: () => storage.getAll(),
+    enabled: !!user,
   });
 
   // Mutation to save a new measurement
   const saveMutation = useMutation({
-    mutationFn: (measurementData) => storage.save(measurementData),
+    mutationFn: (measurementData) => storage.save(measurementData, user.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['measurements'] });
     },
