@@ -1,13 +1,17 @@
 import { supabase } from './supabase'
-
-const STORAGE_KEY = 'distance-measurements'
+import { STORAGE_KEYS } from './constants'
 
 export const storage = {
   getAll: async (userId) => {
     // Use localStorage if not logged in
     if (!userId) {
-      const data = localStorage.getItem(STORAGE_KEY)
-      return data ? JSON.parse(data) : []
+      try {
+        const data = localStorage.getItem(STORAGE_KEYS.MEASUREMENTS)
+        return data ? JSON.parse(data) : []
+      } catch (error) {
+        console.error('Failed to parse measurements from localStorage:', error)
+        return []
+      }
     }
 
     // Use Supabase if logged in
@@ -43,7 +47,7 @@ export const storage = {
         isFavorite: false,
       }
       measurements.push(newMeasurement)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(measurements))
+      localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(measurements))
       return newMeasurement
     }
 
@@ -87,7 +91,7 @@ export const storage = {
       const index = measurements.findIndex(m => m.id === id)
       if (index !== -1) {
         measurements[index] = { ...measurements[index], ...updates }
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(measurements))
+        localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(measurements))
       }
       return measurements
     }
@@ -118,7 +122,7 @@ export const storage = {
     if (!userId) {
       const measurements = await storage.getAll(null)
       const filtered = measurements.filter(m => m.id !== id)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
+      localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(filtered))
       return filtered
     }
 
@@ -136,7 +140,7 @@ export const storage = {
   clear: async (userId) => {
     // Use localStorage if not logged in
     if (!userId) {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_KEYS.MEASUREMENTS)
       return
     }
 
@@ -150,14 +154,17 @@ export const storage = {
   },
 }
 
-const BASELINE_KEY = 'speaker-baseline'
-
 export const baselineStorage = {
   get: async (userId) => {
     // Use localStorage if not logged in
     if (!userId) {
-      const data = localStorage.getItem(BASELINE_KEY)
-      return data ? JSON.parse(data) : null
+      try {
+        const data = localStorage.getItem(STORAGE_KEYS.BASELINE)
+        return data ? JSON.parse(data) : null
+      } catch (error) {
+        console.error('Failed to parse baseline from localStorage:', error)
+        return null
+      }
     }
 
     // Use Supabase if logged in
@@ -186,7 +193,7 @@ export const baselineStorage = {
   save: async (baseline, userId) => {
     // Use localStorage if not logged in
     if (!userId) {
-      localStorage.setItem(BASELINE_KEY, JSON.stringify(baseline))
+      localStorage.setItem(STORAGE_KEYS.BASELINE, JSON.stringify(baseline))
       return baseline
     }
 
@@ -216,7 +223,7 @@ export const baselineStorage = {
   clear: async (userId) => {
     // Use localStorage if not logged in
     if (!userId) {
-      localStorage.removeItem(BASELINE_KEY)
+      localStorage.removeItem(STORAGE_KEYS.BASELINE)
       return
     }
 

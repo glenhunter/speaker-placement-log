@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { getErrorMessage } from '@/lib/constants'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -30,6 +31,13 @@ export default function PasswordResetPage() {
     e.preventDefault()
     setError('')
     setMessage('')
+
+    // Client-side validation
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -37,7 +45,7 @@ export default function PasswordResetPage() {
       setMessage('Password reset email sent. Check your inbox.')
       setEmail('')
     } catch (err) {
-      setError(err.message || 'An error occurred')
+      setError(getErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -48,13 +56,14 @@ export default function PasswordResetPage() {
     setError('')
     setMessage('')
 
-    if (newPassword !== confirmPassword) {
-      setError('Passwords do not match')
+    // Client-side validation
+    if (!newPassword || newPassword.length < 6) {
+      setError('Password must be at least 6 characters')
       return
     }
 
-    if (newPassword.length < 6) {
-      setError('Password must be at least 6 characters')
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match')
       return
     }
 
@@ -67,7 +76,7 @@ export default function PasswordResetPage() {
         navigate('/login')
       }, 2000)
     } catch (err) {
-      setError(err.message || 'An error occurred')
+      setError(getErrorMessage(err))
     } finally {
       setLoading(false)
     }

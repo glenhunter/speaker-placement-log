@@ -1,45 +1,58 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthContext'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { getErrorMessage } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
-  const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const { signIn, signUp } = useAuth()
-  const navigate = useNavigate()
+  const { signIn, signUp, migrating } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setMessage('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setMessage("");
+
+    // Basic client-side validation
+    if (!email || !email.includes("@")) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (!password || password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       if (isLogin) {
-        await signIn(email, password)
-        navigate('/')
+        await signIn(email, password);
+        navigate("/");
       } else {
-        await signUp(email, password)
-        setMessage('Account created successfully!')
-        setEmail('')
-        setPassword('')
-        setTimeout(() => setIsLogin(true), 1500)
+        await signUp(email, password);
+        setMessage("Account created successfully!");
+        setEmail("");
+        setPassword("");
+        setTimeout(() => setIsLogin(true), 1500);
       }
     } catch (err) {
-      setError(err.message || 'An error occurred')
+      setError(getErrorMessage(err));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -48,12 +61,12 @@ export default function LoginPage() {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2 text-center">
               <h1 className="text-2xl font-bold">
-                {isLogin ? 'Welcome back' : 'Create an account'}
+                {isLogin ? "Welcome back" : "Create an account"}
               </h1>
               <p className="text-sm text-muted-foreground">
                 {isLogin
-                  ? 'Enter your email to sign in to your account'
-                  : 'Enter your email below to create your account'}
+                  ? "Enter your email to sign in to your account"
+                  : "Enter your email below to create your account"}
               </p>
             </div>
 
@@ -76,7 +89,7 @@ export default function LoginPage() {
                   {isLogin && (
                     <button
                       type="button"
-                      onClick={() => navigate('/reset-password')}
+                      onClick={() => navigate("/reset-password")}
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot password?
@@ -105,28 +118,46 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Loading...' : isLogin ? 'Sign in' : 'Sign up'}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loading || migrating}
+              >
+                {migrating
+                  ? "Migrating data..."
+                  : loading
+                  ? "Loading..."
+                  : isLogin
+                  ? "Sign in"
+                  : "Sign up"}
               </Button>
+
+              {migrating && (
+                <div className="text-sm text-muted-foreground text-center">
+                  Syncing your local data to the cloud...
+                </div>
+              )}
             </form>
 
             <div className="text-center text-sm">
-              {isLogin ? "Don't have an account? " : 'Already have an account? '}
+              {isLogin
+                ? "Don't have an account? "
+                : "Already have an account? "}
               <button
                 type="button"
                 onClick={() => {
-                  setIsLogin(!isLogin)
-                  setError('')
-                  setMessage('')
+                  setIsLogin(!isLogin);
+                  setError("");
+                  setMessage("");
                 }}
                 className="underline underline-offset-4 hover:text-primary"
               >
-                {isLogin ? 'Sign up' : 'Sign in'}
+                {isLogin ? "Sign up" : "Sign in"}
               </button>
             </div>
           </div>
         </Card>
       </div>
     </div>
-  )
+  );
 }
