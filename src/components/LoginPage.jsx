@@ -120,7 +120,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-amber_flame hover:bg-amber_flame-600 text-white"
+                className="w-full bg-deep_space_blue hover:bg-deep_space_blue-600 active:bg-deep_space_blue-700 text-white transition-all"
                 disabled={loading || migrating}
               >
                 {migrating
@@ -150,7 +150,7 @@ export default function LoginPage() {
                   setError("");
                   setMessage("");
                 }}
-                className="underline underline-offset-4 hover:text-princeton_orange text-princeton_orange-600 font-medium"
+                className="underline underline-offset-4 hover:text-princeton_orange active:text-princeton_orange-700 text-princeton_orange-600 font-medium transition-colors"
               >
                 {isLogin ? "Sign up" : "Sign in"}
               </button>

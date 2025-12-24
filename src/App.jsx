@@ -112,7 +112,7 @@ function App() {
                       variant="outline"
                       size="sm"
                       onClick={() => navigate("/speaker-baselines")}
-                      className="border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-deep_space_blue font-semibold"
+                      className="border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-white active:bg-amber_flame-700 font-semibold transition-all"
                     >
                       Change Baseline
                     </Button>
@@ -121,7 +121,7 @@ function App() {
               ) : (
                 <Button
                   onClick={() => navigate("/speaker-baselines")}
-                  className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                  className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
                 >
                   Create Baseline
                 </Button>
@@ -190,6 +190,7 @@ function App() {
                         variant="outline"
                         onClick={() => adjustRating(bass, setBass, -1)}
                         disabled={bass <= -10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Worse
                       </Button>
@@ -211,6 +212,7 @@ function App() {
                         variant="outline"
                         onClick={() => adjustRating(bass, setBass, 1)}
                         disabled={bass >= 10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Better
                       </Button>
@@ -224,6 +226,7 @@ function App() {
                         variant="outline"
                         onClick={() => adjustRating(treble, setTreble, -1)}
                         disabled={treble <= -10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Worse
                       </Button>
@@ -246,6 +249,7 @@ function App() {
                         variant="outline"
                         onClick={() => adjustRating(treble, setTreble, 1)}
                         disabled={treble >= 10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Better
                       </Button>
@@ -259,6 +263,7 @@ function App() {
                         variant="outline"
                         onClick={() => adjustRating(vocals, setVocals, -1)}
                         disabled={vocals <= -10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Worse
                       </Button>
@@ -281,6 +286,7 @@ function App() {
                         variant="outline"
                         onClick={() => adjustRating(vocals, setVocals, 1)}
                         disabled={vocals >= 10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Better
                       </Button>
@@ -296,6 +302,7 @@ function App() {
                           adjustRating(soundstage, setSoundstage, -1)
                         }
                         disabled={soundstage <= -10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Worse
                       </Button>
@@ -324,6 +331,7 @@ function App() {
                           adjustRating(soundstage, setSoundstage, 1)
                         }
                         disabled={soundstage >= 10}
+                        className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
                       >
                         Better
                       </Button>
@@ -332,7 +340,7 @@ function App() {
                   <Button
                     type="submit"
                     disabled={isSaving}
-                    className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                    className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
                   >
                     {isSaving ? "Saving..." : "Submit"}
                   </Button>
@@ -345,7 +353,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 bg-amber_flame hover:bg-amber_flame-600 p-3 top-24">
+            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 p-3 top-24">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

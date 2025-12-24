@@ -289,7 +289,7 @@ export function SpeakerBaselines() {
                   <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
                       onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
-                      className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                      className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
                     >
                       Use as Baseline
                     </Button>
@@ -354,7 +354,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("planar-edge")}
-                        className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                        className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
                       >
                         Use as Baseline
                       </Button>
@@ -414,7 +414,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("rule-of-thirds")}
-                        className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                        className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
                       >
                         Use as Baseline
                       </Button>
@@ -498,7 +498,7 @@ export function SpeakerBaselines() {
                         onClick={() =>
                           handleUseAsBaseline("equilateral-triangle")
                         }
-                        className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                        className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
                       >
                         Use as Baseline
                       </Button>

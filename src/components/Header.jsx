@@ -40,7 +40,7 @@ export function Header() {
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="bg-amber_flame hover:bg-amber_flame-600 text-deep_space_blue border-amber_flame-600 font-semibold"
+                className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
               >
                 Sign Out
               </Button>
@@ -50,7 +50,7 @@ export function Header() {
               onClick={() => navigate("/login")}
               variant="outline"
               size="sm"
-              className="bg-amber_flame hover:bg-amber_flame-600 text-deep_space_blue border-amber_flame-600 font-semibold"
+              className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 border-input transition-all"
             >
               Login
             </Button>

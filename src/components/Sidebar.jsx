@@ -115,8 +115,7 @@ export function Sidebar({
           </div>
           <button
             onClick={() => deleteMeasurement(measurement.id)}
-            className="absolute top-2 right-2 p-1 rounded hover:bg-opacity-80 transition-colors"
-            style={{ color: "var(--color-destructive)" }}
+            className="absolute top-2 right-2 p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all"
             aria-label="Delete measurement"
           >
             <svg
@@ -146,7 +145,7 @@ export function Sidebar({
                 updates: { isFavorite: !measurement.isFavorite },
               })
             }
-            className="p-1 rounded hover:bg-opacity-80 transition-colors"
+            className="p-1 rounded hover:bg-amber_flame/10 active:bg-amber_flame/20 transition-all"
             aria-label={
               measurement.isFavorite
                 ? "Remove from favorites"
@@ -163,22 +162,12 @@ export function Sidebar({
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{
-                color: measurement.isFavorite
-                  ? "gold"
-                  : "var(--color-muted-foreground)",
-              }}
+              className={measurement.isFavorite ? "text-amber_flame" : "text-muted-foreground"}
             >
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
           </button>
-          <div
-            className="text-right"
-            style={{
-              fontSize: "10px",
-              color: "var(--color-muted-foreground)",
-            }}
-          >
+          <div className="text-right text-xs text-muted-foreground">
             {new Date(measurement.createdAt).toLocaleString()}
           </div>
         </CardFooter>
@@ -192,7 +181,7 @@ export function Sidebar({
         <div className="space-y-6">
           {/* Export Button */}
           <div className="flex justify-start">
-            <Button onClick={exportToMarkdown} variant="outline" size="sm" className="border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-deep_space_blue font-semibold">
+            <Button onClick={exportToMarkdown} variant="outline" size="sm" className="border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-white active:bg-amber_flame-700 font-semibold transition-all">
               Export to Markdown
             </Button>
           </div>

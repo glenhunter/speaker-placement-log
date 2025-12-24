@@ -136,7 +136,7 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-amber_flame hover:bg-amber_flame-600 text-white" disabled={loading}>
+                <Button type="submit" className="w-full bg-deep_space_blue hover:bg-deep_space_blue-600 active:bg-deep_space_blue-700 text-white transition-all" disabled={loading}>
                   {loading ? 'Updating...' : 'Update password'}
                 </Button>
               </form>
@@ -166,7 +166,7 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-amber_flame hover:bg-amber_flame-600 text-white" disabled={loading}>
+                <Button type="submit" className="w-full bg-deep_space_blue hover:bg-deep_space_blue-600 active:bg-deep_space_blue-700 text-white transition-all" disabled={loading}>
                   {loading ? 'Sending...' : 'Send reset email'}
                 </Button>
               </form>
@@ -176,7 +176,7 @@ export default function PasswordResetPage() {
               <button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="underline underline-offset-4 hover:text-princeton_orange text-princeton_orange-600 font-medium"
+                className="underline underline-offset-4 hover:text-princeton_orange active:text-princeton_orange-700 text-princeton_orange-600 font-medium transition-colors"
               >
                 Back to sign in
               </button>
