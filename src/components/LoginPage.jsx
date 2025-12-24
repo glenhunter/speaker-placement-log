@@ -55,15 +55,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-sky_blue_light-900">
       <div className="w-full max-w-sm">
-        <Card className="p-6">
+        <Card className="p-6 border-2 border-sky_blue_light-700 shadow-lg">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-2xl font-bold text-deep_space_blue">
                 {isLogin ? "Welcome back" : "Create an account"}
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-blue_green-300">
                 {isLogin
                   ? "Enter your email to sign in to your account"
                   : "Enter your email below to create your account"}
@@ -120,7 +120,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-amber_flame hover:bg-amber_flame-600 text-white"
                 disabled={loading || migrating}
               >
                 {migrating
@@ -139,7 +139,7 @@ export default function LoginPage() {
               )}
             </form>
 
-            <div className="text-center text-sm">
+            <div className="text-center text-sm text-blue_green-300">
               {isLogin
                 ? "Don't have an account? "
                 : "Already have an account? "}
@@ -150,7 +150,7 @@ export default function LoginPage() {
                   setError("");
                   setMessage("");
                 }}
-                className="underline underline-offset-4 hover:text-primary"
+                className="underline underline-offset-4 hover:text-princeton_orange text-princeton_orange-600 font-medium"
               >
                 {isLogin ? "Sign up" : "Sign in"}
               </button>

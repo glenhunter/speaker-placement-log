@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(222.2 84% 4.9%);
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(222.2 84% 4.9%);
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(222.2 84% 4.9%);
-  --color-primary: hsl(222.2 47.4% 11.2%);
-  --color-primary-foreground: hsl(210 40% 98%);
-  --color-secondary: hsl(210 40% 96.1%);
-  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
-  --color-muted: hsl(210 40% 96.1%);
-  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
-  --color-accent: hsl(210 40% 96.1%);
-  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+  /* Backgrounds - light coastal blue */
+  --color-background: #e8f4fa;
+  --color-foreground: #023047;
+
+  /* Cards - clean white */
+  --color-card: #ffffff;
+  --color-card-foreground: #023047;
+
+  /* Popovers */
+  --color-popover: #ffffff;
+  --color-popover-foreground: #023047;
+
+  /* Primary - deep space blue */
+  --color-primary: #023047;
+  --color-primary-foreground: #ffffff;
+
+  /* Secondary - sky blue */
+  --color-secondary: #d2eaf5;
+  --color-secondary-foreground: #023047;
+
+  /* Muted - light blue grey */
+  --color-muted: #bbdff0;
+  --color-muted-foreground: #0d2e3d;
+
+  /* Accent - amber flame */
+  --color-accent: #ffb703;
+  --color-accent-foreground: #023047;
+
+  /* Destructive - keep red for errors */
   --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(210 40% 98%);
-  --color-border: hsl(214.3 31.8% 91.4%);
-  --color-input: hsl(214.3 31.8% 91.4%);
-  --color-ring: hsl(222.2 84% 4.9%);
+  --color-destructive-foreground: #ffffff;
+
+  /* Borders - soft blue */
+  --color-border: #bbdff0;
+  --color-input: #bbdff0;
+
+  /* Focus ring - princeton orange */
+  --color-ring: #fb8500;
+
   --radius: 0.5rem;
+
+  /* Ocean-Sunset Palette - Sky Blue (Light) */
+  --color-sky_blue_light: #8ecae6;
+  --color-sky_blue_light-100: #0d2e3d;
+  --color-sky_blue_light-200: #1b5c7a;
+  --color-sky_blue_light-300: #288ab7;
+  --color-sky_blue_light-400: #51aed9;
+  --color-sky_blue_light-500: #8ecae6;
+  --color-sky_blue_light-600: #a5d5eb;
+  --color-sky_blue_light-700: #bbdff0;
+  --color-sky_blue_light-800: #d2eaf5;
+  --color-sky_blue_light-900: #e8f4fa;
+
+  /* Ocean-Sunset Palette - Blue Green */
+  --color-blue_green: #219ebc;
+  --color-blue_green-100: #071f25;
+  --color-blue_green-200: #0d3e4b;
+  --color-blue_green-300: #145d70;
+  --color-blue_green-400: #1a7d95;
+  --color-blue_green-500: #219ebc;
+  --color-blue_green-600: #39bcdc;
+  --color-blue_green-700: #6bcce5;
+  --color-blue_green-800: #9cddee;
+  --color-blue_green-900: #ceeef6;
+
+  /* Ocean-Sunset Palette - Deep Space Blue */
+  --color-deep_space_blue: #023047;
+  --color-deep_space_blue-100: #00090e;
+  --color-deep_space_blue-200: #01131c;
+  --color-deep_space_blue-300: #011c2a;
+  --color-deep_space_blue-400: #012638;
+  --color-deep_space_blue-500: #023047;
+  --color-deep_space_blue-600: #04699b;
+  --color-deep_space_blue-700: #06a3f1;
+  --color-deep_space_blue-800: #54c3fb;
+  --color-deep_space_blue-900: #a9e1fd;
+
+  /* Ocean-Sunset Palette - Amber Flame */
+  --color-amber_flame: #ffb703;
+  --color-amber_flame-100: #342500;
+  --color-amber_flame-200: #684b00;
+  --color-amber_flame-300: #9c7000;
+  --color-amber_flame-400: #d09500;
+  --color-amber_flame-500: #ffb703;
+  --color-amber_flame-600: #ffc637;
+  --color-amber_flame-700: #ffd569;
+  --color-amber_flame-800: #ffe39b;
+  --color-amber_flame-900: #fff1cd;
+
+  /* Ocean-Sunset Palette - Princeton Orange */
+  --color-princeton_orange: #fb8500;
+  --color-princeton_orange-100: #321b00;
+  --color-princeton_orange-200: #643500;
+  --color-princeton_orange-300: #965000;
+  --color-princeton_orange-400: #c86b00;
+  --color-princeton_orange-500: #fb8500;
+  --color-princeton_orange-600: #ff9e2f;
+  --color-princeton_orange-700: #ffb663;
+  --color-princeton_orange-800: #ffce97;
+  --color-princeton_orange-900: #ffe7cb;
 }
 
 * {
@@ -39,12 +119,6 @@ body {
 .distance-label {
   font-size: 1.5rem;
   font-weight: 600;
-}
-
-.sheet-trigger-tab {
-  background-color: var(--color-primary);
-  padding: 12px 8px;
-  top: 100px;
 }
 
 [role="tab"][data-state="active"] {

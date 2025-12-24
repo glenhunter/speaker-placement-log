@@ -78,13 +78,12 @@ function App() {
           <div className="max-w-2xl mx-auto">
             {/* Baseline Section */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold mb-4">Baseline</h2>
+              <h2 className="text-3xl font-bold mb-4 text-deep_space_blue">Baseline</h2>
               {baseline ? (
-                <Card className="relative">
+                <Card className="relative border-2 border-sky_blue_light-700 shadow-sm">
                   {baseline.methodName && (
                     <div
-                      className="absolute top-2 right-2"
-                      style={{ fontSize: "10px", color: "#666" }}
+                      className="absolute top-2 right-2 text-xs text-sky_blue_light-300"
                     >
                       {baseline.methodName}
                     </div>
@@ -99,33 +98,37 @@ function App() {
                     >
                       {baseline.values?.map((item, index) => (
                         <div key={index} className="space-y-1">
-                          <p className="text-xs text-gray-600">{item.label}</p>
-                          <p className="text-lg font-bold">{item.value}</p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-blue_green-300">{item.label}</p>
+                          <p className="text-lg font-bold text-deep_space_blue">{item.value}</p>
+                          <p className="text-xs text-sky_blue_light-300">
                             {item.formula}
                           </p>
                         </div>
                       ))}
                     </div>
                   </CardContent>
-                  <CardFooter className="p-4 pt-0">
+                  <CardFooter className="p-4 pt-0 border-t border-sky_blue_light-700">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => navigate("/speaker-baselines")}
+                      className="border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-deep_space_blue font-semibold"
                     >
                       Change Baseline
                     </Button>
                   </CardFooter>
                 </Card>
               ) : (
-                <Button onClick={() => navigate("/speaker-baselines")}>
+                <Button
+                  onClick={() => navigate("/speaker-baselines")}
+                  className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                >
                   Create Baseline
                 </Button>
               )}
             </div>
-            <h2 className="text-3xl font-bold mb-4">Modifications</h2>
-            <Card>
+            <h2 className="text-3xl font-bold mb-4 text-deep_space_blue">Modifications</h2>
+            <Card className="border-2 border-sky_blue_light-700 shadow-sm">
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-3 gap-4">
@@ -179,7 +182,7 @@ function App() {
                       />
                     </div>
                   </div>
-                  <Separator className="bg-gray-700" />
+                  <Separator className="bg-blue_green-500" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -196,7 +199,7 @@ function App() {
                       <span
                         className="text-2xl font-semibold"
                         style={{
-                          color: bass > 0 ? "#0f0" : bass < 0 ? "#f00" : "#666",
+                          color: bass > 0 ? "#219ebc" : bass < 0 ? "#ef4444" : "#288ab7",
                         }}
                       >
                         {bass}
@@ -213,7 +216,7 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <Separator className="bg-gray-300" />
+                  <Separator className="bg-sky_blue_light-600" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -231,7 +234,7 @@ function App() {
                         className="text-2xl font-semibold"
                         style={{
                           color:
-                            treble > 0 ? "#0f0" : treble < 0 ? "#f00" : "#666",
+                            treble > 0 ? "#219ebc" : treble < 0 ? "#ef4444" : "#288ab7",
                         }}
                       >
                         {treble}
@@ -248,7 +251,7 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <Separator className="bg-gray-300" />
+                  <Separator className="bg-sky_blue_light-600" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -266,7 +269,7 @@ function App() {
                         className="text-2xl font-semibold"
                         style={{
                           color:
-                            vocals > 0 ? "#0f0" : vocals < 0 ? "#f00" : "#666",
+                            vocals > 0 ? "#219ebc" : vocals < 0 ? "#ef4444" : "#288ab7",
                         }}
                       >
                         {vocals}
@@ -283,7 +286,7 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <Separator className="bg-gray-300" />
+                  <Separator className="bg-sky_blue_light-600" />
                   <div className="grid grid-cols-3 items-center gap-4">
                     <div>
                       <Button
@@ -304,10 +307,10 @@ function App() {
                         style={{
                           color:
                             soundstage > 0
-                              ? "#0f0"
+                              ? "#219ebc"
                               : soundstage < 0
-                              ? "#f00"
-                              : "#666",
+                              ? "#ef4444"
+                              : "#288ab7",
                         }}
                       >
                         {soundstage}
@@ -326,7 +329,11 @@ function App() {
                       </Button>
                     </div>
                   </div>
-                  <Button type="submit" disabled={isSaving}>
+                  <Button
+                    type="submit"
+                    disabled={isSaving}
+                    className="bg-amber_flame hover:bg-amber_flame-600 text-white"
+                  >
                     {isSaving ? "Saving..." : "Submit"}
                   </Button>
                 </form>
@@ -338,7 +345,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 sheet-trigger-tab">
+            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 bg-amber_flame hover:bg-amber_flame-600 p-3 top-24">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -349,7 +356,7 @@ function App() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{ color: "var(--color-primary-foreground)" }}
+                className="text-white"
               >
                 <path d="m15 18-6-6 6-6" />
               </svg>

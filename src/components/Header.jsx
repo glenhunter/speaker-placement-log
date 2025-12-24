@@ -21,27 +21,26 @@ export function Header() {
 
   return (
     <header
-      className="flex items-center justify-between px-8"
+      className="flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-amber_flame-500"
       style={{
-        backgroundColor: "#000",
         height: "80px",
         minHeight: "80px",
         maxHeight: "80px",
       }}
     >
-      <h1 className="text-2xl font-bold" style={{ color: "#fff" }}>
+      <h1 className="text-2xl font-bold text-white">
         Speaker Placement Log
       </h1>
       {!isAuthPage && (
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              <span className="text-sm text-gray-300">{user.email}</span>
+              <span className="text-sm text-sky_blue_light-700">{user.email}</span>
               <Button
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="bg-gray-700 border-gray-600 text-black hover:bg-gray-600"
+                className="bg-amber_flame hover:bg-amber_flame-600 text-deep_space_blue border-amber_flame-600 font-semibold"
               >
                 Sign Out
               </Button>
@@ -51,7 +50,7 @@ export function Header() {
               onClick={() => navigate("/login")}
               variant="outline"
               size="sm"
-              className="bg-gray-700 border-gray-600 text-black hover:bg-gray-600"
+              className="bg-amber_flame hover:bg-amber_flame-600 text-deep_space_blue border-amber_flame-600 font-semibold"
             >
               Login
             </Button>

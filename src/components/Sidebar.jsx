@@ -95,10 +95,10 @@ export function Sidebar({
     const sum = calculateScore(measurement);
 
     return (
-      <Card key={measurement.id} className="relative">
+      <Card key={measurement.id} className="relative border-2 border-sky_blue_light-700">
         <CardContent className="p-3 pr-10">
           <div className="flex items-center gap-3">
-            <div className="text-4xl font-bold" style={{ fontSize: "36px" }}>
+            <div className="text-4xl font-bold text-deep_space_blue" style={{ fontSize: "36px" }}>
               {sum}
             </div>
             <div className="flex-1 space-y-1 text-sm">
@@ -192,7 +192,7 @@ export function Sidebar({
         <div className="space-y-6">
           {/* Export Button */}
           <div className="flex justify-start">
-            <Button onClick={exportToMarkdown} variant="outline" size="sm">
+            <Button onClick={exportToMarkdown} variant="outline" size="sm" className="border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-deep_space_blue font-semibold">
               Export to Markdown
             </Button>
           </div>
@@ -200,7 +200,7 @@ export function Sidebar({
           {/* Favourites Section */}
           {measurements.filter((m) => m.isFavorite).length > 0 && (
             <div className="space-y-3">
-              <h2 className="text-xl font-bold mb-4">
+              <h2 className="text-xl font-bold mb-4 text-deep_space_blue">
                 Favourites ({measurements.filter((m) => m.isFavorite).length})
               </h2>
               {measurements
@@ -213,7 +213,7 @@ export function Sidebar({
 
           {/* All Stored Values Section */}
           <div className="space-y-3">
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-xl font-bold mb-4 text-deep_space_blue">
               All Stored Values ({measurements.length})
             </h2>
             {measurements

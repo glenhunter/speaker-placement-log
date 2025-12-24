@@ -139,15 +139,15 @@ export function SpeakerBaselines() {
 
       <main className="flex-1 p-8">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">Speaker Baselines</h2>
-          <p className="mb-6">
+          <h2 className="text-3xl font-bold mb-6 text-deep_space_blue">Speaker Baselines</h2>
+          <p className="mb-6 text-blue_green-300">
             Distances should be measured from the front center of the speaker.
           </p>
           {/* Room Dimensions Form */}
-          <Card className="mb-8">
+          <Card className="mb-8 border-2 border-sky_blue_light-700 shadow-sm">
             <CardContent className="p-6 space-y-6">
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold">Room Dimensions</h3>
+                <h3 className="text-xl font-semibold text-deep_space_blue">Room Dimensions</h3>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="roomLength">Length</Label>
@@ -190,7 +190,7 @@ export function SpeakerBaselines() {
 
               {/* Speaker Type */}
               <div className="space-y-3">
-                <h3 className="text-xl font-semibold">Speaker Type</h3>
+                <h3 className="text-xl font-semibold text-deep_space_blue">Speaker Type</h3>
                 <div className="flex gap-6">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -228,31 +228,31 @@ export function SpeakerBaselines() {
               <TabsTrigger value="tab4">Nearfield Listening</TabsTrigger>
             </TabsList>
             <TabsContent value="tab1" className="mt-6">
-              <div className="p-4 border rounded-md space-y-4">
+              <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Cardas Golden Ratio</h4>
                 {roomWidth && speakerType === "conventional" && (
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Distance from the center of the woofer face to the side
                         walls:
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomWidth) * 0.276)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Width × 0.276 ({roomWidth} × 0.276)
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Distance from the center of the woofer face to the wall
                         behind the speaker:
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomWidth) * 0.447)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Width × 0.447 ({roomWidth} × 0.447)
                       </p>
                     </div>
@@ -261,44 +261,45 @@ export function SpeakerBaselines() {
                 {roomHeight && speakerType === "planar" && (
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Distance from the rear wall:
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomHeight) * 0.618)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Ceiling Height × 0.618 ({roomHeight} × 0.618)
                       </p>
                     </div>
                   </div>
                 )}
                 {!roomWidth && speakerType === "conventional" && (
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sky_blue_light-300 text-sm">
                     Enter room width to see calculations for conventional
                     speakers.
                   </p>
                 )}
                 {!roomHeight && speakerType === "planar" && (
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sky_blue_light-300 text-sm">
                     Enter room height to see calculations for planar speakers.
                   </p>
                 )}
                 {((speakerType === "conventional" && roomWidth) ||
                   (speakerType === "planar" && roomHeight)) && (
-                  <div className="pt-4 border-t">
+                  <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
                       onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
+                      className="bg-amber_flame hover:bg-amber_flame-600 text-white"
                     >
                       Use as Baseline
                     </Button>
                   </div>
                 )}
               </div>
-              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
-              <Card>
+              <h2 className="text-2xl font-bold mt-6 mb-4 text-deep_space_blue">Acknowledgements</h2>
+              <Card className="border-2 border-sky_blue_light-700">
                 <CardContent className="p-4">
-                  <p className="text-sm">
+                  <p className="text-sm text-blue_green-300">
                     I've been using the Cardas website for about as long as it
                     has existed I think. I picked his Golden Ratio method
                     because I think it's interesting and a little different from
@@ -317,57 +318,58 @@ export function SpeakerBaselines() {
               </Card>
             </TabsContent>
             <TabsContent value="tab2" className="mt-6">
-              <div className="p-4 border rounded-md space-y-4">
+              <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Planar Edge Method</h4>
                 {roomLength ? (
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Front Wall (Speaker Position):
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomLength) * 0.4)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Length × 0.4 ({roomLength} × 0.4)
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Side Wall (Speaker Position):
                       </p>
                       <p className="text-2xl font-bold">6"</p>
-                      <p className="text-xs text-gray-500 mt-1">Fixed value</p>
+                      <p className="text-xs text-sky_blue_light-300 mt-1">Fixed value</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Listening Position:
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomLength) * 0.8)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Length × 0.8 ({roomLength} × 0.8)
                       </p>
                     </div>
-                    <div className="pt-4 border-t">
+                    <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("planar-edge")}
+                        className="bg-amber_flame hover:bg-amber_flame-600 text-white"
                       >
                         Use as Baseline
                       </Button>
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sky_blue_light-300 text-sm">
                     Enter room length to see Planar Edge Method calculations.
                   </p>
                 )}
               </div>
-              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
-              <Card>
+              <h2 className="text-2xl font-bold mt-6 mb-4 text-deep_space_blue">Acknowledgements</h2>
+              <Card className="border-2 border-sky_blue_light-700">
                 <CardContent className="p-4">
-                  <p className="text-sm">
+                  <p className="text-sm text-blue_green-300">
                     This method is based on{" "}
                     <a
                       href="https://forum.audiogon.com/discussions/planar-speaker-placement"
@@ -383,50 +385,51 @@ export function SpeakerBaselines() {
               </Card>
             </TabsContent>
             <TabsContent value="tab3" className="mt-6">
-              <div className="p-4 border rounded-md space-y-4">
+              <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Rule of 1/3's</h4>
                 {roomLength ? (
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Front Wall (Speaker Position):
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomLength) * 0.3333)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Length × 33.33% ({roomLength} × 0.3333)
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Listening Position:
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(parseFloat(roomLength) * 0.66)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Length × 66% ({roomLength} × 0.66)
                       </p>
                     </div>
-                    <div className="pt-4 border-t">
+                    <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("rule-of-thirds")}
+                        className="bg-amber_flame hover:bg-amber_flame-600 text-white"
                       >
                         Use as Baseline
                       </Button>
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sky_blue_light-300 text-sm">
                     Enter room length to see Rule of 1/3's calculations.
                   </p>
                 )}
               </div>
-              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
-              <Card>
+              <h2 className="text-2xl font-bold mt-6 mb-4 text-deep_space_blue">Acknowledgements</h2>
+              <Card className="border-2 border-sky_blue_light-700">
                 <CardContent className="p-4">
-                  <p className="text-sm">
+                  <p className="text-sm text-blue_green-300">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
@@ -435,9 +438,9 @@ export function SpeakerBaselines() {
               </Card>
             </TabsContent>
             <TabsContent value="tab4" className="mt-6">
-              <div className="p-4 border rounded-md space-y-4">
+              <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Nearfield Listening</h4>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-blue_green-300">
                   Nearfield Listening places the speakers and listening position
                   at the corners of an equilateral triangle. This means the
                   distance between the two speakers is equal to the distance
@@ -459,7 +462,7 @@ export function SpeakerBaselines() {
                 {roomWidth && sidewallDistance ? (
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Speaker Separation (Distance Between Speakers):
                       </p>
                       <p className="text-2xl font-bold">
@@ -468,13 +471,13 @@ export function SpeakerBaselines() {
                             parseFloat(sidewallDistance) * 2
                         )}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         Room Width - (Sidewall Distance × 2) ({roomWidth} -{" "}
                         {sidewallDistance} × 2)
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-blue_green-300 mb-1">
                         Listening Position (Distance from speaker front to
                         listener):
                       </p>
@@ -486,31 +489,32 @@ export function SpeakerBaselines() {
                             2
                         )}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-sky_blue_light-300 mt-1">
                         (Speaker Separation × √3) / 2
                       </p>
                     </div>
-                    <div className="pt-4 border-t">
+                    <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() =>
                           handleUseAsBaseline("equilateral-triangle")
                         }
+                        className="bg-amber_flame hover:bg-amber_flame-600 text-white"
                       >
                         Use as Baseline
                       </Button>
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sky_blue_light-300 text-sm">
                     Enter room width and sidewall distance to see Equilateral
                     Triangle calculations.
                   </p>
                 )}
               </div>
-              <h2 className="text-2xl font-bold mt-6 mb-4">Acknowledgements</h2>
-              <Card>
+              <h2 className="text-2xl font-bold mt-6 mb-4 text-deep_space_blue">Acknowledgements</h2>
+              <Card className="border-2 border-sky_blue_light-700">
                 <CardContent className="p-4">
-                  <p className="text-sm">
+                  <p className="text-sm text-blue_green-300">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
