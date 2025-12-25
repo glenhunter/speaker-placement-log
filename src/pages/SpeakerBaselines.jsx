@@ -9,16 +9,63 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useBaseline } from "@/hooks/useBaseline";
-import { feetToFraction, parseNumericInput } from "@/lib/utils";
+import { useUnit } from "@/contexts/UnitContext";
+import { feetToFraction } from "@/lib/utils";
 
 export function SpeakerBaselines() {
   const navigate = useNavigate();
   const { saveBaseline } = useBaseline();
-  const [roomLength, setRoomLength] = useState("");
-  const [roomWidth, setRoomWidth] = useState("");
-  const [roomHeight, setRoomHeight] = useState("");
-  const [sidewallDistance, setSidewallDistance] = useState("");
+  const { unit } = useUnit();
+
+  // Separate state for major/minor units (feet/metres and inches/cm)
+  const [roomLengthMajor, setRoomLengthMajor] = useState("");
+  const [roomLengthMinor, setRoomLengthMinor] = useState("");
+  const [roomWidthMajor, setRoomWidthMajor] = useState("");
+  const [roomWidthMinor, setRoomWidthMinor] = useState("");
+  const [roomHeightMajor, setRoomHeightMajor] = useState("");
+  const [roomHeightMinor, setRoomHeightMinor] = useState("");
+  const [sidewallDistanceMajor, setSidewallDistanceMajor] = useState("");
+  const [sidewallDistanceMinor, setSidewallDistanceMinor] = useState("");
   const [speakerType, setSpeakerType] = useState("conventional");
+
+  // Convert major/minor values to feet based on selected unit
+  const convertToFeet = (major, minor) => {
+    const majorNum = parseFloat(major);
+    const minorNum = parseFloat(minor);
+
+    // If both are empty/invalid, return null
+    if ((isNaN(majorNum) || major === "") && (isNaN(minorNum) || minor === "")) {
+      return null;
+    }
+
+    // Use 0 for empty values when the other has a value
+    const majorValue = isNaN(majorNum) || major === "" ? 0 : majorNum;
+    const minorValue = isNaN(minorNum) || minor === "" ? 0 : minorNum;
+
+    if (unit === "imperial") {
+      // major = feet, minor = inches
+      return majorValue + (minorValue / 12);
+    } else if (unit === "metric") {
+      // major = metres, minor = cm
+      const totalCm = (majorValue * 100) + minorValue;
+      return totalCm / 30.48; // Convert cm to feet
+    }
+    return null;
+  };
+
+  // Format the display of input values for formulas
+  const formatInputDisplay = (major, minor) => {
+    const majorNum = parseFloat(major);
+    const minorNum = parseFloat(minor);
+    const majorValue = isNaN(majorNum) || major === "" ? "0" : major;
+    const minorValue = isNaN(minorNum) || minor === "" ? "0" : minor;
+
+    if (unit === "imperial") {
+      return `${majorValue}' ${minorValue}"`;
+    } else {
+      return `${majorValue}m ${minorValue}cm`;
+    }
+  };
 
   const handleUseAsBaseline = (calculationType = "cardas-golden-ratio") => {
     const methodNames = {
@@ -35,74 +82,83 @@ export function SpeakerBaselines() {
       values: [],
     };
 
-    const parsedWidth = parseNumericInput(roomWidth);
-    const parsedHeight = parseNumericInput(roomHeight);
-    const parsedLength = parseNumericInput(roomLength);
-    const parsedSidewall = parseNumericInput(sidewallDistance);
+    // Parse and convert to feet for calculations
+    const parsedWidth = convertToFeet(roomWidthMajor, roomWidthMinor);
+    const parsedHeight = convertToFeet(roomHeightMajor, roomHeightMinor);
+    const parsedLength = convertToFeet(roomLengthMajor, roomLengthMinor);
+    const parsedSidewall = convertToFeet(sidewallDistanceMajor, sidewallDistanceMinor);
 
     if (calculationType === "cardas-golden-ratio") {
       if (speakerType === "conventional" && parsedWidth !== null) {
-        const sideWallDistance = feetToFraction(parsedWidth * 0.276);
-        const frontWallDistance = feetToFraction(parsedWidth * 0.447);
+        const sideWallDistanceFeet = parsedWidth * 0.276;
+        const frontWallDistanceFeet = parsedWidth * 0.447;
 
         baselineData.values = [
           {
             label: "Front Wall",
-            value: frontWallDistance,
-            formula: `Room Width × 0.447 (${roomWidth} × 0.447)`,
+            value: feetToFraction(frontWallDistanceFeet),
+            rawValueInFeet: frontWallDistanceFeet,
+            formula: `Room Width × 0.447 (${formatInputDisplay(roomWidthMajor, roomWidthMinor)} × 0.447)`,
           },
           {
             label: "Side Wall",
-            value: sideWallDistance,
-            formula: `Room Width × 0.276 (${roomWidth} × 0.276)`,
+            value: feetToFraction(sideWallDistanceFeet),
+            rawValueInFeet: sideWallDistanceFeet,
+            formula: `Room Width × 0.276 (${formatInputDisplay(roomWidthMajor, roomWidthMinor)} × 0.276)`,
           },
         ];
       } else if (speakerType === "planar" && parsedHeight !== null) {
-        const frontWallDistance = feetToFraction(parsedHeight * 0.618);
+        const frontWallDistanceFeet = parsedHeight * 0.618;
 
         baselineData.values = [
           {
             label: "Front Wall",
-            value: frontWallDistance,
-            formula: `Ceiling Height × 0.618 (${roomHeight} × 0.618)`,
+            value: feetToFraction(frontWallDistanceFeet),
+            rawValueInFeet: frontWallDistanceFeet,
+            formula: `Ceiling Height × 0.618 (${formatInputDisplay(roomHeightMajor, roomHeightMinor)} × 0.618)`,
           },
         ];
       }
     } else if (calculationType === "planar-edge" && parsedLength !== null) {
-      const frontWallDistance = feetToFraction(parsedLength * 0.4);
-      const listeningPosition = feetToFraction(parsedLength * 0.8);
+      const frontWallDistanceFeet = parsedLength * 0.4;
+      const listeningPositionFeet = parsedLength * 0.8;
 
       baselineData.values = [
         {
           label: "Front Wall",
-          value: frontWallDistance,
-          formula: `Room Length × 0.4 (${roomLength} × 0.4)`,
+          value: feetToFraction(frontWallDistanceFeet),
+          rawValueInFeet: frontWallDistanceFeet,
+          formula: `Room Length × 0.4 (${formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.4)`,
         },
         {
           label: "Side Wall",
           value: '6"',
+          rawValueInFeet: 0.5, // 6 inches = 0.5 feet
           formula: "Fixed value",
         },
         {
           label: "Listening Position",
-          value: listeningPosition,
-          formula: `Room Length × 0.8 (${roomLength} × 0.8)`,
+          value: feetToFraction(listeningPositionFeet),
+          rawValueInFeet: listeningPositionFeet,
+          formula: `Room Length × 0.8 (${formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.8)`,
         },
       ];
     } else if (calculationType === "rule-of-thirds" && parsedLength !== null) {
-      const frontWallDistance = feetToFraction(parsedLength * 0.3333);
-      const listeningPosition = feetToFraction(parsedLength * 0.66);
+      const frontWallDistanceFeet = parsedLength * 0.3333;
+      const listeningPositionFeet = parsedLength * 0.66;
 
       baselineData.values = [
         {
           label: "Front Wall",
-          value: frontWallDistance,
-          formula: `Room Length × 33.33% (${roomLength} × 0.3333)`,
+          value: feetToFraction(frontWallDistanceFeet),
+          rawValueInFeet: frontWallDistanceFeet,
+          formula: `Room Length × 33.33% (${formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.3333)`,
         },
         {
           label: "Listening Position",
-          value: listeningPosition,
-          formula: `Room Length × 66% (${roomLength} × 0.66)`,
+          value: feetToFraction(listeningPositionFeet),
+          rawValueInFeet: listeningPositionFeet,
+          formula: `Room Length × 66% (${formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.66)`,
         },
       ];
     } else if (
@@ -111,19 +167,19 @@ export function SpeakerBaselines() {
       parsedSidewall !== null
     ) {
       const speakerSeparation = parsedWidth - parsedSidewall * 2;
-      const listeningPosition = feetToFraction(
-        (speakerSeparation * Math.sqrt(3)) / 2
-      );
+      const listeningPositionFeet = (speakerSeparation * Math.sqrt(3)) / 2;
 
       baselineData.values = [
         {
           label: "Side Wall",
           value: feetToFraction(parsedSidewall),
-          formula: `Input value (${sidewallDistance})`,
+          rawValueInFeet: parsedSidewall,
+          formula: `Input value (${formatInputDisplay(sidewallDistanceMajor, sidewallDistanceMinor)})`,
         },
         {
           label: "Listening Position",
-          value: listeningPosition,
+          value: feetToFraction(listeningPositionFeet),
+          rawValueInFeet: listeningPositionFeet,
           formula: `(Speaker Separation × √3) / 2`,
         },
       ];
@@ -149,41 +205,77 @@ export function SpeakerBaselines() {
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-deep_space_blue">Room Dimensions</h3>
                 <div className="grid grid-cols-3 gap-4">
+                  {/* Length */}
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="roomLength">Length</Label>
-                    <Input
-                      id="roomLength"
-                      type="number"
-                      value={roomLength}
-                      onChange={(e) => setRoomLength(e.target.value)}
-                      placeholder="ft"
-                      min="0"
-                      step="0.01"
-                    />
+                    <Label>Length</Label>
+                    <div className="flex gap-1 items-center">
+                      <Input
+                        id="roomLengthMajor"
+                        type="number"
+                        value={roomLengthMajor}
+                        onChange={(e) => setRoomLengthMajor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                      <Input
+                        id="roomLengthMinor"
+                        type="number"
+                        value={roomLengthMinor}
+                        onChange={(e) => setRoomLengthMinor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                    </div>
                   </div>
+                  {/* Width */}
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="roomWidth">Width</Label>
-                    <Input
-                      id="roomWidth"
-                      type="number"
-                      value={roomWidth}
-                      onChange={(e) => setRoomWidth(e.target.value)}
-                      placeholder="ft"
-                      min="0"
-                      step="0.01"
-                    />
+                    <Label>Width</Label>
+                    <div className="flex gap-1 items-center">
+                      <Input
+                        id="roomWidthMajor"
+                        type="number"
+                        value={roomWidthMajor}
+                        onChange={(e) => setRoomWidthMajor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                      <Input
+                        id="roomWidthMinor"
+                        type="number"
+                        value={roomWidthMinor}
+                        onChange={(e) => setRoomWidthMinor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                    </div>
                   </div>
+                  {/* Height */}
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="roomHeight">Height</Label>
-                    <Input
-                      id="roomHeight"
-                      type="number"
-                      value={roomHeight}
-                      onChange={(e) => setRoomHeight(e.target.value)}
-                      placeholder="ft"
-                      min="0"
-                      step="0.01"
-                    />
+                    <Label>Height</Label>
+                    <div className="flex gap-1 items-center">
+                      <Input
+                        id="roomHeightMajor"
+                        type="number"
+                        value={roomHeightMajor}
+                        onChange={(e) => setRoomHeightMajor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                      <Input
+                        id="roomHeightMinor"
+                        type="number"
+                        value={roomHeightMinor}
+                        onChange={(e) => setRoomHeightMinor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -230,7 +322,7 @@ export function SpeakerBaselines() {
             <TabsContent value="tab1" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Cardas Golden Ratio</h4>
-                {roomWidth && speakerType === "conventional" && (
+                {speakerType === "conventional" && convertToFeet(roomWidthMajor, roomWidthMinor) !== null && (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
@@ -238,10 +330,10 @@ export function SpeakerBaselines() {
                         walls:
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomWidth) * 0.276)}
+                        {feetToFraction(convertToFeet(roomWidthMajor, roomWidthMinor) * 0.276)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Width × 0.276 ({roomWidth} × 0.276)
+                        Room Width × 0.276 ({formatInputDisplay(roomWidthMajor, roomWidthMinor)} × 0.276)
                       </p>
                     </div>
                     <div>
@@ -250,42 +342,42 @@ export function SpeakerBaselines() {
                         behind the speaker:
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomWidth) * 0.447)}
+                        {feetToFraction(convertToFeet(roomWidthMajor, roomWidthMinor) * 0.447)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Width × 0.447 ({roomWidth} × 0.447)
+                        Room Width × 0.447 ({formatInputDisplay(roomWidthMajor, roomWidthMinor)} × 0.447)
                       </p>
                     </div>
                   </div>
                 )}
-                {roomHeight && speakerType === "planar" && (
+                {speakerType === "planar" && convertToFeet(roomHeightMajor, roomHeightMinor) !== null && (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
                         Distance from the rear wall:
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomHeight) * 0.618)}
+                        {feetToFraction(convertToFeet(roomHeightMajor, roomHeightMinor) * 0.618)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Ceiling Height × 0.618 ({roomHeight} × 0.618)
+                        Ceiling Height × 0.618 ({formatInputDisplay(roomHeightMajor, roomHeightMinor)} × 0.618)
                       </p>
                     </div>
                   </div>
                 )}
-                {!roomWidth && speakerType === "conventional" && (
+                {convertToFeet(roomWidthMajor, roomWidthMinor) === null && speakerType === "conventional" && (
                   <p className="text-sky_blue_light-400 text-sm">
                     Enter room width to see calculations for conventional
                     speakers.
                   </p>
                 )}
-                {!roomHeight && speakerType === "planar" && (
+                {convertToFeet(roomHeightMajor, roomHeightMinor) === null && speakerType === "planar" && (
                   <p className="text-sky_blue_light-400 text-sm">
                     Enter room height to see calculations for planar speakers.
                   </p>
                 )}
-                {((speakerType === "conventional" && roomWidth) ||
-                  (speakerType === "planar" && roomHeight)) && (
+                {((speakerType === "conventional" && convertToFeet(roomWidthMajor, roomWidthMinor) !== null) ||
+                  (speakerType === "planar" && convertToFeet(roomHeightMajor, roomHeightMinor) !== null)) && (
                   <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
                       onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
@@ -307,7 +399,8 @@ export function SpeakerBaselines() {
                     <a
                       href="https://www.cardas.com/system-setup"
                       target="_blank"
-                      external
+                      rel="noopener noreferrer"
+                      className="link-accessible"
                     >
                       Cardas website
                     </a>{" "}
@@ -320,17 +413,17 @@ export function SpeakerBaselines() {
             <TabsContent value="tab2" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Planar Edge Method</h4>
-                {roomLength ? (
+                {convertToFeet(roomLengthMajor, roomLengthMinor) !== null ? (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
                         Front Wall (Speaker Position):
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomLength) * 0.4)}
+                        {feetToFraction(convertToFeet(roomLengthMajor, roomLengthMinor) * 0.4)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Length × 0.4 ({roomLength} × 0.4)
+                        Room Length × 0.4 ({formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.4)
                       </p>
                     </div>
                     <div>
@@ -345,10 +438,10 @@ export function SpeakerBaselines() {
                         Listening Position:
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomLength) * 0.8)}
+                        {feetToFraction(convertToFeet(roomLengthMajor, roomLengthMinor) * 0.8)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Length × 0.8 ({roomLength} × 0.8)
+                        Room Length × 0.8 ({formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.8)
                       </p>
                     </div>
                     <div className="pt-4 border-t border-sky_blue_light-700">
@@ -373,8 +466,9 @@ export function SpeakerBaselines() {
                     This method is based on{" "}
                     <a
                       href="https://forum.audiogon.com/discussions/planar-speaker-placement"
-                      external
                       target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-accessible"
                     >
                       this Audiogon forum thread
                     </a>
@@ -387,17 +481,17 @@ export function SpeakerBaselines() {
             <TabsContent value="tab3" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Rule of 1/3's</h4>
-                {roomLength ? (
+                {convertToFeet(roomLengthMajor, roomLengthMinor) !== null ? (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
                         Front Wall (Speaker Position):
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomLength) * 0.3333)}
+                        {feetToFraction(convertToFeet(roomLengthMajor, roomLengthMinor) * 0.3333)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Length × 33.33% ({roomLength} × 0.3333)
+                        Room Length × 33.33% ({formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.3333)
                       </p>
                     </div>
                     <div>
@@ -405,10 +499,10 @@ export function SpeakerBaselines() {
                         Listening Position:
                       </p>
                       <p className="text-2xl font-bold">
-                        {feetToFraction(parseFloat(roomLength) * 0.66)}
+                        {feetToFraction(convertToFeet(roomLengthMajor, roomLengthMinor) * 0.66)}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Length × 66% ({roomLength} × 0.66)
+                        Room Length × 66% ({formatInputDisplay(roomLengthMajor, roomLengthMinor)} × 0.66)
                       </p>
                     </div>
                     <div className="pt-4 border-t border-sky_blue_light-700">
@@ -447,19 +541,29 @@ export function SpeakerBaselines() {
                   from each speaker to the listening position.
                 </p>
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="sidewallDistance">Sidewall Distance</Label>
-                  <Input
-                    id="sidewallDistance"
-                    type="number"
-                    value={sidewallDistance}
-                    onChange={(e) => setSidewallDistance(e.target.value)}
-                    placeholder="ft"
-                    className="w-1/4"
-                    min="0"
-                    step="0.01"
-                  />
+                  <Label>Sidewall Distance</Label>
+                  <div className="flex gap-1 items-center w-1/2">
+                    <Input
+                      id="sidewallDistanceMajor"
+                      type="number"
+                      value={sidewallDistanceMajor}
+                      onChange={(e) => setSidewallDistanceMajor(e.target.value)}
+                      className="w-16"
+                      min="0"
+                    />
+                    <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                    <Input
+                      id="sidewallDistanceMinor"
+                      type="number"
+                      value={sidewallDistanceMinor}
+                      onChange={(e) => setSidewallDistanceMinor(e.target.value)}
+                      className="w-16"
+                      min="0"
+                    />
+                    <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                  </div>
                 </div>
-                {roomWidth && sidewallDistance ? (
+                {convertToFeet(roomWidthMajor, roomWidthMinor) !== null && convertToFeet(sidewallDistanceMajor, sidewallDistanceMinor) !== null ? (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
@@ -467,13 +571,13 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          parseFloat(roomWidth) -
-                            parseFloat(sidewallDistance) * 2
+                          convertToFeet(roomWidthMajor, roomWidthMinor) -
+                            convertToFeet(sidewallDistanceMajor, sidewallDistanceMinor) * 2
                         )}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
-                        Room Width - (Sidewall Distance × 2) ({roomWidth} -{" "}
-                        {sidewallDistance} × 2)
+                        Room Width - (Sidewall Distance × 2) ({formatInputDisplay(roomWidthMajor, roomWidthMinor)} -{" "}
+                        {formatInputDisplay(sidewallDistanceMajor, sidewallDistanceMinor)} × 2)
                       </p>
                     </div>
                     <div>
@@ -483,8 +587,8 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          ((parseFloat(roomWidth) -
-                            parseFloat(sidewallDistance) * 2) *
+                          ((convertToFeet(roomWidthMajor, roomWidthMinor) -
+                            convertToFeet(sidewallDistanceMajor, sidewallDistanceMinor) * 2) *
                             Math.sqrt(3)) /
                             2
                         )}

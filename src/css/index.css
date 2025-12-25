@@ -2,7 +2,7 @@
 
 @theme {
   /* Backgrounds - light coastal blue */
-  --color-background: #EEF7FB;
+  --color-background: #eef7fb;
   --color-foreground: #023047;
 
   /* Cards - clean white */
@@ -117,7 +117,7 @@ body {
 }
 
 .distance-label {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -154,4 +154,27 @@ body {
 
 .btn-outline:active {
   background-color: var(--color-princeton_orange-700);
+}
+
+/* Accessible Link Styles */
+.link-accessible {
+  color: var(--color-blue_green-400);
+  text-decoration: underline;
+  transition: all 150ms;
+}
+
+.link-accessible:hover {
+  color: var(--color-blue_green-500);
+  text-decoration-thickness: 2px;
+}
+
+.link-accessible:focus {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+  color: var(--color-blue_green-500);
+}
+
+.link-accessible:active {
+  color: var(--color-blue_green-600);
 }

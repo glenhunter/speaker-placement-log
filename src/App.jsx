@@ -1,23 +1,41 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lightbulb, X } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { useBaseline } from "@/hooks/useBaseline";
+import { useUnit } from "@/contexts/UnitContext";
+import { formatDistance } from "@/lib/utils";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 function App() {
   const navigate = useNavigate();
-  const [distanceFromFrontWall, setDistanceFromFrontWall] = useState("");
-  const [distanceFromSideWall, setDistanceFromSideWall] = useState("");
-  const [listeningPosition, setListeningPosition] = useState("");
+  // Split state for major/minor units (feet/metres and inches/cm)
+  const [frontWallMajor, setFrontWallMajor] = useState("");
+  const [frontWallMinor, setFrontWallMinor] = useState("");
+  const [sideWallMajor, setSideWallMajor] = useState("");
+  const [sideWallMinor, setSideWallMinor] = useState("");
+  const [listeningPositionMajor, setListeningPositionMajor] = useState("");
+  const [listeningPositionMinor, setListeningPositionMinor] = useState("");
   const [bass, setBass] = useState(0);
   const [treble, setTreble] = useState(0);
   const [vocals, setVocals] = useState(0);
@@ -41,14 +59,40 @@ function App() {
   } = useMeasurements();
 
   const { baseline } = useBaseline();
+  const { unit } = useUnit();
+
+  // Convert major/minor values to feet based on selected unit
+  const convertToFeet = (major, minor) => {
+    const majorNum = parseFloat(major);
+    const minorNum = parseFloat(minor);
+
+    // If both are empty/invalid, return null
+    if ((isNaN(majorNum) || major === "") && (isNaN(minorNum) || minor === "")) {
+      return null;
+    }
+
+    // Use 0 for empty values when the other has a value
+    const majorValue = isNaN(majorNum) || major === "" ? 0 : majorNum;
+    const minorValue = isNaN(minorNum) || minor === "" ? 0 : minorNum;
+
+    if (unit === "imperial") {
+      // major = feet, minor = inches
+      return majorValue + (minorValue / 12);
+    } else if (unit === "metric") {
+      // major = metres, minor = cm
+      const totalCm = (majorValue * 100) + minorValue;
+      return totalCm / 30.48; // Convert cm to feet
+    }
+    return null;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const measurementData = {
-      distanceFromFrontWall,
-      distanceFromSideWall,
-      listeningPosition,
+      distanceFromFrontWall: convertToFeet(frontWallMajor, frontWallMinor),
+      distanceFromSideWall: convertToFeet(sideWallMajor, sideWallMinor),
+      listeningPosition: convertToFeet(listeningPositionMajor, listeningPositionMinor),
       bass,
       treble,
       vocals,
@@ -58,9 +102,12 @@ function App() {
     saveMeasurement(measurementData);
 
     // Clear the form after submission
-    setDistanceFromFrontWall("");
-    setDistanceFromSideWall("");
-    setListeningPosition("");
+    setFrontWallMajor("");
+    setFrontWallMinor("");
+    setSideWallMajor("");
+    setSideWallMinor("");
+    setListeningPositionMajor("");
+    setListeningPositionMinor("");
     setBass(0);
     setTreble(0);
     setVocals(0);
@@ -79,7 +126,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header onHelpClick={() => setShowHelpCard(true)} />
+      <Header measurements={measurements} baseline={baseline} />
 
       {/* Main Content Area */}
       <div className="flex flex-1 relative">
@@ -214,14 +261,6 @@ function App() {
 
             {/* Baseline Section */}
             <div className="mb-8">
-              <div className="flex items-baseline gap-6 mb-4">
-                <h2 className="text-3xl font-bold text-deep_space_blue shrink-0">
-                  Baseline
-                </h2>
-                <p className="text-sm text-gray-600">
-                  You must set a baseline before you can make modifications.
-                </p>
-              </div>
               {baseline ? (
                 <Card className="relative border-2 border-princeton_orange shadow-sm">
                   {baseline.methodName && (
@@ -229,7 +268,24 @@ function App() {
                       {baseline.methodName}
                     </div>
                   )}
-                  <CardContent className="p-4 pt-10">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-3xl text-deep_space_blue">
+                        Baseline
+                      </CardTitle>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <button className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors">
+                            <HelpCircle className="w-5 h-5" />
+                          </button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <p className="text-sm">Hello World</p>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
                     <div
                       className={`grid ${
                         baseline.values?.length === 3
@@ -237,19 +293,28 @@ function App() {
                           : "grid-cols-2"
                       } gap-4`}
                     >
-                      {baseline.values?.map((item, index) => (
-                        <div key={index} className="space-y-1">
-                          <p className="text-xs text-sky_blue_light-500">
-                            {item.label}
-                          </p>
-                          <p className="text-lg font-bold text-deep_space_blue">
-                            {item.value}
-                          </p>
-                          <p className="text-xs text-sky_blue_light-400">
-                            {item.formula}
-                          </p>
-                        </div>
-                      ))}
+                      {baseline.values?.map((item, index) => {
+                        // Convert rawValueInFeet to the selected unit and format
+                        let displayValue = item.value; // Fallback to original value
+                        if (item.rawValueInFeet !== undefined) {
+                          // formatDistance expects feet and converts internally based on unit
+                          displayValue = formatDistance(item.rawValueInFeet, unit);
+                        }
+
+                        return (
+                          <div key={index} className="space-y-1">
+                            <p className="text-xs text-sky_blue_light-500">
+                              {item.label}
+                            </p>
+                            <p className="text-lg font-bold text-deep_space_blue">
+                              {displayValue}
+                            </p>
+                            <p className="text-xs text-sky_blue_light-400">
+                              {item.formula}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 border-t border-princeton_orange">
@@ -272,67 +337,98 @@ function App() {
                 </Button>
               )}
             </div>
-            <div className="flex items-baseline gap-6 mb-4">
-              <h2 className="text-3xl font-bold text-deep_space_blue shrink-0">
-                Modifications
-              </h2>
-              <p className="text-sm text-gray-600">
-                I suggest that you record full measurements here rather than
-                deltas.
-              </p>
-            </div>
-            <Card className="border-2 border-princeton_orange shadow-sm">
-              <CardContent className="p-6">
+            <Card className="border-2 border-sky_blue_light-700 shadow-sm">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-deep_space_blue">
+                    Modifications
+                  </CardTitle>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors">
+                        <HelpCircle className="w-5 h-5" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <p className="text-sm">Hello World</p>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0 px-6 pb-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-3 gap-4">
+                    {/* Front Wall */}
                     <div className="flex flex-col gap-2">
-                      <Label htmlFor="frontWall" className="distance-label">
-                        Front Wall:
-                      </Label>
-                      <Input
-                        id="frontWall"
-                        type="number"
-                        value={distanceFromFrontWall}
-                        onChange={(e) =>
-                          setDistanceFromFrontWall(e.target.value)
-                        }
-                        className="distance-input"
-                        min="0"
-                        step="0.01"
-                      />
+                      <Label className="distance-label">Front Wall:</Label>
+                      <div className="flex gap-1 items-center">
+                        <Input
+                          id="frontWallMajor"
+                          type="number"
+                          value={frontWallMajor}
+                          onChange={(e) => setFrontWallMajor(e.target.value)}
+                          className="w-16"
+                          min="0"
+                        />
+                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                        <Input
+                          id="frontWallMinor"
+                          type="number"
+                          value={frontWallMinor}
+                          onChange={(e) => setFrontWallMinor(e.target.value)}
+                          className="w-16"
+                          min="0"
+                        />
+                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                      </div>
                     </div>
+                    {/* Side Wall */}
                     <div className="flex flex-col gap-2">
-                      <Label htmlFor="sideWall" className="distance-label">
-                        Side Wall:
-                      </Label>
-                      <Input
-                        id="sideWall"
-                        type="number"
-                        value={distanceFromSideWall}
-                        onChange={(e) =>
-                          setDistanceFromSideWall(e.target.value)
-                        }
-                        className="distance-input"
-                        min="0"
-                        step="0.01"
-                      />
+                      <Label className="distance-label">Side Wall:</Label>
+                      <div className="flex gap-1 items-center">
+                        <Input
+                          id="sideWallMajor"
+                          type="number"
+                          value={sideWallMajor}
+                          onChange={(e) => setSideWallMajor(e.target.value)}
+                          className="w-16"
+                          min="0"
+                        />
+                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                        <Input
+                          id="sideWallMinor"
+                          type="number"
+                          value={sideWallMinor}
+                          onChange={(e) => setSideWallMinor(e.target.value)}
+                          className="w-16"
+                          min="0"
+                        />
+                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                      </div>
                     </div>
+                    {/* Listening Position (Seat) */}
                     <div className="flex flex-col gap-2">
-                      <Label
-                        htmlFor="listeningPosition"
-                        className="distance-label"
-                      >
-                        Seat:
-                      </Label>
-                      <Input
-                        id="listeningPosition"
-                        type="number"
-                        value={listeningPosition}
-                        onChange={(e) => setListeningPosition(e.target.value)}
-                        className="distance-input"
-                        min="0"
-                        step="0.01"
-                      />
+                      <Label className="distance-label">Seat:</Label>
+                      <div className="flex gap-1 items-center">
+                        <Input
+                          id="listeningPositionMajor"
+                          type="number"
+                          value={listeningPositionMajor}
+                          onChange={(e) => setListeningPositionMajor(e.target.value)}
+                          className="w-16"
+                          min="0"
+                        />
+                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                        <Input
+                          id="listeningPositionMinor"
+                          type="number"
+                          value={listeningPositionMinor}
+                          onChange={(e) => setListeningPositionMinor(e.target.value)}
+                          className="w-16"
+                          min="0"
+                        />
+                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                      </div>
                     </div>
                   </div>
                   <Separator className="bg-sky_blue_light-500" />
@@ -510,7 +606,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-24">
+            <button className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-16">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
