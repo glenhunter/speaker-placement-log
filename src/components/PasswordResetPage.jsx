@@ -141,7 +141,7 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all" disabled={loading}>
+                <Button type="submit" className="w-full btn-primary" disabled={loading}>
                   {loading ? 'Updating...' : 'Update password'}
                 </Button>
               </form>
@@ -171,7 +171,7 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all" disabled={loading}>
+                <Button type="submit" className="w-full btn-primary" disabled={loading}>
                   {loading ? 'Sending...' : 'Send reset email'}
                 </Button>
               </form>
