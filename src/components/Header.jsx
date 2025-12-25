@@ -39,7 +39,7 @@ export function Header({ onHelpClick }) {
               onClick={onHelpClick}
               variant="outline"
               size="sm"
-              className="bg-gray-700 border-gray-600 text-black hover:bg-gray-600 flex items-center gap-2"
+              className="btn-outline flex items-center gap-2"
             >
               <Lightbulb className="w-4 h-4" />
               Help
@@ -52,7 +52,7 @@ export function Header({ onHelpClick }) {
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                className="btn-outline"
               >
                 Sign Out
               </Button>
@@ -62,7 +62,7 @@ export function Header({ onHelpClick }) {
               onClick={() => navigate("/login")}
               variant="outline"
               size="sm"
-              className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+              className="btn-outline"
             >
               Login
             </Button>

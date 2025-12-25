@@ -214,17 +214,22 @@ function App() {
 
             {/* Baseline Section */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold mb-4 text-deep_space_blue">
-                Baseline
-              </h2>
+              <div className="flex items-baseline gap-6 mb-4">
+                <h2 className="text-3xl font-bold text-deep_space_blue shrink-0">
+                  Baseline
+                </h2>
+                <p className="text-sm text-gray-600">
+                  You must set a baseline before you can make modifications.
+                </p>
+              </div>
               {baseline ? (
-                <Card className="relative border-2 border-sky_blue_light-700 shadow-sm">
+                <Card className="relative border-2 border-princeton_orange shadow-sm">
                   {baseline.methodName && (
-                    <div className="absolute top-2 right-2 text-xs text-sky_blue_light-400">
+                    <div className="absolute top-0 right-0 text-xs text-white bg-sky_blue_light-700 px-3 py-1.5 rounded-bl-lg">
                       {baseline.methodName}
                     </div>
                   )}
-                  <CardContent className="p-4">
+                  <CardContent className="p-4 pt-10">
                     <div
                       className={`grid ${
                         baseline.values?.length === 3
@@ -247,12 +252,12 @@ function App() {
                       ))}
                     </div>
                   </CardContent>
-                  <CardFooter className="p-4 pt-0 border-t border-sky_blue_light-700">
+                  <CardFooter className="p-4 border-t border-princeton_orange">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => navigate("/speaker-baselines")}
-                      className="border-2 border-princeton_orange text-princeton_orange hover:bg-princeton_orange hover:text-white active:bg-princeton_orange-700 font-semibold transition-all"
+                      className="btn-outline font-semibold"
                     >
                       Change Baseline
                     </Button>
@@ -261,16 +266,22 @@ function App() {
               ) : (
                 <Button
                   onClick={() => navigate("/speaker-baselines")}
-                  className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                  className="btn-primary"
                 >
                   Create Baseline
                 </Button>
               )}
             </div>
-            <h2 className="text-3xl font-bold mb-4 text-deep_space_blue">
-              Modifications
-            </h2>
-            <Card className="border-2 border-sky_blue_light-700 shadow-sm">
+            <div className="flex items-baseline gap-6 mb-4">
+              <h2 className="text-3xl font-bold text-deep_space_blue shrink-0">
+                Modifications
+              </h2>
+              <p className="text-sm text-gray-600">
+                I suggest that you record full measurements here rather than
+                deltas.
+              </p>
+            </div>
+            <Card className="border-2 border-princeton_orange shadow-sm">
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-3 gap-4">
@@ -331,7 +342,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(bass, setBass, -1)}
                       disabled={bass <= -10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Worse
                     </Button>
@@ -358,7 +369,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(bass, setBass, 1)}
                       disabled={bass >= 10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Better
                     </Button>
@@ -370,7 +381,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(treble, setTreble, -1)}
                       disabled={treble <= -10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Worse
                     </Button>
@@ -397,7 +408,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(treble, setTreble, 1)}
                       disabled={treble >= 10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Better
                     </Button>
@@ -409,7 +420,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(vocals, setVocals, -1)}
                       disabled={vocals <= -10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Worse
                     </Button>
@@ -436,7 +447,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(vocals, setVocals, 1)}
                       disabled={vocals >= 10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Better
                     </Button>
@@ -450,7 +461,7 @@ function App() {
                         adjustRating(soundstage, setSoundstage, -1)
                       }
                       disabled={soundstage <= -10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Worse
                     </Button>
@@ -477,7 +488,7 @@ function App() {
                       variant="outline"
                       onClick={() => adjustRating(soundstage, setSoundstage, 1)}
                       disabled={soundstage >= 10}
-                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                      className="btn-outline"
                     >
                       Better
                     </Button>
@@ -486,7 +497,7 @@ function App() {
                   <Button
                     type="submit"
                     disabled={isSaving}
-                    className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                    className="btn-primary"
                   >
                     {isSaving ? "Saving..." : "Submit"}
                   </Button>
@@ -499,7 +510,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 p-3 top-24">
+            <button className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-24">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

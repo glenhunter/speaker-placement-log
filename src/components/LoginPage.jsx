@@ -125,7 +125,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                className="w-full btn-primary"
                 disabled={loading || migrating}
               >
                 {migrating
