@@ -115,8 +115,11 @@ export function Header({ measurements, baseline }) {
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="text-white hover:text-sky_blue_light-700 transition-colors">
-                <Settings className="w-6 h-6" />
+              <button
+                className="text-white hover:text-sky_blue_light-700 transition-colors"
+                aria-label="Settings menu"
+              >
+                <Settings className="w-6 h-6" aria-hidden="true" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -151,7 +154,7 @@ export function Header({ measurements, baseline }) {
                 <>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="w-4 h-4 mr-2" />
+                    <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
                     Sign Out
                   </DropdownMenuItem>
                 </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { getErrorMessage } from "@/lib/constants";
@@ -107,18 +107,26 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  minLength={6}
+                  minLength={8}
+                  aria-describedby={error ? "form-error" : undefined}
                 />
               </div>
 
               {error && (
-                <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                <div
+                  id="form-error"
+                  role="alert"
+                  className="text-sm text-destructive bg-destructive/10 p-3 rounded-md"
+                >
                   {error}
                 </div>
               )}
 
               {message && (
-                <div className="text-sm text-green-600 bg-green-50 dark:bg-green-950 p-3 rounded-md">
+                <div
+                  role="status"
+                  className="text-sm text-green-600 bg-green-50 dark:bg-green-950 p-3 rounded-md"
+                >
                   {message}
                 </div>
               )}
