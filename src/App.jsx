@@ -5,10 +5,20 @@ import { HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { useBaseline } from "@/hooks/useBaseline";
 import { Sidebar } from "@/components/Sidebar";
@@ -81,7 +91,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header onHelpClick={() => setShowHelpCard(true)} />
+      <Header measurements={measurements} baseline={baseline} />
 
       {/* Main Content Area */}
       <div className="flex flex-1 relative">
@@ -225,7 +235,9 @@ function App() {
                   )}
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-3xl text-deep_space_blue">Baseline</CardTitle>
+                      <CardTitle className="text-3xl text-deep_space_blue">
+                        Baseline
+                      </CardTitle>
                       <Popover>
                         <PopoverTrigger asChild>
                           <button className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors">
@@ -284,7 +296,9 @@ function App() {
             <Card className="border-2 border-sky_blue_light-700 shadow-sm">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-3xl text-deep_space_blue">Modifications</CardTitle>
+                  <CardTitle className="text-deep_space_blue">
+                    Modifications
+                  </CardTitle>
                   <Popover>
                     <PopoverTrigger asChild>
                       <button className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors">
@@ -525,7 +539,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-24">
+            <button className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-16">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

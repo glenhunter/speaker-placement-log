@@ -2,7 +2,7 @@
 
 @theme {
   /* Backgrounds - light coastal blue */
-  --color-background: #EEF7FB;
+  --color-background: #eef7fb;
   --color-foreground: #023047;
 
   /* Cards - clean white */
@@ -117,7 +117,7 @@ body {
 }
 
 .distance-label {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 

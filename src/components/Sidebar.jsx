@@ -31,71 +31,6 @@ export function Sidebar({
   deleteMeasurement,
   baseline,
 }) {
-  const exportToMarkdown = () => {
-    let markdown = "# Speaker Placement Log\n\n";
-    markdown += `Generated on: ${new Date().toLocaleString()}\n\n`;
-    markdown += `Total Measurements: ${measurements.length}\n\n`;
-
-    // Add baseline if it exists
-    if (baseline?.values) {
-      markdown += "## Baseline\n\n";
-      markdown += `**Calculation Type:** ${baseline.calculationType
-        ?.replace(/-/g, " ")
-        .replace(/\b\w/g, (l) => l.toUpperCase())}\n\n`;
-      markdown += `**Speaker Type:** ${
-        baseline.speakerType?.charAt(0).toUpperCase() +
-        baseline.speakerType?.slice(1)
-      }\n\n`;
-      baseline.values.forEach((item) => {
-        markdown += `**${item.label}:** ${item.value}\n`;
-        markdown += `- ${item.formula}\n\n`;
-      });
-    }
-
-    markdown += "---\n\n";
-
-    measurements
-      .slice()
-      .reverse()
-      .forEach((measurement, index) => {
-        const sum = calculateScore(measurement);
-
-        markdown += `## Measurement ${measurements.length - index}\n\n`;
-        markdown += `**Score:** ${sum}\n\n`;
-        markdown += `**Distance:**\n`;
-        markdown += `- Front Wall: ${measurement.distanceFromFrontWall}\n`;
-        markdown += `- Side Wall: ${measurement.distanceFromSideWall}\n`;
-        if (measurement.listeningPosition) {
-          markdown += `- Listening Position: ${measurement.listeningPosition}\n`;
-        }
-        markdown += `\n**Ratings:**\n`;
-        markdown += `- Bass: ${measurement.bass}\n`;
-        markdown += `- Treble: ${measurement.treble}\n`;
-        markdown += `- Vocals: ${measurement.vocals}\n`;
-        markdown += `- Soundstage: ${measurement.soundstage}\n\n`;
-        markdown += `**Date:** ${new Date(
-          measurement.createdAt
-        ).toLocaleString()}\n`;
-        if (measurement.isFavorite) {
-          markdown += `⭐ **Favorite**\n`;
-        }
-        markdown += "\n---\n\n";
-      });
-
-    // Create blob and download
-    const blob = new Blob([markdown], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `speaker-placement-log-${
-      new Date().toISOString().split("T")[0]
-    }.md`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   const renderMeasurementCard = (measurement) => {
     const sum = calculateScore(measurement);
 
@@ -198,18 +133,6 @@ export function Sidebar({
       </h2>
       {measurements.length > 0 ? (
         <div className="space-y-6">
-          {/* Export Button */}
-          <div className="flex justify-start">
-            <Button
-              onClick={exportToMarkdown}
-              variant="outline"
-              size="sm"
-              className="btn-outline font-semibold"
-            >
-              Export to Markdown
-            </Button>
-          </div>
-
           {/* Favourites Section */}
           {measurements.filter((m) => m.isFavorite).length > 0 && (
             <div className="space-y-3">
