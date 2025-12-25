@@ -8,27 +8,22 @@ const Button = React.forwardRef(({ className, variant = "default", size = "defau
     lg: "h-11 rounded-md px-8",
   }
 
-  const variantStyles = {
-    default: {
-      backgroundColor: 'var(--color-primary)',
-      color: 'var(--color-primary-foreground)',
-    },
-    outline: {
-      borderColor: 'var(--color-input)',
-      backgroundColor: 'var(--color-background)',
-    },
+  const variants = {
+    default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
+    outline: "border-2 border-sky_blue_light-700 bg-white text-deep_space_blue shadow-sm hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
+    ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
+    link: "text-primary underline-offset-4 hover:underline",
   }
 
   return (
     <button
       type={type}
       className={cn(
-        "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-        variant === "outline" && "border",
+        "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        variants[variant],
         sizes[size],
         className
       )}
-      style={variantStyles[variant]}
       ref={ref}
       {...props}
     />

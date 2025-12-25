@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -55,15 +57,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <Card className="p-6">
+    <div className="flex flex-col min-h-screen">
+      <Header />
+
+      <div className="flex flex-1 w-full items-center justify-center p-6 md:p-10 bg-sky_blue_light-900">
+        <div className="w-full max-w-sm">
+        <Card className="p-6 border-2 border-sky_blue_light-700 shadow-lg">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-2xl font-bold text-deep_space_blue">
                 {isLogin ? "Welcome back" : "Create an account"}
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-sky_blue_light-400">
                 {isLogin
                   ? "Enter your email to sign in to your account"
                   : "Enter your email below to create your account"}
@@ -120,7 +125,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
                 disabled={loading || migrating}
               >
                 {migrating
@@ -139,7 +144,7 @@ export default function LoginPage() {
               )}
             </form>
 
-            <div className="text-center text-sm">
+            <div className="text-center text-sm text-sky_blue_light-400">
               {isLogin
                 ? "Don't have an account? "
                 : "Already have an account? "}
@@ -150,14 +155,17 @@ export default function LoginPage() {
                   setError("");
                   setMessage("");
                 }}
-                className="underline underline-offset-4 hover:text-primary"
+                className="underline underline-offset-4 hover:text-princeton_orange-600 active:text-princeton_orange-700 text-princeton_orange font-medium transition-colors"
               >
                 {isLogin ? "Sign up" : "Sign in"}
               </button>
             </div>
           </div>
         </Card>
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

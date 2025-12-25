@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? '/speaker-placement-log/' : '/',
   server: {
     host: '0.0.0.0',
-    port: 5180,
+    port: 5181,
+    strictPort: true,
   },
 }));

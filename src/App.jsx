@@ -214,14 +214,13 @@ function App() {
 
             {/* Baseline Section */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold mb-4">Baseline</h2>
+              <h2 className="text-3xl font-bold mb-4 text-deep_space_blue">
+                Baseline
+              </h2>
               {baseline ? (
-                <Card className="relative">
+                <Card className="relative border-2 border-sky_blue_light-700 shadow-sm">
                   {baseline.methodName && (
-                    <div
-                      className="absolute top-2 right-2"
-                      style={{ fontSize: "10px", color: "#666" }}
-                    >
+                    <div className="absolute top-2 right-2 text-xs text-sky_blue_light-400">
                       {baseline.methodName}
                     </div>
                   )}
@@ -235,39 +234,49 @@ function App() {
                     >
                       {baseline.values?.map((item, index) => (
                         <div key={index} className="space-y-1">
-                          <p className="text-xs text-gray-600">{item.label}</p>
-                          <p className="text-lg font-bold">{item.value}</p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-sky_blue_light-500">
+                            {item.label}
+                          </p>
+                          <p className="text-lg font-bold text-deep_space_blue">
+                            {item.value}
+                          </p>
+                          <p className="text-xs text-sky_blue_light-400">
                             {item.formula}
                           </p>
                         </div>
                       ))}
                     </div>
                   </CardContent>
-                  <CardFooter className="p-4 pt-0">
+                  <CardFooter className="p-4 pt-0 border-t border-sky_blue_light-700">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => navigate("/speaker-baselines")}
+                      className="border-2 border-princeton_orange text-princeton_orange hover:bg-princeton_orange hover:text-white active:bg-princeton_orange-700 font-semibold transition-all"
                     >
                       Change Baseline
                     </Button>
                   </CardFooter>
                 </Card>
               ) : (
-                <Button onClick={() => navigate("/speaker-baselines")}>
+                <Button
+                  onClick={() => navigate("/speaker-baselines")}
+                  className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                >
                   Create Baseline
                 </Button>
               )}
             </div>
-            <h2 className="text-3xl font-bold mb-4">Modifications</h2>
-            <Card>
+            <h2 className="text-3xl font-bold mb-4 text-deep_space_blue">
+              Modifications
+            </h2>
+            <Card className="border-2 border-sky_blue_light-700 shadow-sm">
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="frontWall" className="distance-label">
-                        Front Wall
+                        Front Wall:
                       </Label>
                       <Input
                         id="frontWall"
@@ -283,7 +292,7 @@ function App() {
                     </div>
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="sideWall" className="distance-label">
-                        Side Wall
+                        Side Wall:
                       </Label>
                       <Input
                         id="sideWall"
@@ -302,7 +311,7 @@ function App() {
                         htmlFor="listeningPosition"
                         className="distance-label"
                       >
-                        Listening Position
+                        Seat:
                       </Label>
                       <Input
                         id="listeningPosition"
@@ -315,154 +324,170 @@ function App() {
                       />
                     </div>
                   </div>
-                  <Separator className="bg-gray-700" />
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(bass, setBass, -1)}
-                        disabled={bass <= -10}
-                      >
-                        Worse
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold">Bass</h3>
+                  <Separator className="bg-sky_blue_light-500" />
+                  <div className="flex items-center gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(bass, setBass, -1)}
+                      disabled={bass <= -10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Worse
+                    </Button>
+                    <div className="flex-1 flex items-center justify-center gap-4">
+                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                        Bass:
+                      </h3>
                       <span
-                        className="text-2xl font-semibold"
+                        className="text-2xl font-semibold text-left min-w-[140px]"
                         style={{
-                          color: bass > 0 ? "#0f0" : bass < 0 ? "#f00" : "#666",
+                          color:
+                            bass > 0
+                              ? "#669bbc"
+                              : bass < 0
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {bass}
                       </span>
                     </div>
-                    <div className="flex justify-end">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(bass, setBass, 1)}
-                        disabled={bass >= 10}
-                      >
-                        Better
-                      </Button>
-                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(bass, setBass, 1)}
+                      disabled={bass >= 10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Better
+                    </Button>
                   </div>
-                  <Separator className="bg-gray-300" />
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(treble, setTreble, -1)}
-                        disabled={treble <= -10}
-                      >
-                        Worse
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold">Treble</h3>
+                  <Separator className="bg-sky_blue_light-600" />
+                  <div className="flex items-center gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(treble, setTreble, -1)}
+                      disabled={treble <= -10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Worse
+                    </Button>
+                    <div className="flex-1 flex items-center justify-center gap-4">
+                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                        Treble:
+                      </h3>
                       <span
-                        className="text-2xl font-semibold"
+                        className="text-2xl font-semibold text-left min-w-[140px]"
                         style={{
                           color:
-                            treble > 0 ? "#0f0" : treble < 0 ? "#f00" : "#666",
+                            treble > 0
+                              ? "#669bbc"
+                              : treble < 0
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {treble}
                       </span>
                     </div>
-                    <div className="flex justify-end">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(treble, setTreble, 1)}
-                        disabled={treble >= 10}
-                      >
-                        Better
-                      </Button>
-                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(treble, setTreble, 1)}
+                      disabled={treble >= 10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Better
+                    </Button>
                   </div>
-                  <Separator className="bg-gray-300" />
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(vocals, setVocals, -1)}
-                        disabled={vocals <= -10}
-                      >
-                        Worse
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold">Vocals</h3>
+                  <Separator className="bg-sky_blue_light-600" />
+                  <div className="flex items-center gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(vocals, setVocals, -1)}
+                      disabled={vocals <= -10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Worse
+                    </Button>
+                    <div className="flex-1 flex items-center justify-center gap-4">
+                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                        Vocals:
+                      </h3>
                       <span
-                        className="text-2xl font-semibold"
+                        className="text-2xl font-semibold text-left min-w-[140px]"
                         style={{
                           color:
-                            vocals > 0 ? "#0f0" : vocals < 0 ? "#f00" : "#666",
+                            vocals > 0
+                              ? "#669bbc"
+                              : vocals < 0
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {vocals}
                       </span>
                     </div>
-                    <div className="flex justify-end">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => adjustRating(vocals, setVocals, 1)}
-                        disabled={vocals >= 10}
-                      >
-                        Better
-                      </Button>
-                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(vocals, setVocals, 1)}
+                      disabled={vocals >= 10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Better
+                    </Button>
                   </div>
-                  <Separator className="bg-gray-300" />
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() =>
-                          adjustRating(soundstage, setSoundstage, -1)
-                        }
-                        disabled={soundstage <= -10}
-                      >
-                        Worse
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold">Soundstage</h3>
+                  <Separator className="bg-sky_blue_light-600" />
+                  <div className="flex items-center gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        adjustRating(soundstage, setSoundstage, -1)
+                      }
+                      disabled={soundstage <= -10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Worse
+                    </Button>
+                    <div className="flex-1 flex items-center justify-center gap-4">
+                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                        Soundstage:
+                      </h3>
                       <span
-                        className="text-2xl font-semibold"
+                        className="text-2xl font-semibold text-left min-w-[140px]"
                         style={{
                           color:
                             soundstage > 0
-                              ? "#0f0"
+                              ? "#669bbc"
                               : soundstage < 0
-                              ? "#f00"
-                              : "#666",
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {soundstage}
                       </span>
                     </div>
-                    <div className="flex justify-end">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() =>
-                          adjustRating(soundstage, setSoundstage, 1)
-                        }
-                        disabled={soundstage >= 10}
-                      >
-                        Better
-                      </Button>
-                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => adjustRating(soundstage, setSoundstage, 1)}
+                      disabled={soundstage >= 10}
+                      className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                    >
+                      Better
+                    </Button>
                   </div>
-                  <Button type="submit" disabled={isSaving}>
+                  <Separator className="bg-sky_blue_light-500" />
+                  <Button
+                    type="submit"
+                    disabled={isSaving}
+                    className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                  >
                     {isSaving ? "Saving..." : "Submit"}
                   </Button>
                 </form>
@@ -474,7 +499,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 sheet-trigger-tab">
+            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 p-3 top-24">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -485,7 +510,7 @@ function App() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{ color: "var(--color-primary-foreground)" }}
+                className="text-white"
               >
                 <path d="m15 18-6-6 6-6" />
               </svg>

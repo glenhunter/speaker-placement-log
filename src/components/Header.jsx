@@ -22,15 +22,14 @@ export function Header({ onHelpClick }) {
 
   return (
     <header
-      className="flex items-center justify-between px-8"
+      className="flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-princeton_orange"
       style={{
-        backgroundColor: "#000",
         height: "80px",
         minHeight: "80px",
         maxHeight: "80px",
       }}
     >
-      <h1 className="text-2xl font-bold" style={{ color: "#fff" }}>
+      <h1 className="text-2xl font-bold text-white">
         Speaker Placement Log
       </h1>
       {!isAuthPage && (
@@ -48,12 +47,12 @@ export function Header({ onHelpClick }) {
           )}
           {user ? (
             <>
-              <span className="text-sm text-gray-300">{user.email}</span>
+              <span className="text-sm text-sky_blue_light-700">{user.email}</span>
               <Button
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="bg-gray-700 border-gray-600 text-black hover:bg-gray-600"
+                className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
               >
                 Sign Out
               </Button>
@@ -63,7 +62,7 @@ export function Header({ onHelpClick }) {
               onClick={() => navigate("/login")}
               variant="outline"
               size="sm"
-              className="bg-gray-700 border-gray-600 text-black hover:bg-gray-600"
+              className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
             >
               Login
             </Button>
