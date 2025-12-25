@@ -10,7 +10,7 @@ const Button = React.forwardRef(({ className, variant = "default", size = "defau
 
   const variants = {
     default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
-    outline: "border-2 border-deep_space_blue-400 bg-white text-deep_space_blue shadow-sm hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
+    outline: "border-2 border-sky_blue_light-700 bg-white text-deep_space_blue shadow-sm hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
     ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
     link: "text-primary underline-offset-4 hover:underline",
   }

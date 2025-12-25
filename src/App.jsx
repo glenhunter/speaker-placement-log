@@ -84,7 +84,7 @@ function App() {
               {baseline ? (
                 <Card className="relative border-2 border-sky_blue_light-700 shadow-sm">
                   {baseline.methodName && (
-                    <div className="absolute top-2 right-2 text-xs text-sky_blue_light-300">
+                    <div className="absolute top-2 right-2 text-xs text-sky_blue_light-400">
                       {baseline.methodName}
                     </div>
                   )}
@@ -98,13 +98,13 @@ function App() {
                     >
                       {baseline.values?.map((item, index) => (
                         <div key={index} className="space-y-1">
-                          <p className="text-xs text-blue_green-300">
+                          <p className="text-xs text-sky_blue_light-500">
                             {item.label}
                           </p>
                           <p className="text-lg font-bold text-deep_space_blue">
                             {item.value}
                           </p>
-                          <p className="text-xs text-sky_blue_light-300">
+                          <p className="text-xs text-sky_blue_light-400">
                             {item.formula}
                           </p>
                         </div>
@@ -116,7 +116,7 @@ function App() {
                       variant="outline"
                       size="sm"
                       onClick={() => navigate("/speaker-baselines")}
-                      className="border-2 border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-white active:bg-amber_flame-700 font-semibold transition-all"
+                      className="border-2 border-princeton_orange text-princeton_orange hover:bg-princeton_orange hover:text-white active:bg-princeton_orange-700 font-semibold transition-all"
                     >
                       Change Baseline
                     </Button>
@@ -125,7 +125,7 @@ function App() {
               ) : (
                 <Button
                   onClick={() => navigate("/speaker-baselines")}
-                  className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
+                  className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
                 >
                   Create Baseline
                 </Button>
@@ -188,7 +188,7 @@ function App() {
                       />
                     </div>
                   </div>
-                  <Separator className="bg-blue_green-500" />
+                  <Separator className="bg-sky_blue_light-500" />
                   <div className="flex items-center gap-4">
                     <Button
                       type="button"
@@ -208,10 +208,10 @@ function App() {
                         style={{
                           color:
                             bass > 0
-                              ? "#219ebc"
+                              ? "#669bbc"
                               : bass < 0
-                              ? "#ef4444"
-                              : "#288ab7",
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {bass}
@@ -247,10 +247,10 @@ function App() {
                         style={{
                           color:
                             treble > 0
-                              ? "#219ebc"
+                              ? "#669bbc"
                               : treble < 0
-                              ? "#ef4444"
-                              : "#288ab7",
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {treble}
@@ -286,10 +286,10 @@ function App() {
                         style={{
                           color:
                             vocals > 0
-                              ? "#219ebc"
+                              ? "#669bbc"
                               : vocals < 0
-                              ? "#ef4444"
-                              : "#288ab7",
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {vocals}
@@ -327,10 +327,10 @@ function App() {
                         style={{
                           color:
                             soundstage > 0
-                              ? "#219ebc"
+                              ? "#669bbc"
                               : soundstage < 0
-                              ? "#ef4444"
-                              : "#288ab7",
+                              ? "#c1121f"
+                              : "#477fa2",
                         }}
                       >
                         {soundstage}
@@ -346,11 +346,11 @@ function App() {
                       Better
                     </Button>
                   </div>
-                  <Separator className="bg-blue_green-500" />
+                  <Separator className="bg-sky_blue_light-500" />
                   <Button
                     type="submit"
                     disabled={isSaving}
-                    className="bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 text-white transition-all"
+                    className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
                   >
                     {isSaving ? "Saving..." : "Submit"}
                   </Button>
@@ -363,7 +363,7 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl bg-amber_flame hover:bg-amber_flame-600 active:bg-amber_flame-700 p-3 top-24">
+            <button className="fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 p-3 top-24">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

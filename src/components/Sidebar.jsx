@@ -157,7 +157,7 @@ export function Sidebar({
                 updates: { isFavorite: !measurement.isFavorite },
               })
             }
-            className="p-1 rounded hover:bg-amber_flame/10 active:bg-amber_flame/20 transition-all"
+            className="p-1 rounded hover:bg-princeton_orange/10 active:bg-princeton_orange/20 transition-all"
             aria-label={
               measurement.isFavorite
                 ? "Remove from favorites"
@@ -176,7 +176,7 @@ export function Sidebar({
               strokeLinejoin="round"
               className={
                 measurement.isFavorite
-                  ? "text-amber_flame"
+                  ? "text-princeton_orange"
                   : "text-muted-foreground"
               }
             >
@@ -204,7 +204,7 @@ export function Sidebar({
               onClick={exportToMarkdown}
               variant="outline"
               size="sm"
-              className="border-2 border-amber_flame text-amber_flame hover:bg-amber_flame hover:text-white active:bg-amber_flame-700 font-semibold transition-all"
+              className="border-2 border-princeton_orange text-princeton_orange hover:bg-princeton_orange hover:text-white active:bg-princeton_orange-700 font-semibold transition-all"
             >
               Export to Markdown
             </Button>

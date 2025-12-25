@@ -96,7 +96,7 @@ export default function PasswordResetPage() {
               <h1 className="text-2xl font-bold text-deep_space_blue">
                 {isUpdating ? 'Update your password' : 'Reset your password'}
               </h1>
-              <p className="text-sm text-blue_green-300">
+              <p className="text-sm text-sky_blue_light-400">
                 {isUpdating
                   ? 'Enter your new password below'
                   : 'Enter your email to receive a password reset link'}
@@ -141,7 +141,7 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-deep_space_blue hover:bg-deep_space_blue-600 active:bg-deep_space_blue-700 text-white transition-all" disabled={loading}>
+                <Button type="submit" className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all" disabled={loading}>
                   {loading ? 'Updating...' : 'Update password'}
                 </Button>
               </form>
@@ -171,17 +171,17 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-deep_space_blue hover:bg-deep_space_blue-600 active:bg-deep_space_blue-700 text-white transition-all" disabled={loading}>
+                <Button type="submit" className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all" disabled={loading}>
                   {loading ? 'Sending...' : 'Send reset email'}
                 </Button>
               </form>
             )}
 
-            <div className="text-center text-sm text-blue_green-300">
+            <div className="text-center text-sm text-sky_blue_light-400">
               <button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="underline underline-offset-4 hover:text-princeton_orange active:text-princeton_orange-700 text-princeton_orange-600 font-medium transition-colors"
+                className="underline underline-offset-4 hover:text-princeton_orange-600 active:text-princeton_orange-700 text-princeton_orange font-medium transition-colors"
               >
                 Back to sign in
               </button>

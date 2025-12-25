@@ -68,7 +68,7 @@ export default function LoginPage() {
               <h1 className="text-2xl font-bold text-deep_space_blue">
                 {isLogin ? "Welcome back" : "Create an account"}
               </h1>
-              <p className="text-sm text-blue_green-300">
+              <p className="text-sm text-sky_blue_light-400">
                 {isLogin
                   ? "Enter your email to sign in to your account"
                   : "Enter your email below to create your account"}
@@ -125,7 +125,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-deep_space_blue hover:bg-deep_space_blue-600 active:bg-deep_space_blue-700 text-white transition-all"
+                className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
                 disabled={loading || migrating}
               >
                 {migrating
@@ -144,7 +144,7 @@ export default function LoginPage() {
               )}
             </form>
 
-            <div className="text-center text-sm text-blue_green-300">
+            <div className="text-center text-sm text-sky_blue_light-400">
               {isLogin
                 ? "Don't have an account? "
                 : "Already have an account? "}
@@ -155,7 +155,7 @@ export default function LoginPage() {
                   setError("");
                   setMessage("");
                 }}
-                className="underline underline-offset-4 hover:text-princeton_orange active:text-princeton_orange-700 text-princeton_orange-600 font-medium transition-colors"
+                className="underline underline-offset-4 hover:text-princeton_orange-600 active:text-princeton_orange-700 text-princeton_orange font-medium transition-colors"
               >
                 {isLogin ? "Sign up" : "Sign in"}
               </button>

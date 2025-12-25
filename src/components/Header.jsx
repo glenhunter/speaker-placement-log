@@ -21,7 +21,7 @@ export function Header() {
 
   return (
     <header
-      className="flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-amber_flame-500"
+      className="flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-princeton_orange"
       style={{
         height: "80px",
         minHeight: "80px",
