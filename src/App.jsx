@@ -97,6 +97,7 @@ function App() {
       treble,
       vocals,
       soundstage,
+      baselineMethodName: baseline?.methodName || null,
     };
 
     saveMeasurement(measurementData);

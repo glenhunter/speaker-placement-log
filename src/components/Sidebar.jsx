@@ -1,4 +1,9 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useUnit } from "@/contexts/UnitContext";
 import { formatDistance } from "@/lib/utils";
@@ -41,54 +46,68 @@ export function Sidebar({
     return (
       <Card
         key={measurement.id}
-        className="relative border-2 border-sky_blue_light-700"
+        className="border-2 border-sky_blue_light-700 overflow-hidden"
       >
-        <CardContent className="p-3 pr-10">
-          <div className="flex items-center gap-3">
-            <div
-              className="text-4xl font-bold text-deep_space_blue"
-              style={{ fontSize: "36px" }}
-            >
-              {sum}
-            </div>
-            <div className="flex-1 space-y-1 text-sm">
-              <div>
-                FW: {formatDistance(measurement.distanceFromFrontWall, unit)}, SW:{" "}
-                {formatDistance(measurement.distanceFromSideWall, unit)}
-                {measurement.listeningPosition &&
-                  `, LP: ${formatDistance(measurement.listeningPosition, unit)}`}
+        <CardHeader className="p-0">
+          <div className="flex items-center justify-end">
+            {measurement.baselineMethodName && (
+              <div className="text-xs text-white bg-sky_blue_light-700 px-3 py-1.5 rounded-bl-lg">
+                {measurement.baselineMethodName}
               </div>
-              <div>
-                B: {measurement.bass}, T: {measurement.treble}, V:{" "}
-                {measurement.vocals}, S: {measurement.soundstage}
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0 px-4 pb-4">
+          <div className="grid grid-cols-[auto_1fr_auto_1fr] gap-4">
+            {/* Column 1: Measurements */}
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="text-gray-600">Front Wall:</div>
+              <div className="text-gray-600">Side Wall:</div>
+              {measurement.listeningPosition && (
+                <div className="text-gray-600">Seat:</div>
+              )}
+            </div>
+
+            {/* Column 2: Measurement Values */}
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="font-semibold text-deep_space_blue">
+                {formatDistance(measurement.distanceFromFrontWall, unit)}
+              </div>
+              <div className="font-semibold text-deep_space_blue">
+                {formatDistance(measurement.distanceFromSideWall, unit)}
+              </div>
+              {measurement.listeningPosition && (
+                <div className="font-semibold text-deep_space_blue">
+                  {formatDistance(measurement.listeningPosition, unit)}
+                </div>
+              )}
+            </div>
+
+            {/* Column 2: Subjective Ratings */}
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="text-gray-600">Bass:</div>
+              <div className="text-gray-600">Treble:</div>
+              <div className="text-gray-600">Vocals:</div>
+              <div className="text-gray-600">Soundstage:</div>
+            </div>
+            {/* Column 4: Subjective Rating Values */}
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.bass}
+              </div>
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.treble}
+              </div>
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.vocals}
+              </div>
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.soundstage}
               </div>
             </div>
           </div>
-          <button
-            onClick={() => deleteMeasurement(measurement.id)}
-            className="absolute top-2 right-2 p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all"
-            aria-label="Delete measurement"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 6h18" />
-              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-              <line x1="10" x2="10" y1="11" y2="17" />
-              <line x1="14" x2="14" y1="11" y2="17" />
-            </svg>
-          </button>
         </CardContent>
-        <CardFooter className="p-3 pt-0 flex justify-between items-center">
+        <CardFooter className="px-3 py-1 grid grid-cols-4 items-center border-t border-sky_blue_light-700">
           <button
             onClick={() =>
               updateMeasurement({
@@ -96,7 +115,7 @@ export function Sidebar({
                 updates: { isFavorite: !measurement.isFavorite },
               })
             }
-            className="p-1 rounded hover:bg-princeton_orange/10 active:bg-princeton_orange/20 transition-all"
+            className="p-1 rounded hover:bg-princeton_orange/10 active:bg-princeton_orange/20 transition-all justify-self-start"
             aria-label={
               measurement.isFavorite
                 ? "Remove from favorites"
@@ -122,9 +141,33 @@ export function Sidebar({
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
           </button>
-          <div className="text-right text-xs text-muted-foreground">
+          <div className="text-base font-bold text-deep_space_blue">{sum}</div>
+          <div className="text-center text-xs text-muted-foreground">
             {new Date(measurement.createdAt).toLocaleString()}
           </div>
+          <button
+            onClick={() => deleteMeasurement(measurement.id)}
+            className="p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all justify-self-end"
+            aria-label="Delete measurement"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              <line x1="10" x2="10" y1="11" y2="17" />
+              <line x1="14" x2="14" y1="11" y2="17" />
+            </svg>
+          </button>
         </CardFooter>
       </Card>
     );

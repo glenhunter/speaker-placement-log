@@ -33,6 +33,7 @@ export const storage = {
       soundstage: m.soundstage,
       isFavorite: m.is_favorite,
       createdAt: m.created_at,
+      baselineMethodName: m.baseline_method_name,
     }))
   },
 
@@ -63,6 +64,7 @@ export const storage = {
         vocals: measurement.vocals,
         soundstage: measurement.soundstage,
         is_favorite: false,
+        baseline_method_name: measurement.baselineMethodName,
         user_id: userId,
       }])
       .select()
@@ -81,6 +83,7 @@ export const storage = {
       soundstage: data.soundstage,
       isFavorite: data.is_favorite,
       createdAt: data.created_at,
+      baselineMethodName: data.baseline_method_name,
     }
   },
 
@@ -106,6 +109,7 @@ export const storage = {
     if ('vocals' in updates) dbUpdates.vocals = updates.vocals
     if ('soundstage' in updates) dbUpdates.soundstage = updates.soundstage
     if ('isFavorite' in updates) dbUpdates.is_favorite = updates.isFavorite
+    if ('baselineMethodName' in updates) dbUpdates.baseline_method_name = updates.baselineMethodName
 
     const { error } = await supabase
       .from('measurements')
