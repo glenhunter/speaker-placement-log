@@ -58,56 +58,51 @@ export function Sidebar({
           </div>
         </CardHeader>
         <CardContent className="pt-0 px-4 pb-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-[auto_1fr_auto_1fr] gap-4">
             {/* Column 1: Measurements */}
             <div className="flex flex-col gap-1 text-sm">
-              <div className="flex gap-2">
-                <span className="text-gray-600">Front Wall:</span>
-                <span className="font-semibold text-deep_space_blue">
-                  {formatDistance(measurement.distanceFromFrontWall, unit)}
-                </span>
+              <div className="text-gray-600">Front Wall:</div>
+              <div className="text-gray-600">Side Wall:</div>
+              {measurement.listeningPosition && (
+                <div className="text-gray-600">Seat:</div>
+              )}
+            </div>
+
+            {/* Column 2: Measurement Values */}
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="font-semibold text-deep_space_blue">
+                {formatDistance(measurement.distanceFromFrontWall, unit)}
               </div>
-              <div className="flex gap-2">
-                <span className="text-gray-600">Side Wall:</span>
-                <span className="font-semibold text-deep_space_blue">
-                  {formatDistance(measurement.distanceFromSideWall, unit)}
-                </span>
+              <div className="font-semibold text-deep_space_blue">
+                {formatDistance(measurement.distanceFromSideWall, unit)}
               </div>
               {measurement.listeningPosition && (
-                <div className="flex gap-2">
-                  <span className="text-gray-600">Seat:</span>
-                  <span className="font-semibold text-deep_space_blue">
-                    {formatDistance(measurement.listeningPosition, unit)}
-                  </span>
+                <div className="font-semibold text-deep_space_blue">
+                  {formatDistance(measurement.listeningPosition, unit)}
                 </div>
               )}
             </div>
 
             {/* Column 2: Subjective Ratings */}
             <div className="flex flex-col gap-1 text-sm">
-              <div className="flex gap-2">
-                <span className="text-gray-600">Bass:</span>
-                <span className="font-semibold text-deep_space_blue">
-                  {measurement.bass}
-                </span>
+              <div className="text-gray-600">Bass:</div>
+              <div className="text-gray-600">Treble:</div>
+              <div className="text-gray-600">Vocals:</div>
+              <div className="text-gray-600">Soundstage:</div>
+            </div>
+            {/* Column 4: Subjective Rating Values */}
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.bass}
               </div>
-              <div className="flex gap-2">
-                <span className="text-gray-600">Treble:</span>
-                <span className="font-semibold text-deep_space_blue">
-                  {measurement.treble}
-                </span>
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.treble}
               </div>
-              <div className="flex gap-2">
-                <span className="text-gray-600">Vocals:</span>
-                <span className="font-semibold text-deep_space_blue">
-                  {measurement.vocals}
-                </span>
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.vocals}
               </div>
-              <div className="flex gap-2">
-                <span className="text-gray-600">Soundstage:</span>
-                <span className="font-semibold text-deep_space_blue">
-                  {measurement.soundstage}
-                </span>
+              <div className="font-semibold text-deep_space_blue">
+                {measurement.soundstage}
               </div>
             </div>
           </div>
@@ -146,9 +141,7 @@ export function Sidebar({
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
           </button>
-          <div className="text-base font-bold text-deep_space_blue">
-            {sum}
-          </div>
+          <div className="text-base font-bold text-deep_space_blue">{sum}</div>
           <div className="text-center text-xs text-muted-foreground">
             {new Date(measurement.createdAt).toLocaleString()}
           </div>
