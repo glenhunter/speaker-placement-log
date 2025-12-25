@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 
 export default function PasswordResetPage() {
   const [email, setEmail] = useState('')
@@ -83,15 +85,18 @@ export default function PasswordResetPage() {
   }
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <Card className="p-6">
+    <div className="flex flex-col min-h-screen">
+      <Header />
+
+      <div className="flex flex-1 w-full items-center justify-center p-6 md:p-10 bg-sky_blue_light-900">
+        <div className="w-full max-w-sm">
+        <Card className="p-6 border-2 border-sky_blue_light-700 shadow-lg">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-2xl font-bold text-deep_space_blue">
                 {isUpdating ? 'Update your password' : 'Reset your password'}
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-sky_blue_light-400">
                 {isUpdating
                   ? 'Enter your new password below'
                   : 'Enter your email to receive a password reset link'}
@@ -136,7 +141,7 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all" disabled={loading}>
                   {loading ? 'Updating...' : 'Update password'}
                 </Button>
               </form>
@@ -166,24 +171,27 @@ export default function PasswordResetPage() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all" disabled={loading}>
                   {loading ? 'Sending...' : 'Send reset email'}
                 </Button>
               </form>
             )}
 
-            <div className="text-center text-sm">
+            <div className="text-center text-sm text-sky_blue_light-400">
               <button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="underline underline-offset-4 hover:text-primary"
+                className="underline underline-offset-4 hover:text-princeton_orange-600 active:text-princeton_orange-700 text-princeton_orange font-medium transition-colors"
               >
                 Back to sign in
               </button>
             </div>
           </div>
         </Card>
+        </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

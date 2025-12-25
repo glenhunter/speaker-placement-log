@@ -39,8 +39,13 @@ export function Sidebar({
     // Add baseline if it exists
     if (baseline?.values) {
       markdown += "## Baseline\n\n";
-      markdown += `**Calculation Type:** ${baseline.calculationType?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n\n`;
-      markdown += `**Speaker Type:** ${baseline.speakerType?.charAt(0).toUpperCase() + baseline.speakerType?.slice(1)}\n\n`;
+      markdown += `**Calculation Type:** ${baseline.calculationType
+        ?.replace(/-/g, " ")
+        .replace(/\b\w/g, (l) => l.toUpperCase())}\n\n`;
+      markdown += `**Speaker Type:** ${
+        baseline.speakerType?.charAt(0).toUpperCase() +
+        baseline.speakerType?.slice(1)
+      }\n\n`;
       baseline.values.forEach((item) => {
         markdown += `**${item.label}:** ${item.value}\n`;
         markdown += `- ${item.formula}\n\n`;
@@ -95,17 +100,24 @@ export function Sidebar({
     const sum = calculateScore(measurement);
 
     return (
-      <Card key={measurement.id} className="relative">
+      <Card
+        key={measurement.id}
+        className="relative border-2 border-sky_blue_light-700"
+      >
         <CardContent className="p-3 pr-10">
           <div className="flex items-center gap-3">
-            <div className="text-4xl font-bold" style={{ fontSize: "36px" }}>
+            <div
+              className="text-4xl font-bold text-deep_space_blue"
+              style={{ fontSize: "36px" }}
+            >
               {sum}
             </div>
             <div className="flex-1 space-y-1 text-sm">
               <div>
                 FW: {measurement.distanceFromFrontWall}, SW:{" "}
                 {measurement.distanceFromSideWall}
-                {measurement.listeningPosition && `, LP: ${measurement.listeningPosition}`}
+                {measurement.listeningPosition &&
+                  `, LP: ${measurement.listeningPosition}`}
               </div>
               <div>
                 B: {measurement.bass}, T: {measurement.treble}, V:{" "}
@@ -115,8 +127,7 @@ export function Sidebar({
           </div>
           <button
             onClick={() => deleteMeasurement(measurement.id)}
-            className="absolute top-2 right-2 p-1 rounded hover:bg-opacity-80 transition-colors"
-            style={{ color: "var(--color-destructive)" }}
+            className="absolute top-2 right-2 p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all"
             aria-label="Delete measurement"
           >
             <svg
@@ -146,7 +157,7 @@ export function Sidebar({
                 updates: { isFavorite: !measurement.isFavorite },
               })
             }
-            className="p-1 rounded hover:bg-opacity-80 transition-colors"
+            className="p-1 rounded hover:bg-princeton_orange/10 active:bg-princeton_orange/20 transition-all"
             aria-label={
               measurement.isFavorite
                 ? "Remove from favorites"
@@ -163,22 +174,16 @@ export function Sidebar({
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{
-                color: measurement.isFavorite
-                  ? "gold"
-                  : "var(--color-muted-foreground)",
-              }}
+              className={
+                measurement.isFavorite
+                  ? "text-princeton_orange"
+                  : "text-muted-foreground"
+              }
             >
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
           </button>
-          <div
-            className="text-right"
-            style={{
-              fontSize: "10px",
-              color: "var(--color-muted-foreground)",
-            }}
-          >
+          <div className="text-right text-xs text-muted-foreground">
             {new Date(measurement.createdAt).toLocaleString()}
           </div>
         </CardFooter>
@@ -188,11 +193,19 @@ export function Sidebar({
 
   return (
     <>
+      <h2 className="text-2xl font-bold mb-6 text-deep_space_blue">
+        Modifications
+      </h2>
       {measurements.length > 0 ? (
         <div className="space-y-6">
           {/* Export Button */}
           <div className="flex justify-start">
-            <Button onClick={exportToMarkdown} variant="outline" size="sm">
+            <Button
+              onClick={exportToMarkdown}
+              variant="outline"
+              size="sm"
+              className="border-2 border-princeton_orange text-princeton_orange hover:bg-princeton_orange hover:text-white active:bg-princeton_orange-700 font-semibold transition-all"
+            >
               Export to Markdown
             </Button>
           </div>
@@ -200,7 +213,7 @@ export function Sidebar({
           {/* Favourites Section */}
           {measurements.filter((m) => m.isFavorite).length > 0 && (
             <div className="space-y-3">
-              <h2 className="text-xl font-bold mb-4">
+              <h2 className="text-xl font-bold mb-4 text-deep_space_blue">
                 Favourites ({measurements.filter((m) => m.isFavorite).length})
               </h2>
               {measurements
@@ -213,7 +226,7 @@ export function Sidebar({
 
           {/* All Stored Values Section */}
           <div className="space-y-3">
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-xl font-bold mb-4 text-deep_space_blue">
               All Stored Values ({measurements.length})
             </h2>
             {measurements
@@ -227,7 +240,8 @@ export function Sidebar({
           className="text-sm"
           style={{ color: "var(--color-muted-foreground)" }}
         >
-          No measurements stored yet. Submit the form to save values.
+          No modifications stored yet. Set a baseline and make some subjective
+          modifications.
         </div>
       )}
     </>
