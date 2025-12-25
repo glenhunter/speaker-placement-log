@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUnit } from "@/contexts/UnitContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Settings, LogOut } from "lucide-react";
 import {
@@ -12,12 +12,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export function Header({ measurements, baseline }) {
   const { user, signOut } = useAuth();
+  const { unit, setUnit } = useUnit();
   const navigate = useNavigate();
   const location = useLocation();
-  const [unit, setUnit] = useState("inches");
 
   const handleSignOut = async () => {
     try {
@@ -103,51 +104,61 @@ export function Header({ measurements, baseline }) {
     >
       <h1 className="text-2xl font-bold text-white">Speaker Tweaker</h1>
       {!isAuthPage && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="text-white hover:text-sky_blue_light-700 transition-colors">
-              <Settings className="w-6 h-6" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Units</DropdownMenuLabel>
-            <div className="px-2 py-2">
-              <RadioGroup value={unit} onValueChange={setUnit}>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="inches" id="inches" />
-                  <Label htmlFor="inches" className="cursor-pointer">
-                    Inches
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="centimetres" id="centimetres" />
-                  <Label htmlFor="centimetres" className="cursor-pointer">
-                    Centimetres
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-            <DropdownMenuSeparator />
+        <div className="flex items-center gap-8">
+          {!user && (
+            <Button
+              onClick={() => navigate("/login")}
+              className="btn-primary py-1 px-3 h-8 text-sm"
+            >
+              Sign In
+            </Button>
+          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="text-white hover:text-sky_blue_light-700 transition-colors">
+                <Settings className="w-6 h-6" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Units</DropdownMenuLabel>
+              <div className="px-2 py-2">
+                <RadioGroup value={unit} onValueChange={setUnit}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="imperial" id="imperial" />
+                    <Label htmlFor="imperial" className="cursor-pointer">
+                      Imperial
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="metric" id="metric" />
+                    <Label htmlFor="metric" className="cursor-pointer">
+                      Metric
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
 
-            {measurements && measurements.length > 0 && (
-              <>
-                <DropdownMenuItem onClick={exportToMarkdown}>
-                  Export to Markdown
-                </DropdownMenuItem>
-              </>
-            )}
+              {measurements && measurements.length > 0 && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={exportToMarkdown}>
+                    Export to Markdown
+                  </DropdownMenuItem>
+                </>
+              )}
 
-            {user && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {user && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       )}
     </header>
   );

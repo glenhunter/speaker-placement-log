@@ -1,5 +1,7 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useUnit } from "@/contexts/UnitContext";
+import { formatDistance } from "@/lib/utils";
 
 /**
  * Safely converts a rating value to a number.
@@ -31,6 +33,8 @@ export function Sidebar({
   deleteMeasurement,
   baseline,
 }) {
+  const { unit } = useUnit();
+
   const renderMeasurementCard = (measurement) => {
     const sum = calculateScore(measurement);
 
@@ -49,10 +53,10 @@ export function Sidebar({
             </div>
             <div className="flex-1 space-y-1 text-sm">
               <div>
-                FW: {measurement.distanceFromFrontWall}, SW:{" "}
-                {measurement.distanceFromSideWall}
+                FW: {formatDistance(measurement.distanceFromFrontWall, unit)}, SW:{" "}
+                {formatDistance(measurement.distanceFromSideWall, unit)}
                 {measurement.listeningPosition &&
-                  `, LP: ${measurement.listeningPosition}`}
+                  `, LP: ${formatDistance(measurement.listeningPosition, unit)}`}
               </div>
               <div>
                 B: {measurement.bass}, T: {measurement.treble}, V:{" "}
