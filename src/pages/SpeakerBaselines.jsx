@@ -289,7 +289,7 @@ export function SpeakerBaselines() {
                   <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
                       onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
-                      className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                      className="btn-primary"
                     >
                       Use as Baseline
                     </Button>
@@ -354,7 +354,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("planar-edge")}
-                        className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                        className="btn-primary"
                       >
                         Use as Baseline
                       </Button>
@@ -414,7 +414,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("rule-of-thirds")}
-                        className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                        className="btn-primary"
                       >
                         Use as Baseline
                       </Button>
@@ -498,7 +498,7 @@ export function SpeakerBaselines() {
                         onClick={() =>
                           handleUseAsBaseline("equilateral-triangle")
                         }
-                        className="bg-princeton_orange hover:bg-princeton_orange-600 active:bg-princeton_orange-700 text-white transition-all"
+                        className="btn-primary"
                       >
                         Use as Baseline
                       </Button>

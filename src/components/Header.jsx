@@ -1,8 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Lightbulb } from "lucide-react";
 
-export function Header() {
+export function Header({ onHelpClick }) {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,6 +34,17 @@ export function Header() {
       </h1>
       {!isAuthPage && (
         <div className="flex items-center gap-4">
+          {onHelpClick && (
+            <Button
+              onClick={onHelpClick}
+              variant="outline"
+              size="sm"
+              className="btn-outline flex items-center gap-2"
+            >
+              <Lightbulb className="w-4 h-4" />
+              Help
+            </Button>
+          )}
           {user ? (
             <>
               <span className="text-sm text-sky_blue_light-700">{user.email}</span>
@@ -40,7 +52,7 @@ export function Header() {
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+                className="btn-outline"
               >
                 Sign Out
               </Button>
@@ -50,7 +62,7 @@ export function Header() {
               onClick={() => navigate("/login")}
               variant="outline"
               size="sm"
-              className="hover:bg-deep_space_blue hover:text-white active:bg-deep_space_blue-600 transition-all"
+              className="btn-outline"
             >
               Login
             </Button>

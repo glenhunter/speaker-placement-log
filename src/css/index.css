@@ -125,3 +125,33 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
 }
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--color-princeton_orange);
+  color: white;
+  transition: all 150ms;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-princeton_orange-600);
+}
+
+.btn-primary:active {
+  background-color: var(--color-princeton_orange-700);
+}
+
+.btn-outline {
+  border: 2px solid var(--color-princeton_orange);
+  color: var(--color-princeton_orange);
+  transition: all 150ms;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-princeton_orange);
+  color: white;
+}
+
+.btn-outline:active {
+  background-color: var(--color-princeton_orange-700);
+}

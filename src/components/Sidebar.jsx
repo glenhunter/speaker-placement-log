@@ -204,7 +204,7 @@ export function Sidebar({
               onClick={exportToMarkdown}
               variant="outline"
               size="sm"
-              className="border-2 border-princeton_orange text-princeton_orange hover:bg-princeton_orange hover:text-white active:bg-princeton_orange-700 font-semibold transition-all"
+              className="btn-outline font-semibold"
             >
               Export to Markdown
             </Button>
