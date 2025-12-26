@@ -112,9 +112,6 @@ function App() {
     setTreble(0);
     setVocals(0);
     setSoundstage(0);
-
-    console.log("Measurement saved:", measurementData);
-    console.log("All measurements:", measurements);
   };
 
   const adjustRating = (currentValue, setter, delta) => {

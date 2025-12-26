@@ -148,11 +148,11 @@ export const storage = {
       return
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - explicitly filter by user_id for safety
     const { error } = await supabase
       .from('measurements')
       .delete()
-      .neq('id', '00000000-0000-0000-0000-000000000000')
+      .eq('user_id', userId)
 
     if (error) throw error
   },
@@ -231,11 +231,11 @@ export const baselineStorage = {
       return
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - explicitly filter by user_id for safety
     const { error } = await supabase
       .from('baselines')
       .delete()
-      .neq('id', '00000000-0000-0000-0000-000000000000')
+      .eq('user_id', userId)
 
     if (error) throw error
   },
