@@ -83,7 +83,7 @@ export function Sidebar({
               )}
             </div>
 
-            {/* Column 2: Subjective Ratings */}
+            {/* Column 3: Subjective Ratings */}
             <div className="flex flex-col gap-1 text-sm">
               <div className="text-gray-600">Bass:</div>
               <div className="text-gray-600">Treble:</div>
