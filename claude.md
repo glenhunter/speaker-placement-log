@@ -23,7 +23,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Routing Structure
 - Four routes: `/login`, `/reset-password`, `/` (main app), `/speaker-baselines` (baseline calculator)
-- Protected routes (`/` and `/speaker-baselines`) require authentication
+- All routes are accessible without authentication (anonymous usage supported)
+- Anonymous users have data stored in localStorage (lost on browser close)
+- Authenticated users have data synced to Supabase cloud storage
 - Configured in `main.jsx` with BrowserRouter basename `/speaker-placement-log`
 - AuthProvider wraps entire app for authentication state
 - React Query wraps entire app for data management
@@ -176,10 +178,10 @@ When a shadcn component is missing:
 - localStorage migration: Runs `migrateLocalStorageData()` on first successful login
 
 **Protected Routes** (src/components/ProtectedRoute.jsx):
-- Wraps routes that require authentication
+- Component available for wrapping routes that require authentication
 - Shows loading state while checking session
 - Redirects to `/login` if user not authenticated
-- Used for `/` and `/speaker-baselines` routes
+- Currently NOT used - app allows anonymous usage with localStorage fallback
 
 ### Environment Variables
 

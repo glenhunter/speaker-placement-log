@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lightbulb, X } from "lucide-react";
-import { HelpCircle } from "lucide-react";
+import { Lightbulb, X, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -113,9 +112,6 @@ function App() {
     setTreble(0);
     setVocals(0);
     setSoundstage(0);
-
-    console.log("Measurement saved:", measurementData);
-    console.log("All measurements:", measurements);
   };
 
   const adjustRating = (currentValue, setter, delta) => {
@@ -127,12 +123,18 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-deep_space_blue focus:text-white focus:rounded"
+      >
+        Skip to main content
+      </a>
       <Header measurements={measurements} baseline={baseline} />
 
       {/* Main Content Area */}
       <div className="flex flex-1 relative">
         {/* Main Content */}
-        <main className="flex-1 p-8">
+        <main id="main-content" className="flex-1 p-8" aria-label="Speaker placement modifications">
           <div className="max-w-2xl mx-auto">
             {/* Help Card */}
             {showHelpCard && (
@@ -145,8 +147,9 @@ function App() {
                   <button
                     onClick={() => setShowHelpCard(false)}
                     className="hover:bg-gray-300 rounded p-1"
+                    aria-label="Close help card"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-5 h-5" aria-hidden="true" />
                   </button>
                 </div>
                 <CardContent className="pt-0 pb-4">
@@ -276,8 +279,11 @@ function App() {
                       </CardTitle>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <button className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors">
-                            <HelpCircle className="w-5 h-5" />
+                          <button
+                            className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors"
+                            aria-label="Baseline help information"
+                          >
+                            <HelpCircle className="w-5 h-5" aria-hidden="true" />
                           </button>
                         </PopoverTrigger>
                         <PopoverContent>
@@ -346,8 +352,11 @@ function App() {
                   </CardTitle>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <button className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors">
-                        <HelpCircle className="w-5 h-5" />
+                      <button
+                        className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors"
+                        aria-label="Modifications help information"
+                      >
+                        <HelpCircle className="w-5 h-5" aria-hidden="true" />
                       </button>
                     </PopoverTrigger>
                     <PopoverContent>
@@ -360,8 +369,8 @@ function App() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-3 gap-4">
                     {/* Front Wall */}
-                    <div className="flex flex-col gap-2">
-                      <Label className="distance-label">Front Wall:</Label>
+                    <fieldset className="flex flex-col gap-2">
+                      <legend className="distance-label text-sm font-medium">Front Wall:</legend>
                       <div className="flex gap-1 items-center">
                         <Input
                           id="frontWallMajor"
@@ -370,8 +379,9 @@ function App() {
                           onChange={(e) => setFrontWallMajor(e.target.value)}
                           className="w-16"
                           min="0"
+                          aria-label={`Front wall ${unit === "imperial" ? "feet" : "metres"}`}
                         />
-                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                        <span className="text-sm text-sky_blue_light-500" aria-hidden="true">{unit === "imperial" ? "ft" : "m"}</span>
                         <Input
                           id="frontWallMinor"
                           type="number"
@@ -379,13 +389,14 @@ function App() {
                           onChange={(e) => setFrontWallMinor(e.target.value)}
                           className="w-16"
                           min="0"
+                          aria-label={`Front wall ${unit === "imperial" ? "inches" : "centimetres"}`}
                         />
-                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                        <span className="text-sm text-sky_blue_light-500" aria-hidden="true">{unit === "imperial" ? "in" : "cm"}</span>
                       </div>
-                    </div>
+                    </fieldset>
                     {/* Side Wall */}
-                    <div className="flex flex-col gap-2">
-                      <Label className="distance-label">Side Wall:</Label>
+                    <fieldset className="flex flex-col gap-2">
+                      <legend className="distance-label text-sm font-medium">Side Wall:</legend>
                       <div className="flex gap-1 items-center">
                         <Input
                           id="sideWallMajor"
@@ -394,8 +405,9 @@ function App() {
                           onChange={(e) => setSideWallMajor(e.target.value)}
                           className="w-16"
                           min="0"
+                          aria-label={`Side wall ${unit === "imperial" ? "feet" : "metres"}`}
                         />
-                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                        <span className="text-sm text-sky_blue_light-500" aria-hidden="true">{unit === "imperial" ? "ft" : "m"}</span>
                         <Input
                           id="sideWallMinor"
                           type="number"
@@ -403,13 +415,14 @@ function App() {
                           onChange={(e) => setSideWallMinor(e.target.value)}
                           className="w-16"
                           min="0"
+                          aria-label={`Side wall ${unit === "imperial" ? "inches" : "centimetres"}`}
                         />
-                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                        <span className="text-sm text-sky_blue_light-500" aria-hidden="true">{unit === "imperial" ? "in" : "cm"}</span>
                       </div>
-                    </div>
+                    </fieldset>
                     {/* Listening Position (Seat) */}
-                    <div className="flex flex-col gap-2">
-                      <Label className="distance-label">Seat:</Label>
+                    <fieldset className="flex flex-col gap-2">
+                      <legend className="distance-label text-sm font-medium">Seat:</legend>
                       <div className="flex gap-1 items-center">
                         <Input
                           id="listeningPositionMajor"
@@ -418,8 +431,9 @@ function App() {
                           onChange={(e) => setListeningPositionMajor(e.target.value)}
                           className="w-16"
                           min="0"
+                          aria-label={`Seat distance ${unit === "imperial" ? "feet" : "metres"}`}
                         />
-                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "ft" : "m"}</span>
+                        <span className="text-sm text-sky_blue_light-500" aria-hidden="true">{unit === "imperial" ? "ft" : "m"}</span>
                         <Input
                           id="listeningPositionMinor"
                           type="number"
@@ -427,24 +441,26 @@ function App() {
                           onChange={(e) => setListeningPositionMinor(e.target.value)}
                           className="w-16"
                           min="0"
+                          aria-label={`Seat distance ${unit === "imperial" ? "inches" : "centimetres"}`}
                         />
-                        <span className="text-sm text-sky_blue_light-500">{unit === "imperial" ? "in" : "cm"}</span>
+                        <span className="text-sm text-sky_blue_light-500" aria-hidden="true">{unit === "imperial" ? "in" : "cm"}</span>
                       </div>
-                    </div>
+                    </fieldset>
                   </div>
                   <Separator className="bg-sky_blue_light-500" />
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4" role="group" aria-labelledby="bass-label">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => adjustRating(bass, setBass, -1)}
                       disabled={bass <= -10}
                       className="btn-outline"
+                      aria-label="Decrease bass rating"
                     >
                       Worse
                     </Button>
                     <div className="flex-1 flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                      <h3 id="bass-label" className="text-2xl font-semibold text-right min-w-[140px]">
                         Bass:
                       </h3>
                       <span
@@ -457,6 +473,8 @@ function App() {
                               ? "#c1121f"
                               : "#477fa2",
                         }}
+                        aria-live="polite"
+                        aria-atomic="true"
                       >
                         {bass}
                       </span>
@@ -467,23 +485,25 @@ function App() {
                       onClick={() => adjustRating(bass, setBass, 1)}
                       disabled={bass >= 10}
                       className="btn-outline"
+                      aria-label="Increase bass rating"
                     >
                       Better
                     </Button>
                   </div>
                   <Separator className="bg-sky_blue_light-600" />
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4" role="group" aria-labelledby="treble-label">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => adjustRating(treble, setTreble, -1)}
                       disabled={treble <= -10}
                       className="btn-outline"
+                      aria-label="Decrease treble rating"
                     >
                       Worse
                     </Button>
                     <div className="flex-1 flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                      <h3 id="treble-label" className="text-2xl font-semibold text-right min-w-[140px]">
                         Treble:
                       </h3>
                       <span
@@ -496,6 +516,8 @@ function App() {
                               ? "#c1121f"
                               : "#477fa2",
                         }}
+                        aria-live="polite"
+                        aria-atomic="true"
                       >
                         {treble}
                       </span>
@@ -506,23 +528,25 @@ function App() {
                       onClick={() => adjustRating(treble, setTreble, 1)}
                       disabled={treble >= 10}
                       className="btn-outline"
+                      aria-label="Increase treble rating"
                     >
                       Better
                     </Button>
                   </div>
                   <Separator className="bg-sky_blue_light-600" />
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4" role="group" aria-labelledby="vocals-label">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => adjustRating(vocals, setVocals, -1)}
                       disabled={vocals <= -10}
                       className="btn-outline"
+                      aria-label="Decrease vocals rating"
                     >
                       Worse
                     </Button>
                     <div className="flex-1 flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                      <h3 id="vocals-label" className="text-2xl font-semibold text-right min-w-[140px]">
                         Vocals:
                       </h3>
                       <span
@@ -535,6 +559,8 @@ function App() {
                               ? "#c1121f"
                               : "#477fa2",
                         }}
+                        aria-live="polite"
+                        aria-atomic="true"
                       >
                         {vocals}
                       </span>
@@ -545,12 +571,13 @@ function App() {
                       onClick={() => adjustRating(vocals, setVocals, 1)}
                       disabled={vocals >= 10}
                       className="btn-outline"
+                      aria-label="Increase vocals rating"
                     >
                       Better
                     </Button>
                   </div>
                   <Separator className="bg-sky_blue_light-600" />
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4" role="group" aria-labelledby="soundstage-label">
                     <Button
                       type="button"
                       variant="outline"
@@ -559,11 +586,12 @@ function App() {
                       }
                       disabled={soundstage <= -10}
                       className="btn-outline"
+                      aria-label="Decrease soundstage rating"
                     >
                       Worse
                     </Button>
                     <div className="flex-1 flex items-center justify-center gap-4">
-                      <h3 className="text-2xl font-semibold text-right min-w-[140px]">
+                      <h3 id="soundstage-label" className="text-2xl font-semibold text-right min-w-[140px]">
                         Soundstage:
                       </h3>
                       <span
@@ -576,6 +604,8 @@ function App() {
                               ? "#c1121f"
                               : "#477fa2",
                         }}
+                        aria-live="polite"
+                        aria-atomic="true"
                       >
                         {soundstage}
                       </span>
@@ -586,6 +616,7 @@ function App() {
                       onClick={() => adjustRating(soundstage, setSoundstage, 1)}
                       disabled={soundstage >= 10}
                       className="btn-outline"
+                      aria-label="Increase soundstage rating"
                     >
                       Better
                     </Button>
@@ -607,7 +638,10 @@ function App() {
         {/* Sheet Trigger Tab */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-16">
+            <button
+              className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-16"
+              aria-label="Open modifications sidebar"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -619,6 +653,7 @@ function App() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="text-white"
+                aria-hidden="true"
               >
                 <path d="m15 18-6-6 6-6" />
               </svg>
