@@ -146,7 +146,7 @@ function App() {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="flex min-h-screen w-full">
+      <div className="flex flex-col min-h-screen w-full">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-deep_space_blue focus:text-white focus:rounded"
@@ -154,11 +154,14 @@ function App() {
           Skip to main content
         </a>
 
-        {/* Main content area */}
-        <SidebarInset className="flex-1 flex flex-col">
-          <Header measurements={measurements} baseline={baseline} />
+        {/* Header spans full width above everything */}
+        <Header measurements={measurements} baseline={baseline} />
 
-          <main id="main-content" className="flex-1 p-8" aria-label="Speaker placement modifications">
+        {/* Content and Sidebar container */}
+        <div className="flex flex-1">
+          {/* Main content area */}
+          <SidebarInset className="flex-1 flex flex-col">
+            <main id="main-content" className="flex-1 p-8" aria-label="Speaker placement modifications">
           <div className="max-w-2xl mx-auto">
             {/* Help Card */}
             {showHelpCard && (
@@ -658,27 +661,29 @@ function App() {
             </Card>
           </div>
           </main>
+          </SidebarInset>
 
-          <Footer />
-        </SidebarInset>
+          {/* Toggle button - positioned on left edge of sidebar */}
+          <SidebarToggleButton />
 
-        {/* Toggle button - positioned on left edge of sidebar */}
-        <SidebarToggleButton />
+          {/* Sidebar on right */}
+          <SidebarContainer side="right" collapsible="icon" className="border-l" style={{ maxWidth: '400px' }}>
+            <SidebarHeader className="border-b p-4">
+              <h2 className="text-xl font-bold text-deep_space_blue">Modifications</h2>
+            </SidebarHeader>
+            <SidebarContent className="p-4">
+              <Sidebar
+                measurements={measurements}
+                updateMeasurement={updateMeasurement}
+                deleteMeasurement={deleteMeasurement}
+                baseline={baseline}
+              />
+            </SidebarContent>
+          </SidebarContainer>
+        </div>
 
-        {/* Sidebar on right */}
-        <SidebarContainer side="right" collapsible="icon" className="border-l" style={{ maxWidth: '400px' }}>
-          <SidebarHeader className="border-b p-4">
-            <h2 className="text-xl font-bold text-deep_space_blue">Modifications</h2>
-          </SidebarHeader>
-          <SidebarContent className="p-4">
-            <Sidebar
-              measurements={measurements}
-              updateMeasurement={updateMeasurement}
-              deleteMeasurement={deleteMeasurement}
-              baseline={baseline}
-            />
-          </SidebarContent>
-        </SidebarContainer>
+        {/* Footer spans full width below everything */}
+        <Footer />
       </div>
     </SidebarProvider>
   );
