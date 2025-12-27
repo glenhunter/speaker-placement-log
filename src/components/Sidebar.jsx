@@ -175,9 +175,6 @@ export function Sidebar({
 
   return (
     <>
-      <h2 className="text-2xl font-bold mb-6 text-deep_space_blue">
-        Modifications
-      </h2>
       {measurements.length > 0 ? (
         <div className="space-y-6">
           {/* Favourites Section */}
