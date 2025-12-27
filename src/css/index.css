@@ -188,3 +188,7 @@ body {
 .link-accessible:active {
   color: var(--color-blue_green-600);
 }
+
+.card-method-label {
+  align-self: baseline;
+}
