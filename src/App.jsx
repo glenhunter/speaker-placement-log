@@ -11,13 +11,21 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import {
+  SidebarProvider,
+  Sidebar as SidebarContainer,
+  SidebarContent,
+  SidebarHeader,
+  SidebarTrigger,
+  SidebarInset,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { useBaseline } from "@/hooks/useBaseline";
 import { useUnit } from "@/contexts/UnitContext";
@@ -25,6 +33,21 @@ import { formatDistance } from "@/lib/utils";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+
+function SidebarToggleButton() {
+  const { open } = useSidebar();
+
+  return (
+    <div
+      className="fixed top-16 z-50 transition-all duration-200"
+      style={{
+        right: open ? '400px' : '0',
+      }}
+    >
+      <SidebarTrigger className="btn-primary rounded-l-lg shadow-lg p-3 rounded-r-none" />
+    </div>
+  );
+}
 
 function App() {
   const navigate = useNavigate();
@@ -122,19 +145,20 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-deep_space_blue focus:text-white focus:rounded"
-      >
-        Skip to main content
-      </a>
-      <Header measurements={measurements} baseline={baseline} />
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex min-h-screen w-full">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-deep_space_blue focus:text-white focus:rounded"
+        >
+          Skip to main content
+        </a>
 
-      {/* Main Content Area */}
-      <div className="flex flex-1 relative">
-        {/* Main Content */}
-        <main id="main-content" className="flex-1 p-8" aria-label="Speaker placement modifications">
+        {/* Main content area */}
+        <SidebarInset className="flex-1 flex flex-col">
+          <Header measurements={measurements} baseline={baseline} />
+
+          <main id="main-content" className="flex-1 p-8" aria-label="Speaker placement modifications">
           <div className="max-w-2xl mx-auto">
             {/* Help Card */}
             {showHelpCard && (
@@ -633,45 +657,30 @@ function App() {
               </CardContent>
             </Card>
           </div>
-        </main>
+          </main>
 
-        {/* Sheet Trigger Tab */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <button
-              className="btn-primary fixed right-0 z-40 rounded-l-lg shadow-lg transition-all hover:pr-1 hover:shadow-xl p-3 top-16"
-              aria-label="Open modifications sidebar"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-white"
-                aria-hidden="true"
-              >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </button>
-          </SheetTrigger>
-          <SheetContent className="w-96 overflow-y-auto" side="right">
+          <Footer />
+        </SidebarInset>
+
+        {/* Toggle button - positioned on left edge of sidebar */}
+        <SidebarToggleButton />
+
+        {/* Sidebar on right */}
+        <SidebarContainer side="right" collapsible="icon" className="border-l" style={{ maxWidth: '400px' }}>
+          <SidebarHeader className="border-b p-4">
+            <h2 className="text-xl font-bold text-deep_space_blue">Modifications</h2>
+          </SidebarHeader>
+          <SidebarContent className="p-4">
             <Sidebar
               measurements={measurements}
               updateMeasurement={updateMeasurement}
               deleteMeasurement={deleteMeasurement}
               baseline={baseline}
             />
-          </SheetContent>
-        </Sheet>
+          </SidebarContent>
+        </SidebarContainer>
       </div>
-
-      <Footer />
-    </div>
+    </SidebarProvider>
   );
 }
 

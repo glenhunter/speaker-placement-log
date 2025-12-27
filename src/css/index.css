@@ -42,6 +42,16 @@
 
   --radius: 0.5rem;
 
+  /* Sidebar Variables */
+  --color-sidebar: var(--color-card);
+  --color-sidebar-foreground: var(--color-card-foreground);
+  --color-sidebar-accent: var(--color-accent);
+  --color-sidebar-accent-foreground: var(--color-accent-foreground);
+  --color-sidebar-border: var(--color-border);
+  --color-sidebar-ring: var(--color-ring);
+  --sidebar-width: 400px;
+  --sidebar-width-icon: 3rem;
+
   /* Ocean-Sunset Palette - Sky Blue (Light) */
   --color-sky_blue_light: #8ecae6;
   --color-sky_blue_light-100: #0d2e3d;
