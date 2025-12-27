@@ -35,13 +35,13 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 function SidebarToggleButton() {
-  const { open } = useSidebar();
+  const { open, isMobile } = useSidebar();
 
   return (
     <div
-      className="fixed top-16 z-50 transition-all duration-200"
+      className="fixed top-16 right-0 z-[60] transition-transform duration-200"
       style={{
-        right: open ? '400px' : '0',
+        transform: !isMobile && open ? 'translateX(-400px)' : 'translateX(0)'
       }}
     >
       <SidebarTrigger className="btn-primary rounded-l-lg shadow-lg p-3 rounded-r-none" />
