@@ -13,6 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { formatDistance } from "@/lib/utils";
 
 export function Header({ measurements, baseline }) {
   const { user, signOut } = useAuth();
@@ -32,17 +33,22 @@ export function Header({ measurements, baseline }) {
   const exportToMarkdown = () => {
     let markdown = "# Speaker Placement Log\n\n";
     markdown += `Generated on: ${new Date().toLocaleString()}\n\n`;
+    markdown += `Units: ${unit === "imperial" ? "Imperial (ft/in)" : "Metric (m/cm)"}\n\n`;
     markdown += `Total Measurements: ${measurements?.length || 0}\n\n`;
 
     // Add baseline if it exists
     if (baseline?.values) {
       markdown += "## Baseline\n\n";
-      markdown += `**Calculation Type:** ${baseline.calculationType
-        ?.replace(/-/g, " ")
-        .replace(/\b\w/g, (l) => l.toUpperCase())}\n\n`;
+      if (baseline.methodName) {
+        markdown += `**Method:** ${baseline.methodName}\n\n`;
+      }
 
       baseline.values.forEach((item) => {
-        markdown += `- **${item.label}:** ${item.value}\n`;
+        // Use formatDistance for values that have rawValueInFeet
+        const displayValue = item.rawValueInFeet !== undefined
+          ? formatDistance(item.rawValueInFeet, unit)
+          : item.value;
+        markdown += `- **${item.label}:** ${displayValue}\n`;
       });
       markdown += "\n";
     }
@@ -51,17 +57,25 @@ export function Header({ measurements, baseline }) {
     if (measurements && measurements.length > 0) {
       markdown += "## Measurements\n\n";
       measurements.forEach((measurement, index) => {
-        markdown += `### Measurement ${index + 1}${
-          measurement.isFavorite ? " ⭐" : ""
-        }\n\n`;
+        // Use name if available, otherwise default to numbered format
+        const title = measurement.name
+          ? `${measurement.name}${measurement.isFavorite ? " ⭐" : ""}`
+          : `Measurement ${index + 1}${measurement.isFavorite ? " ⭐" : ""}`;
+
+        markdown += `### ${title}\n\n`;
+
+        if (measurement.baselineMethodName) {
+          markdown += `**Baseline Method:** ${measurement.baselineMethodName}\n\n`;
+        }
+
         if (measurement.distanceFromFrontWall) {
-          markdown += `- **Front Wall:** ${measurement.distanceFromFrontWall}"\n`;
+          markdown += `- **Front Wall:** ${formatDistance(measurement.distanceFromFrontWall, unit)}\n`;
         }
         if (measurement.distanceFromSideWall) {
-          markdown += `- **Side Wall:** ${measurement.distanceFromSideWall}"\n`;
+          markdown += `- **Side Wall:** ${formatDistance(measurement.distanceFromSideWall, unit)}\n`;
         }
         if (measurement.listeningPosition) {
-          markdown += `- **Listening Position:** ${measurement.listeningPosition}"\n`;
+          markdown += `- **Listening Position:** ${formatDistance(measurement.listeningPosition, unit)}\n`;
         }
         markdown += `- **Bass:** ${measurement.bass}\n`;
         markdown += `- **Treble:** ${measurement.treble}\n`;
