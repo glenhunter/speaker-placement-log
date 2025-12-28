@@ -36,9 +36,8 @@ export function HelpDialog() {
           </p>
 
           <p className="leading-7 font-semibold">
-            TL/DR if you want your values to persist create a user. Create a
-            baseline first, then tweak. Record your tweaks and star the best
-            one.
+            TL/DR Create a baseline first, then tweak. Record your tweaks and
+            star the best one. If you want your values to persist create a user.
           </p>
 
           <p className="leading-7">
@@ -80,9 +79,7 @@ export function HelpDialog() {
             at a time, i.e. move the speakers forwards/backwards or left/right
             but not both. You can either enter the difference from baseline in
             the front/side/listening position fields or use the full (new)
-            measurement from the walls. Currently only Imperial units are
-            supported (mostly because I lost my metric measuring tape) but
-            Metric is coming soon.
+            measurement from the walls.
           </p>
 
           <p className="leading-7">
@@ -119,15 +116,6 @@ export function HelpDialog() {
             will work but when you close the browser tab your data will be gone
             forever.
           </p>
-
-          <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight pt-4">
-            Coming soon
-          </h2>
-
-          <ul className="ml-6 list-disc [&>li]:mt-2">
-            <li>Metric units</li>
-            <li>More deatils for the modifications</li>
-          </ul>
         </div>
       </DialogContent>
     </Dialog>

@@ -178,22 +178,6 @@ function App() {
                           <CardTitle className="text-3xl text-deep_space_blue">
                             Baseline
                           </CardTitle>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <button
-                                className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors"
-                                aria-label="Baseline help information"
-                              >
-                                <HelpCircle
-                                  className="w-5 h-5"
-                                  aria-hidden="true"
-                                />
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <p className="text-sm">Hello World</p>
-                            </PopoverContent>
-                          </Popover>
                         </div>
                       </CardHeader>
                       <CardContent className="pt-0">
@@ -243,12 +227,41 @@ function App() {
                       </CardFooter>
                     </Card>
                   ) : (
-                    <Button
-                      onClick={() => navigate("/speaker-baselines")}
-                      className="btn-primary"
-                    >
-                      Create Baseline
-                    </Button>
+                    <Card className="relative border-2 border-princeton_orange shadow-sm">
+                      <CardContent className="pt-0">
+                        <Button
+                          onClick={() => navigate("/speaker-baselines")}
+                          className="btn-primary"
+                        >
+                          Create Baseline
+                        </Button>
+                        <div
+                          className="flex items-center justify-end"
+                          id="baseline-help"
+                        >
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <button
+                                className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors"
+                                aria-label="Baseline help information"
+                              >
+                                <HelpCircle
+                                  className="w-5 h-5"
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <p className="text-sm">
+                                Create a baseline first, then tweak. Record your
+                                tweaks and star the best one. If you want your
+                                values to persist create a user.
+                              </p>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      </CardContent>
+                    </Card>
                   )}
                 </div>
                 <Card className="border-2 border-sky_blue_light-700 shadow-sm">
@@ -270,7 +283,11 @@ function App() {
                           </button>
                         </PopoverTrigger>
                         <PopoverContent>
-                          <p className="text-sm">Hello World</p>
+                          <p className="text-sm">
+                            Use the subjective measurement buttons to record
+                            your impressions of the sound. The buttons move in
+                            increments of "+/- 1"
+                          </p>
                         </PopoverContent>
                       </Popover>
                     </div>
