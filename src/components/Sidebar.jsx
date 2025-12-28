@@ -7,6 +7,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useUnit } from "@/contexts/UnitContext";
 import { formatDistance } from "@/lib/utils";
+import { PenTool, Pencil, Check } from "lucide-react";
+import { useState } from "react";
 
 /**
  * Safely converts a rating value to a number.
@@ -39,6 +41,24 @@ export function Sidebar({
   baseline,
 }) {
   const { unit } = useUnit();
+  const [editingId, setEditingId] = useState(null);
+  const [editingName, setEditingName] = useState("");
+
+  const startEditing = (measurement) => {
+    setEditingId(measurement.id);
+    setEditingName(measurement.name || "");
+  };
+
+  const handleSaveName = async (id) => {
+    if (editingName.trim()) {
+      await updateMeasurement({
+        id,
+        updates: { name: editingName.trim() },
+      });
+    }
+    setEditingId(null);
+    setEditingName("");
+  };
 
   const renderMeasurementCard = (measurement) => {
     const sum = calculateScore(measurement);
@@ -49,9 +69,54 @@ export function Sidebar({
         className="border-2 border-sky_blue_light-700 overflow-hidden"
       >
         <CardHeader className="p-0">
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-between">
+            {/* Left side: Name section */}
+            <div className="flex items-center gap-2 px-3 py-1.5">
+              {editingId === measurement.id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editingName}
+                    onChange={(e) => setEditingName(e.target.value)}
+                    className="text-sm bg-transparent border-b border-white focus:outline-none"
+                    placeholder="Name this modification..."
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => handleSaveName(measurement.id)}
+                    className="text-green-500 hover:text-green-400"
+                    aria-label="Save name"
+                  >
+                    <Check size={16} />
+                  </button>
+                </>
+              ) : measurement.name ? (
+                <>
+                  <span className="text-sm font-medium">
+                    {measurement.name}
+                  </span>
+                  <button
+                    onClick={() => startEditing(measurement)}
+                    className="text-gray-400 hover:text-white"
+                    aria-label="Edit name"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => startEditing(measurement)}
+                  className="text-gray-400 hover:text-white"
+                  aria-label="Name this modification"
+                >
+                  <PenTool size={16} />
+                </button>
+              )}
+            </div>
+
+            {/* Right side: Method label (existing) */}
             {measurement.baselineMethodName && (
-              <div className="text-xs text-white bg-sky_blue_light-700 px-3 py-1.5 rounded-bl-lg">
+              <div className="text-xs text-white bg-sky_blue_light-700 px-3 py-1.5 rounded-bl-lg card-method-label">
                 {measurement.baselineMethodName}
               </div>
             )}

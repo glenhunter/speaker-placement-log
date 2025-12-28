@@ -28,6 +28,10 @@ export function SpeakerBaselines() {
   const [sidewallDistanceMinor, setSidewallDistanceMinor] = useState("");
   const [listeningPositionMajor, setListeningPositionMajor] = useState("");
   const [listeningPositionMinor, setListeningPositionMinor] = useState("");
+  const [manualFrontWallMajor, setManualFrontWallMajor] = useState("");
+  const [manualFrontWallMinor, setManualFrontWallMinor] = useState("");
+  const [manualSideWallMajor, setManualSideWallMajor] = useState("");
+  const [manualSideWallMinor, setManualSideWallMinor] = useState("");
   const [speakerType, setSpeakerType] = useState("conventional");
 
   // Convert major/minor values to feet based on selected unit
@@ -217,40 +221,38 @@ export function SpeakerBaselines() {
         },
       ];
     } else if (calculationType === "manual") {
-      // Manual tab - include room dimensions and optional listening position
+      // Manual tab - include speaker positions and optional listening position
       baselineData.values = [];
 
-      // Add room dimensions
-      if (parsedLength !== null) {
+      // Add front wall and side wall distances if provided
+      const parsedManualFrontWall = convertToFeet(
+        manualFrontWallMajor,
+        manualFrontWallMinor
+      );
+      const parsedManualSideWall = convertToFeet(
+        manualSideWallMajor,
+        manualSideWallMinor
+      );
+
+      if (parsedManualFrontWall !== null) {
         baselineData.values.push({
-          label: "Room Length",
-          value: formatInputDisplay(roomLengthMajor, roomLengthMinor),
-          rawValueInFeet: parsedLength,
+          label: "Front Wall",
+          value: formatInputDisplay(manualFrontWallMajor, manualFrontWallMinor),
+          rawValueInFeet: parsedManualFrontWall,
           formula: `Input value (${formatInputDisplay(
-            roomLengthMajor,
-            roomLengthMinor
+            manualFrontWallMajor,
+            manualFrontWallMinor
           )})`,
         });
       }
-      if (parsedWidth !== null) {
+      if (parsedManualSideWall !== null) {
         baselineData.values.push({
-          label: "Room Width",
-          value: formatInputDisplay(roomWidthMajor, roomWidthMinor),
-          rawValueInFeet: parsedWidth,
+          label: "Side Wall",
+          value: formatInputDisplay(manualSideWallMajor, manualSideWallMinor),
+          rawValueInFeet: parsedManualSideWall,
           formula: `Input value (${formatInputDisplay(
-            roomWidthMajor,
-            roomWidthMinor
-          )})`,
-        });
-      }
-      if (parsedHeight !== null) {
-        baselineData.values.push({
-          label: "Room Height",
-          value: formatInputDisplay(roomHeightMajor, roomHeightMinor),
-          rawValueInFeet: parsedHeight,
-          formula: `Input value (${formatInputDisplay(
-            roomHeightMajor,
-            roomHeightMinor
+            manualSideWallMajor,
+            manualSideWallMinor
           )})`,
         });
       }
@@ -813,38 +815,99 @@ export function SpeakerBaselines() {
                   optimize their placement.
                 </p>
                 <p className="text-base text-sky_blue_light-500">
-                  The Listening Position input here is optional, but
-                  recommended.
+                  Enter the current distance from your speakers to the front
+                  wall and side walls. The Listening Position input is optional,
+                  but recommended.
                 </p>
-                <div className="flex flex-col gap-2">
-                  <Label>Listening Position (Optional)</Label>
-                  <div className="flex gap-1 items-center w-1/2">
-                    <Input
-                      id="listeningPositionMajor"
-                      type="number"
-                      value={listeningPositionMajor}
-                      onChange={(e) =>
-                        setListeningPositionMajor(e.target.value)
-                      }
-                      className="w-16"
-                      min="0"
-                    />
-                    <span className="text-sm text-sky_blue_light-500">
-                      {unit === "imperial" ? "ft" : "m"}
-                    </span>
-                    <Input
-                      id="listeningPositionMinor"
-                      type="number"
-                      value={listeningPositionMinor}
-                      onChange={(e) =>
-                        setListeningPositionMinor(e.target.value)
-                      }
-                      className="w-16"
-                      min="0"
-                    />
-                    <span className="text-sm text-sky_blue_light-500">
-                      {unit === "imperial" ? "in" : "cm"}
-                    </span>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <Label>Front Wall</Label>
+                    <div className="flex gap-1 items-center">
+                      <Input
+                        id="manualFrontWallMajor"
+                        type="number"
+                        value={manualFrontWallMajor}
+                        onChange={(e) =>
+                          setManualFrontWallMajor(e.target.value)
+                        }
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">
+                        {unit === "imperial" ? "ft" : "m"}
+                      </span>
+                      <Input
+                        id="manualFrontWallMinor"
+                        type="number"
+                        value={manualFrontWallMinor}
+                        onChange={(e) =>
+                          setManualFrontWallMinor(e.target.value)
+                        }
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">
+                        {unit === "imperial" ? "in" : "cm"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label>Side Wall</Label>
+                    <div className="flex gap-1 items-center">
+                      <Input
+                        id="manualSideWallMajor"
+                        type="number"
+                        value={manualSideWallMajor}
+                        onChange={(e) => setManualSideWallMajor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">
+                        {unit === "imperial" ? "ft" : "m"}
+                      </span>
+                      <Input
+                        id="manualSideWallMinor"
+                        type="number"
+                        value={manualSideWallMinor}
+                        onChange={(e) => setManualSideWallMinor(e.target.value)}
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">
+                        {unit === "imperial" ? "in" : "cm"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label>Seat</Label>
+                    <div className="flex gap-1 items-center w-1/2">
+                      <Input
+                        id="listeningPositionMajor"
+                        type="number"
+                        value={listeningPositionMajor}
+                        onChange={(e) =>
+                          setListeningPositionMajor(e.target.value)
+                        }
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">
+                        {unit === "imperial" ? "ft" : "m"}
+                      </span>
+                      <Input
+                        id="listeningPositionMinor"
+                        type="number"
+                        value={listeningPositionMinor}
+                        onChange={(e) =>
+                          setListeningPositionMinor(e.target.value)
+                        }
+                        className="w-16"
+                        min="0"
+                      />
+                      <span className="text-sm text-sky_blue_light-500">
+                        {unit === "imperial" ? "in" : "cm"}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="pt-4 border-t border-sky_blue_light-700">
