@@ -30,36 +30,44 @@ A web application for tracking and comparing speaker placement measurements to h
 ### Setup
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/glenhunter/speaker-placement-log.git
    cd speaker-placement-log
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Create a `.env.local` file with your Supabase credentials:
+
    ```bash
    VITE_SUPABASE_URL=your_supabase_project_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
 4. Configure Supabase:
+
    - Run the database schema (see `/docs/supabase-implementation-plan.md`)
    - Configure authentication redirect URLs in Supabase dashboard
    - Enable email provider authentication
 
 5. Start the development server:
+
    ```bash
    npm run dev
    ```
 
 6. Open your browser and navigate to:
+
    ```
    http://localhost:5173/speaker-placement-log/
    ```
+
+7. Remote URL is: [https://glenhunter.github.io/speaker-placement-log/](https://glenhunter.github.io/speaker-placement-log/)
 
 ## Usage
 
