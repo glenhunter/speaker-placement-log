@@ -2,6 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUnit } from "@/contexts/UnitContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Settings, LogOut } from "lucide-react";
+import { HelpDialog } from "@/components/HelpDialog";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -127,6 +128,7 @@ export function Header({ measurements, baseline }) {
               Sign In
             </Button>
           )}
+          <HelpDialog />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
