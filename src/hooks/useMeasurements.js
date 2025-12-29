@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { storage } from '@/lib/storage';
+import { devError } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const useMeasurements = () => {
@@ -19,7 +20,7 @@ export const useMeasurements = () => {
       queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
     onError: (error) => {
-      console.error('Failed to save measurement:', error);
+      devError('Failed to save measurement:', error);
     },
   });
 
@@ -46,7 +47,7 @@ export const useMeasurements = () => {
       if (context?.previousMeasurements) {
         queryClient.setQueryData(['measurements', user?.id], context.previousMeasurements);
       }
-      console.error('Failed to update measurement:', error);
+      devError('Failed to update measurement:', error);
     },
     onSettled: () => {
       // Refetch after error or success to ensure consistency
@@ -77,7 +78,7 @@ export const useMeasurements = () => {
       if (context?.previousMeasurements) {
         queryClient.setQueryData(['measurements', user?.id], context.previousMeasurements);
       }
-      console.error('Failed to delete measurement:', error);
+      devError('Failed to delete measurement:', error);
     },
     onSettled: () => {
       // Refetch after error or success to ensure consistency
@@ -92,7 +93,7 @@ export const useMeasurements = () => {
       queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
     onError: (error) => {
-      console.error('Failed to clear measurements:', error);
+      devError('Failed to clear measurements:', error);
     },
   });
 

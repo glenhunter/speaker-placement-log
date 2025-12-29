@@ -6,6 +6,16 @@ export function cn(...inputs) {
 }
 
 /**
+ * Logs errors only in development mode to prevent information leakage in production.
+ * @param  {...any} args - Arguments to pass to console.error
+ */
+export function devError(...args) {
+  if (import.meta.env.DEV) {
+    console.error(...args)
+  }
+}
+
+/**
  * Validates and parses a numeric input value.
  * Returns the parsed number or null if invalid.
  */
