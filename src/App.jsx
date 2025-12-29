@@ -231,7 +231,7 @@ function App() {
                       <CardContent className="flex items-center justify-center min-h-[100px]">
                         <Button
                           onClick={() => navigate("/speaker-baselines")}
-                          className="btn-primary"
+                          className="btn-primary w-full md:w-auto"
                         >
                           Create Baseline
                         </Button>
@@ -613,7 +613,7 @@ function App() {
                       <Button
                         type="submit"
                         disabled={isSaving}
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         {isSaving ? "Saving..." : "Submit"}
                       </Button>

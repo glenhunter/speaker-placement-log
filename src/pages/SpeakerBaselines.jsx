@@ -394,7 +394,7 @@ export function SpeakerBaselines() {
                 <h3 className="text-xl font-semibold text-deep_space_blue">
                   Speaker Type
                 </h3>
-                <div className="flex gap-6">
+                <div className="flex flex-col gap-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
@@ -515,7 +515,7 @@ export function SpeakerBaselines() {
                   <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
                       onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
-                      className="btn-primary"
+                      className="btn-primary w-full md:w-auto"
                     >
                       Use as Baseline
                     </Button>
@@ -593,7 +593,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("planar-edge")}
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         Use as Baseline
                       </Button>
@@ -665,7 +665,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("rule-of-thirds")}
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         Use as Baseline
                       </Button>
@@ -780,7 +780,7 @@ export function SpeakerBaselines() {
                         onClick={() =>
                           handleUseAsBaseline("equilateral-triangle")
                         }
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         Use as Baseline
                       </Button>
@@ -913,7 +913,7 @@ export function SpeakerBaselines() {
                 <div className="pt-4 border-t border-sky_blue_light-700">
                   <Button
                     onClick={() => handleUseAsBaseline("manual")}
-                    className="btn-primary"
+                    className="btn-primary w-full md:w-auto"
                   >
                     Submit
                   </Button>
