@@ -424,12 +424,12 @@ export function SpeakerBaselines() {
 
           {/* Tabs Section */}
           <Tabs defaultValue="tab1" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="tab1">Golden Ratio</TabsTrigger>
-              <TabsTrigger value="tab2">Planar "Edge"</TabsTrigger>
-              <TabsTrigger value="tab3">Rule of 1/3's</TabsTrigger>
-              <TabsTrigger value="tab4">Nearfield</TabsTrigger>
-              <TabsTrigger value="tab5">Manual</TabsTrigger>
+            <TabsList className="flex w-full overflow-x-auto md:grid md:grid-cols-5">
+              <TabsTrigger value="tab1" className="flex-shrink-0">Golden Ratio</TabsTrigger>
+              <TabsTrigger value="tab2" className="flex-shrink-0">Planar "Edge"</TabsTrigger>
+              <TabsTrigger value="tab3" className="flex-shrink-0">Rule of 1/3's</TabsTrigger>
+              <TabsTrigger value="tab4" className="flex-shrink-0">Nearfield</TabsTrigger>
+              <TabsTrigger value="tab5" className="flex-shrink-0">Manual</TabsTrigger>
             </TabsList>
             <TabsContent value="tab1" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
