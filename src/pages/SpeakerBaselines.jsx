@@ -301,7 +301,7 @@ export function SpeakerBaselines() {
                 <h3 className="text-xl font-semibold text-deep_space_blue">
                   Room Dimensions
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Length */}
                   <div className="flex flex-col gap-2">
                     <Label>Length</Label>
@@ -819,7 +819,7 @@ export function SpeakerBaselines() {
                   wall and side walls. The Listening Position input is optional,
                   but recommended.
                 </p>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex flex-col gap-2">
                     <Label>Front Wall</Label>
                     <div className="flex gap-1 items-center">

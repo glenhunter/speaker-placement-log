@@ -110,12 +110,7 @@ export function Header({ measurements, baseline }) {
 
   return (
     <header
-      className="sticky top-0 z-50 flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-princeton_orange"
-      style={{
-        height: "60px",
-        minHeight: "60px",
-        maxHeight: "60px",
-      }}
+      className="sticky top-0 z-50 flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 md:gap-0 px-8 py-3 md:py-0 bg-deep_space_blue-500 border-b-4 border-princeton_orange md:h-[60px]"
     >
       <h1 className="text-2xl font-bold text-white">Speaker Tweaker</h1>
       {!isAuthPage && (

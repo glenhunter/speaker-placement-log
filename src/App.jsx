@@ -182,10 +182,10 @@ function App() {
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div
-                          className={`grid ${
+                          className={`grid grid-cols-1 ${
                             baseline.values?.length === 3
-                              ? "grid-cols-3"
-                              : "grid-cols-2"
+                              ? "md:grid-cols-3"
+                              : "md:grid-cols-2"
                           } gap-4`}
                         >
                           {baseline.values?.map((item, index) => {
@@ -294,7 +294,7 @@ function App() {
                   </CardHeader>
                   <CardContent className="pt-0 px-6 pb-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {/* Front Wall */}
                         <fieldset className="flex flex-col gap-2">
                           <legend className="distance-label text-sm font-medium">
@@ -432,7 +432,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-500" />
                       <div
-                        className="flex items-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
                         role="group"
                         aria-labelledby="bass-label"
                       >
@@ -441,20 +441,20 @@ function App() {
                           variant="outline"
                           onClick={() => adjustRating(bass, setBass, -1)}
                           disabled={bass <= -10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-1"
                           aria-label="Decrease bass rating"
                         >
                           Worse
                         </Button>
-                        <div className="flex-1 flex items-center justify-center gap-4">
+                        <div className="w-full md:w-auto md:flex-1 order-1 md:order-2 flex items-center justify-center gap-4">
                           <h3
                             id="bass-label"
-                            className="text-2xl font-semibold text-right min-w-[140px]"
+                            className="text-2xl font-semibold text-right min-w-[80px] md:min-w-[140px]"
                           >
                             Bass:
                           </h3>
                           <span
-                            className="text-2xl font-semibold text-left min-w-[140px]"
+                            className="text-2xl font-semibold text-left min-w-[40px] md:min-w-[140px]"
                             style={{
                               color:
                                 bass > 0
@@ -474,7 +474,7 @@ function App() {
                           variant="outline"
                           onClick={() => adjustRating(bass, setBass, 1)}
                           disabled={bass >= 10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-3"
                           aria-label="Increase bass rating"
                         >
                           Better
@@ -482,7 +482,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-600" />
                       <div
-                        className="flex items-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
                         role="group"
                         aria-labelledby="treble-label"
                       >
@@ -491,20 +491,20 @@ function App() {
                           variant="outline"
                           onClick={() => adjustRating(treble, setTreble, -1)}
                           disabled={treble <= -10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-1"
                           aria-label="Decrease treble rating"
                         >
                           Worse
                         </Button>
-                        <div className="flex-1 flex items-center justify-center gap-4">
+                        <div className="w-full md:w-auto md:flex-1 order-1 md:order-2 flex items-center justify-center gap-4">
                           <h3
                             id="treble-label"
-                            className="text-2xl font-semibold text-right min-w-[140px]"
+                            className="text-2xl font-semibold text-right min-w-[80px] md:min-w-[140px]"
                           >
                             Treble:
                           </h3>
                           <span
-                            className="text-2xl font-semibold text-left min-w-[140px]"
+                            className="text-2xl font-semibold text-left min-w-[40px] md:min-w-[140px]"
                             style={{
                               color:
                                 treble > 0
@@ -524,7 +524,7 @@ function App() {
                           variant="outline"
                           onClick={() => adjustRating(treble, setTreble, 1)}
                           disabled={treble >= 10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-3"
                           aria-label="Increase treble rating"
                         >
                           Better
@@ -532,7 +532,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-600" />
                       <div
-                        className="flex items-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
                         role="group"
                         aria-labelledby="vocals-label"
                       >
@@ -541,20 +541,20 @@ function App() {
                           variant="outline"
                           onClick={() => adjustRating(vocals, setVocals, -1)}
                           disabled={vocals <= -10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-1"
                           aria-label="Decrease vocals rating"
                         >
                           Worse
                         </Button>
-                        <div className="flex-1 flex items-center justify-center gap-4">
+                        <div className="w-full md:w-auto md:flex-1 order-1 md:order-2 flex items-center justify-center gap-4">
                           <h3
                             id="vocals-label"
-                            className="text-2xl font-semibold text-right min-w-[140px]"
+                            className="text-2xl font-semibold text-right min-w-[80px] md:min-w-[140px]"
                           >
                             Vocals:
                           </h3>
                           <span
-                            className="text-2xl font-semibold text-left min-w-[140px]"
+                            className="text-2xl font-semibold text-left min-w-[40px] md:min-w-[140px]"
                             style={{
                               color:
                                 vocals > 0
@@ -574,7 +574,7 @@ function App() {
                           variant="outline"
                           onClick={() => adjustRating(vocals, setVocals, 1)}
                           disabled={vocals >= 10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-3"
                           aria-label="Increase vocals rating"
                         >
                           Better
@@ -582,7 +582,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-600" />
                       <div
-                        className="flex items-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
                         role="group"
                         aria-labelledby="soundstage-label"
                       >
@@ -593,20 +593,20 @@ function App() {
                             adjustRating(soundstage, setSoundstage, -1)
                           }
                           disabled={soundstage <= -10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-1"
                           aria-label="Decrease soundstage rating"
                         >
                           Worse
                         </Button>
-                        <div className="flex-1 flex items-center justify-center gap-4">
+                        <div className="w-full md:w-auto md:flex-1 order-1 md:order-2 flex items-center justify-center gap-4">
                           <h3
                             id="soundstage-label"
-                            className="text-2xl font-semibold text-right min-w-[140px]"
+                            className="text-2xl font-semibold text-right min-w-[80px] md:min-w-[140px]"
                           >
                             Soundstage:
                           </h3>
                           <span
-                            className="text-2xl font-semibold text-left min-w-[140px]"
+                            className="text-2xl font-semibold text-left min-w-[40px] md:min-w-[140px]"
                             style={{
                               color:
                                 soundstage > 0
@@ -628,7 +628,7 @@ function App() {
                             adjustRating(soundstage, setSoundstage, 1)
                           }
                           disabled={soundstage >= 10}
-                          className="btn-outline"
+                          className="btn-outline order-2 md:order-3"
                           aria-label="Increase soundstage rating"
                         >
                           Better
