@@ -795,7 +795,7 @@ export function SpeakerBaselines() {
                 </p>
                 <p className="text-base text-sky_blue_light-500">
                   Enter the current distance from your speakers to the front
-                  wall and side walls. The Listening Position input is optional,
+                  wall and side walls. The Listening Position (Seat) input is optional,
                   but recommended.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
