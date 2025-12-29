@@ -9,7 +9,7 @@ A web application for tracking and comparing speaker placement measurements to h
 - **User Authentication**: Secure email/password authentication with password reset
 - **Cloud Storage**: Data syncs across devices via Supabase PostgreSQL
 - **Track Measurements**: Record speaker distance from front and side walls
-- **Rate Audio Quality**: Use intuitive sliders (0-10) to rate:
+- **Rate Audio Quality**: Use Worse/Better buttons (-10 to +10) to rate:
   - Bass response
   - Treble clarity
   - Vocal presence
@@ -71,13 +71,13 @@ A web application for tracking and comparing speaker placement measurements to h
 
 ## Usage
 
-1. **Sign Up/Sign In**: Create an account or sign in with email/password
+1. **Sign Up/Sign In**: Create an account via the menu (hamburger icon)
 2. **Enter Distance Measurements**: Input the distance of your speakers from the front and side walls
-3. **Rate Audio Qualities**: Use the sliders to rate bass, treble, vocals, and soundstage (0-10)
+3. **Rate Audio Qualities**: Use Worse/Better buttons to rate bass, treble, vocals, and soundstage (-10 to +10)
 4. **Submit**: Click the Submit button to save your measurement to the cloud
 5. **View History**: Click the sidebar tab (right edge of screen) to view all measurements
-6. **Export**: Use the "Export to Markdown" button in the sidebar to download your data
-7. **Sign Out**: Click the Sign Out button in the header when done
+6. **Export**: Use "Export to Markdown" in the menu to download your data
+7. **Sign Out**: Click Sign Out in the menu when done
 
 ## Build for Production
 
@@ -98,7 +98,7 @@ npm run preview
 ## Tech Stack
 
 - **Framework**: [React](https://react.dev/) 18
-- **Build Tool**: [Vite](https://vitejs.dev/) 5
+- **Build Tool**: [Vite](https://vitejs.dev/) 7
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) 4
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (Radix UI primitives)
 - **Routing**: [React Router DOM](https://reactrouter.com/)

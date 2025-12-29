@@ -10,7 +10,7 @@ export function HelpDialog({ open, onOpenChange }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="max-w-2xl max-h-[85vh] overflow-y-auto"
-        style={{ backgroundColor: "#e5e7eb" }}
+        style={{ backgroundColor: "var(--color-dialog-background)" }}
         aria-describedby="help-description"
       >
         <DialogHeader>

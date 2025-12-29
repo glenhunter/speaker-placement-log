@@ -6,6 +6,16 @@ export function cn(...inputs) {
 }
 
 /**
+ * Logs errors only in development mode to prevent information leakage in production.
+ * @param  {...any} args - Arguments to pass to console.error
+ */
+export function devError(...args) {
+  if (import.meta.env.DEV) {
+    console.error(...args)
+  }
+}
+
+/**
  * Validates and parses a numeric input value.
  * Returns the parsed number or null if invalid.
  */
@@ -175,6 +185,40 @@ export function parseMetric(input) {
     return cm / 30.48;
   }
 
+  return null;
+}
+
+/**
+ * Converts major/minor input values to feet based on selected unit
+ * @param {string|number} major - Major unit value (feet or metres)
+ * @param {string|number} minor - Minor unit value (inches or cm)
+ * @param {string} unit - Either "imperial" or "metric"
+ * @returns {number|null} - Value in feet, or null if both inputs are empty/invalid
+ */
+export function convertToFeet(major, minor, unit) {
+  const majorNum = parseFloat(major);
+  const minorNum = parseFloat(minor);
+
+  // If both are empty/invalid, return null
+  if (
+    (isNaN(majorNum) || major === "") &&
+    (isNaN(minorNum) || minor === "")
+  ) {
+    return null;
+  }
+
+  // Use 0 for empty values when the other has a value
+  const majorValue = isNaN(majorNum) || major === "" ? 0 : majorNum;
+  const minorValue = isNaN(minorNum) || minor === "" ? 0 : minorNum;
+
+  if (unit === "imperial") {
+    // major = feet, minor = inches
+    return majorValue + minorValue / 12;
+  } else if (unit === "metric") {
+    // major = metres, minor = cm
+    const totalCm = majorValue * 100 + minorValue;
+    return totalCm / 30.48; // Convert cm to feet
+  }
   return null;
 }
 

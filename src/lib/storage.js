@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import { STORAGE_KEYS } from './constants'
+import { devError } from './utils'
 
 export const storage = {
   getAll: async (userId) => {
@@ -9,15 +10,16 @@ export const storage = {
         const data = localStorage.getItem(STORAGE_KEYS.MEASUREMENTS)
         return data ? JSON.parse(data) : []
       } catch (error) {
-        console.error('Failed to parse measurements from localStorage:', error)
+        devError('Failed to parse measurements from localStorage:', error)
         return []
       }
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - filter by user_id for defense in depth
     const { data, error } = await supabase
       .from('measurements')
       .select('*')
+      .eq('user_id', userId)
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -98,8 +100,9 @@ export const storage = {
       if (index !== -1) {
         measurements[index] = { ...measurements[index], ...updates }
         localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(measurements))
+        return measurements[index]
       }
-      return measurements
+      return null
     }
 
     // Use Supabase if logged in
@@ -115,14 +118,31 @@ export const storage = {
     if ('baselineMethodName' in updates) dbUpdates.baseline_method_name = updates.baselineMethodName
     if ('name' in updates) dbUpdates.name = updates.name
 
-    const { error } = await supabase
+    // Filter by both id and user_id for defense in depth
+    const { data, error } = await supabase
       .from('measurements')
       .update(dbUpdates)
       .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single()
 
     if (error) throw error
 
-    return storage.getAll(userId)
+    return {
+      id: data.id,
+      distanceFromFrontWall: data.distance_from_front_wall,
+      distanceFromSideWall: data.distance_from_side_wall,
+      listeningPosition: data.listening_position,
+      bass: data.bass,
+      treble: data.treble,
+      vocals: data.vocals,
+      soundstage: data.soundstage,
+      isFavorite: data.is_favorite,
+      createdAt: data.created_at,
+      baselineMethodName: data.baseline_method_name,
+      name: data.name,
+    }
   },
 
   delete: async (id, userId) => {
@@ -131,18 +151,19 @@ export const storage = {
       const measurements = await storage.getAll(null)
       const filtered = measurements.filter(m => m.id !== id)
       localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(filtered))
-      return filtered
+      return id
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - filter by user_id for defense in depth
     const { error } = await supabase
       .from('measurements')
       .delete()
       .eq('id', id)
+      .eq('user_id', userId)
 
     if (error) throw error
 
-    return storage.getAll(userId)
+    return id
   },
 
   clear: async (userId) => {
@@ -170,15 +191,16 @@ export const baselineStorage = {
         const data = localStorage.getItem(STORAGE_KEYS.BASELINE)
         return data ? JSON.parse(data) : null
       } catch (error) {
-        console.error('Failed to parse baseline from localStorage:', error)
+        devError('Failed to parse baseline from localStorage:', error)
         return null
       }
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - filter by user_id for defense in depth
     const { data, error } = await supabase
       .from('baselines')
       .select('*')
+      .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(1)
       .single()

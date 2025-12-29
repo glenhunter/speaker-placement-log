@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { STORAGE_KEYS, getBaseUrl, getErrorMessage } from '@/lib/constants'
+import { devError } from '@/lib/utils'
 
 const AuthContext = createContext({})
 
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }) => {
           measurements = JSON.parse(measurementsData)
         }
       } catch (parseError) {
-        console.error('Failed to parse measurements from localStorage:', parseError)
+        devError('Failed to parse measurements from localStorage:', parseError)
       }
 
       try {
@@ -68,7 +69,7 @@ export const AuthProvider = ({ children }) => {
           baseline = JSON.parse(baselineData)
         }
       } catch (parseError) {
-        console.error('Failed to parse baseline from localStorage:', parseError)
+        devError('Failed to parse baseline from localStorage:', parseError)
       }
 
       // Upload measurements to Supabase with user_id
@@ -102,7 +103,7 @@ export const AuthProvider = ({ children }) => {
       // Mark as migrated
       localStorage.setItem(STORAGE_KEYS.MIGRATION_FLAG, 'true')
     } catch (error) {
-      console.error('Error migrating localStorage data:', error)
+      devError('Error migrating localStorage data:', error)
       // Don't block login if migration fails
     } finally {
       setMigrating(false)

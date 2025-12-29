@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { formatDistance } from "@/lib/utils";
+import { formatDistance, devError } from "@/lib/utils";
 
 export function Header({ measurements, baseline }) {
   const { user, signOut } = useAuth();
@@ -28,7 +28,7 @@ export function Header({ measurements, baseline }) {
       await signOut();
       navigate("/");
     } catch (error) {
-      console.error("Error signing out:", error);
+      devError("Error signing out:", error);
     }
   };
 

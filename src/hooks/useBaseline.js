@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { baselineStorage } from '@/lib/storage';
+import { devError } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function useBaseline() {
@@ -19,7 +20,7 @@ export function useBaseline() {
       queryClient.invalidateQueries({ queryKey: ['baseline', user?.id] });
     },
     onError: (error) => {
-      console.error('Failed to save baseline:', error);
+      devError('Failed to save baseline:', error);
     },
   });
 
@@ -30,7 +31,7 @@ export function useBaseline() {
       queryClient.invalidateQueries({ queryKey: ['baseline', user?.id] });
     },
     onError: (error) => {
-      console.error('Failed to clear baseline:', error);
+      devError('Failed to clear baseline:', error);
     },
   });
 
