@@ -6,11 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useBaseline } from "@/hooks/useBaseline";
 import { useUnit } from "@/contexts/UnitContext";
-import { feetToFraction } from "@/lib/utils";
+import { feetToFraction, convertToFeet } from "@/lib/utils";
 
 export function SpeakerBaselines() {
   const navigate = useNavigate();
@@ -33,34 +32,6 @@ export function SpeakerBaselines() {
   const [manualSideWallMajor, setManualSideWallMajor] = useState("");
   const [manualSideWallMinor, setManualSideWallMinor] = useState("");
   const [speakerType, setSpeakerType] = useState("conventional");
-
-  // Convert major/minor values to feet based on selected unit
-  const convertToFeet = (major, minor) => {
-    const majorNum = parseFloat(major);
-    const minorNum = parseFloat(minor);
-
-    // If both are empty/invalid, return null
-    if (
-      (isNaN(majorNum) || major === "") &&
-      (isNaN(minorNum) || minor === "")
-    ) {
-      return null;
-    }
-
-    // Use 0 for empty values when the other has a value
-    const majorValue = isNaN(majorNum) || major === "" ? 0 : majorNum;
-    const minorValue = isNaN(minorNum) || minor === "" ? 0 : minorNum;
-
-    if (unit === "imperial") {
-      // major = feet, minor = inches
-      return majorValue + minorValue / 12;
-    } else if (unit === "metric") {
-      // major = metres, minor = cm
-      const totalCm = majorValue * 100 + minorValue;
-      return totalCm / 30.48; // Convert cm to feet
-    }
-    return null;
-  };
 
   // Format the display of input values for formulas
   const formatInputDisplay = (major, minor) => {
@@ -93,12 +64,13 @@ export function SpeakerBaselines() {
     };
 
     // Parse and convert to feet for calculations
-    const parsedWidth = convertToFeet(roomWidthMajor, roomWidthMinor);
-    const parsedHeight = convertToFeet(roomHeightMajor, roomHeightMinor);
-    const parsedLength = convertToFeet(roomLengthMajor, roomLengthMinor);
+    const parsedWidth = convertToFeet(roomWidthMajor, roomWidthMinor, unit);
+    const parsedHeight = convertToFeet(roomHeightMajor, roomHeightMinor, unit);
+    const parsedLength = convertToFeet(roomLengthMajor, roomLengthMinor, unit);
     const parsedSidewall = convertToFeet(
       sidewallDistanceMajor,
-      sidewallDistanceMinor
+      sidewallDistanceMinor,
+      unit
     );
 
     if (calculationType === "cardas-golden-ratio") {
@@ -227,11 +199,13 @@ export function SpeakerBaselines() {
       // Add front wall and side wall distances if provided
       const parsedManualFrontWall = convertToFeet(
         manualFrontWallMajor,
-        manualFrontWallMinor
+        manualFrontWallMinor,
+        unit
       );
       const parsedManualSideWall = convertToFeet(
         manualSideWallMajor,
-        manualSideWallMinor
+        manualSideWallMinor,
+        unit
       );
 
       if (parsedManualFrontWall !== null) {
@@ -260,7 +234,8 @@ export function SpeakerBaselines() {
       // Add listening position if provided
       const parsedListeningPosition = convertToFeet(
         listeningPositionMajor,
-        listeningPositionMinor
+        listeningPositionMinor,
+        unit
       );
       if (parsedListeningPosition !== null) {
         baselineData.values.push({
@@ -435,7 +410,7 @@ export function SpeakerBaselines() {
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Cardas Golden Ratio</h4>
                 {speakerType === "conventional" &&
-                  convertToFeet(roomWidthMajor, roomWidthMinor) !== null && (
+                  convertToFeet(roomWidthMajor, roomWidthMinor, unit) !== null && (
                     <div className="space-y-3">
                       <div>
                         <p className="text-sm text-sky_blue_light-500 mb-1">
@@ -444,7 +419,7 @@ export function SpeakerBaselines() {
                         </p>
                         <p className="text-2xl font-bold">
                           {feetToFraction(
-                            convertToFeet(roomWidthMajor, roomWidthMinor) *
+                            convertToFeet(roomWidthMajor, roomWidthMinor, unit) *
                               0.276
                           )}
                         </p>
@@ -461,7 +436,7 @@ export function SpeakerBaselines() {
                         </p>
                         <p className="text-2xl font-bold">
                           {feetToFraction(
-                            convertToFeet(roomWidthMajor, roomWidthMinor) *
+                            convertToFeet(roomWidthMajor, roomWidthMinor, unit) *
                               0.447
                           )}
                         </p>
@@ -474,7 +449,7 @@ export function SpeakerBaselines() {
                     </div>
                   )}
                 {speakerType === "planar" &&
-                  convertToFeet(roomHeightMajor, roomHeightMinor) !== null && (
+                  convertToFeet(roomHeightMajor, roomHeightMinor, unit) !== null && (
                     <div className="space-y-3">
                       <div>
                         <p className="text-sm text-sky_blue_light-500 mb-1">
@@ -482,7 +457,7 @@ export function SpeakerBaselines() {
                         </p>
                         <p className="text-2xl font-bold">
                           {feetToFraction(
-                            convertToFeet(roomHeightMajor, roomHeightMinor) *
+                            convertToFeet(roomHeightMajor, roomHeightMinor, unit) *
                               0.618
                           )}
                         </p>
@@ -494,23 +469,23 @@ export function SpeakerBaselines() {
                       </div>
                     </div>
                   )}
-                {convertToFeet(roomWidthMajor, roomWidthMinor) === null &&
+                {convertToFeet(roomWidthMajor, roomWidthMinor, unit) === null &&
                   speakerType === "conventional" && (
                     <p className="text-sky_blue_light-400 text-sm">
                       Enter room width to see calculations for conventional
                       speakers.
                     </p>
                   )}
-                {convertToFeet(roomHeightMajor, roomHeightMinor) === null &&
+                {convertToFeet(roomHeightMajor, roomHeightMinor, unit) === null &&
                   speakerType === "planar" && (
                     <p className="text-sky_blue_light-400 text-sm">
                       Enter room height to see calculations for planar speakers.
                     </p>
                   )}
                 {((speakerType === "conventional" &&
-                  convertToFeet(roomWidthMajor, roomWidthMinor) !== null) ||
+                  convertToFeet(roomWidthMajor, roomWidthMinor, unit) !== null) ||
                   (speakerType === "planar" &&
-                    convertToFeet(roomHeightMajor, roomHeightMinor) !==
+                    convertToFeet(roomHeightMajor, roomHeightMinor, unit) !==
                       null)) && (
                   <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
@@ -549,7 +524,7 @@ export function SpeakerBaselines() {
             <TabsContent value="tab2" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Planar "Edge" Method</h4>
-                {convertToFeet(roomLengthMajor, roomLengthMinor) !== null ? (
+                {convertToFeet(roomLengthMajor, roomLengthMinor, unit) !== null ? (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
@@ -557,7 +532,7 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          convertToFeet(roomLengthMajor, roomLengthMinor) * 0.4
+                          convertToFeet(roomLengthMajor, roomLengthMinor, unit) * 0.4
                         )}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
@@ -581,7 +556,7 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          convertToFeet(roomLengthMajor, roomLengthMinor) * 0.8
+                          convertToFeet(roomLengthMajor, roomLengthMinor, unit) * 0.8
                         )}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
@@ -629,7 +604,7 @@ export function SpeakerBaselines() {
             <TabsContent value="tab3" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
                 <h4 className="font-semibold text-lg">Rule of 1/3's</h4>
-                {convertToFeet(roomLengthMajor, roomLengthMinor) !== null ? (
+                {convertToFeet(roomLengthMajor, roomLengthMinor, unit) !== null ? (
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-sky_blue_light-500 mb-1">
@@ -637,7 +612,7 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          convertToFeet(roomLengthMajor, roomLengthMinor) *
+                          convertToFeet(roomLengthMajor, roomLengthMinor, unit) *
                             0.3333
                         )}
                       </p>
@@ -653,7 +628,7 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          convertToFeet(roomLengthMajor, roomLengthMinor) * 0.66
+                          convertToFeet(roomLengthMajor, roomLengthMinor, unit) * 0.66
                         )}
                       </p>
                       <p className="text-xs text-sky_blue_light-400 mt-1">
@@ -683,9 +658,10 @@ export function SpeakerBaselines() {
               <Card className="border-2 border-sky_blue_light-700">
                 <CardContent className="p-4">
                   <p className="text-sm text-sky_blue_light-500">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    The Rule of Thirds is a classic room acoustics principle
+                    that helps minimize standing waves and bass nodes. By
+                    placing speakers and listeners at third points in the room,
+                    you avoid the worst room mode reinforcement.
                   </p>
                 </CardContent>
               </Card>
@@ -726,8 +702,8 @@ export function SpeakerBaselines() {
                     </span>
                   </div>
                 </div>
-                {convertToFeet(roomWidthMajor, roomWidthMinor) !== null &&
-                convertToFeet(sidewallDistanceMajor, sidewallDistanceMinor) !==
+                {convertToFeet(roomWidthMajor, roomWidthMinor, unit) !== null &&
+                convertToFeet(sidewallDistanceMajor, sidewallDistanceMinor, unit) !==
                   null ? (
                   <div className="space-y-3">
                     <div>
@@ -736,10 +712,11 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          convertToFeet(roomWidthMajor, roomWidthMinor) -
+                          convertToFeet(roomWidthMajor, roomWidthMinor, unit) -
                             convertToFeet(
                               sidewallDistanceMajor,
-                              sidewallDistanceMinor
+                              sidewallDistanceMinor,
+                              unit
                             ) *
                               2
                         )}
@@ -761,10 +738,11 @@ export function SpeakerBaselines() {
                       </p>
                       <p className="text-2xl font-bold">
                         {feetToFraction(
-                          ((convertToFeet(roomWidthMajor, roomWidthMinor) -
+                          ((convertToFeet(roomWidthMajor, roomWidthMinor, unit) -
                             convertToFeet(
                               sidewallDistanceMajor,
-                              sidewallDistanceMinor
+                              sidewallDistanceMinor,
+                              unit
                             ) *
                               2) *
                             Math.sqrt(3)) /
@@ -799,9 +777,10 @@ export function SpeakerBaselines() {
               <Card className="border-2 border-sky_blue_light-700">
                 <CardContent className="p-4">
                   <p className="text-sm text-sky_blue_light-500">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Nearfield listening using an equilateral triangle is a
+                    standard studio monitoring technique. It minimizes room
+                    reflections by placing you close enough to the speakers that
+                    direct sound dominates.
                   </p>
                 </CardContent>
               </Card>

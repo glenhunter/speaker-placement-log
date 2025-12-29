@@ -14,10 +14,11 @@ export const storage = {
       }
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - filter by user_id for defense in depth
     const { data, error } = await supabase
       .from('measurements')
       .select('*')
+      .eq('user_id', userId)
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -175,10 +176,11 @@ export const baselineStorage = {
       }
     }
 
-    // Use Supabase if logged in
+    // Use Supabase if logged in - filter by user_id for defense in depth
     const { data, error } = await supabase
       .from('baselines')
       .select('*')
+      .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(1)
       .single()

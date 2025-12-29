@@ -60,6 +60,20 @@ export function Sidebar({
     setEditingName("");
   };
 
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditingName("");
+  };
+
+  const handleKeyDown = (e, id) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSaveName(id);
+    } else if (e.key === "Escape") {
+      cancelEditing();
+    }
+  };
+
   const renderMeasurementCard = (measurement) => {
     const sum = calculateScore(measurement);
 
@@ -78,12 +92,15 @@ export function Sidebar({
                     type="text"
                     value={editingName}
                     onChange={(e) => setEditingName(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, measurement.id)}
+                    onBlur={() => handleSaveName(measurement.id)}
                     className="text-sm bg-transparent border-b border-white focus:outline-none"
                     placeholder="Name this modification..."
                     autoFocus
                   />
                   <button
                     onClick={() => handleSaveName(measurement.id)}
+                    onMouseDown={(e) => e.preventDefault()}
                     className="text-green-500 hover:text-green-400"
                     aria-label="Save name"
                   >
@@ -207,9 +224,13 @@ export function Sidebar({
             </svg>
           </button>
           <div className="text-base font-bold text-deep_space_blue">{sum}</div>
-          <div className="text-center text-xs text-muted-foreground">
+          <time
+            dateTime={measurement.createdAt}
+            className="text-center text-xs text-muted-foreground"
+            aria-label={`Created on ${new Date(measurement.createdAt).toLocaleString()}`}
+          >
             {new Date(measurement.createdAt).toLocaleString()}
-          </div>
+          </time>
           <button
             onClick={() => deleteMeasurement(measurement.id)}
             className="p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all justify-self-end"

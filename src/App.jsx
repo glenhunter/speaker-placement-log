@@ -29,7 +29,7 @@ import {
 import { useMeasurements } from "@/hooks/useMeasurements";
 import { useBaseline } from "@/hooks/useBaseline";
 import { useUnit } from "@/contexts/UnitContext";
-import { formatDistance } from "@/lib/utils";
+import { formatDistance, convertToFeet } from "@/lib/utils";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -74,43 +74,22 @@ function App() {
   const { baseline } = useBaseline();
   const { unit } = useUnit();
 
-  // Convert major/minor values to feet based on selected unit
-  const convertToFeet = (major, minor) => {
-    const majorNum = parseFloat(major);
-    const minorNum = parseFloat(minor);
-
-    // If both are empty/invalid, return null
-    if (
-      (isNaN(majorNum) || major === "") &&
-      (isNaN(minorNum) || minor === "")
-    ) {
-      return null;
-    }
-
-    // Use 0 for empty values when the other has a value
-    const majorValue = isNaN(majorNum) || major === "" ? 0 : majorNum;
-    const minorValue = isNaN(minorNum) || minor === "" ? 0 : minorNum;
-
-    if (unit === "imperial") {
-      // major = feet, minor = inches
-      return majorValue + minorValue / 12;
-    } else if (unit === "metric") {
-      // major = metres, minor = cm
-      const totalCm = majorValue * 100 + minorValue;
-      return totalCm / 30.48; // Convert cm to feet
-    }
-    return null;
+  // Format rating with +/- prefix for accessibility (colorblind users)
+  const formatRating = (value) => {
+    if (value > 0) return `+${value}`;
+    return String(value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const measurementData = {
-      distanceFromFrontWall: convertToFeet(frontWallMajor, frontWallMinor),
-      distanceFromSideWall: convertToFeet(sideWallMajor, sideWallMinor),
+      distanceFromFrontWall: convertToFeet(frontWallMajor, frontWallMinor, unit),
+      distanceFromSideWall: convertToFeet(sideWallMajor, sideWallMinor, unit),
       listeningPosition: convertToFeet(
         listeningPositionMajor,
-        listeningPositionMinor
+        listeningPositionMinor,
+        unit
       ),
       bass,
       treble,
@@ -441,7 +420,7 @@ function App() {
                             aria-live="polite"
                             aria-atomic="true"
                           >
-                            {bass}
+                            {formatRating(bass)}
                           </span>
                         </div>
                         <Button
@@ -491,7 +470,7 @@ function App() {
                             aria-live="polite"
                             aria-atomic="true"
                           >
-                            {treble}
+                            {formatRating(treble)}
                           </span>
                         </div>
                         <Button
@@ -541,7 +520,7 @@ function App() {
                             aria-live="polite"
                             aria-atomic="true"
                           >
-                            {vocals}
+                            {formatRating(vocals)}
                           </span>
                         </div>
                         <Button
@@ -593,7 +572,7 @@ function App() {
                             aria-live="polite"
                             aria-atomic="true"
                           >
-                            {soundstage}
+                            {formatRating(soundstage)}
                           </span>
                         </div>
                         <Button

@@ -118,14 +118,23 @@ When a shadcn component is missing:
 
 ### Visual Feedback
 
-- Color-coded ratings: green (#0f0) positive, red (#f00) negative, gray (#666) zero
+- Color-coded ratings: blue (#669bbc) positive, red (#c1121f) negative, muted blue (#477fa2) zero
 - Separators for hierarchy: dark gray (bg-gray-700) for major sections, light gray (bg-gray-300) between items
 - Card-based layout for grouping related content
 
+### Responsive Design
+
+- Mobile-first approach using Tailwind breakpoints (`md:` for 768px+)
+- Distance inputs: Stack vertically on mobile (`grid-cols-1 md:grid-cols-3`)
+- Rating controls: Label/value on top, buttons below on mobile; horizontal on desktop
+- Header: Single row with hamburger menu containing Sign In and Help
+- Tabs: Horizontally scrollable on mobile (`flex overflow-x-auto md:grid`)
+- Buttons: Full-width on mobile (`w-full md:w-auto`)
+
 ### Grid Layouts
 
-- 3-column grid for rating controls: [Worse Button] [Title + Counter] [Better Button]
-- Use `items-center` and `justify-center`/`justify-end` for alignment
+- Rating controls use `flex-wrap` with `order` classes for responsive reordering
+- Use `items-center` and `justify-between` for button edge alignment
 
 ## Common Operations
 

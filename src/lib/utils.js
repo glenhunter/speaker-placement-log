@@ -179,6 +179,40 @@ export function parseMetric(input) {
 }
 
 /**
+ * Converts major/minor input values to feet based on selected unit
+ * @param {string|number} major - Major unit value (feet or metres)
+ * @param {string|number} minor - Minor unit value (inches or cm)
+ * @param {string} unit - Either "imperial" or "metric"
+ * @returns {number|null} - Value in feet, or null if both inputs are empty/invalid
+ */
+export function convertToFeet(major, minor, unit) {
+  const majorNum = parseFloat(major);
+  const minorNum = parseFloat(minor);
+
+  // If both are empty/invalid, return null
+  if (
+    (isNaN(majorNum) || major === "") &&
+    (isNaN(minorNum) || minor === "")
+  ) {
+    return null;
+  }
+
+  // Use 0 for empty values when the other has a value
+  const majorValue = isNaN(majorNum) || major === "" ? 0 : majorNum;
+  const minorValue = isNaN(minorNum) || minor === "" ? 0 : minorNum;
+
+  if (unit === "imperial") {
+    // major = feet, minor = inches
+    return majorValue + minorValue / 12;
+  } else if (unit === "metric") {
+    // major = metres, minor = cm
+    const totalCm = majorValue * 100 + minorValue;
+    return totalCm / 30.48; // Convert cm to feet
+  }
+  return null;
+}
+
+/**
  * Formats a distance value based on the selected unit
  * @param {number} value - The numeric value in feet
  * @param {string} unit - Either "imperial" or "metric"
