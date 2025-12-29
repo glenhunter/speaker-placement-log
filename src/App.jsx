@@ -228,38 +228,13 @@ function App() {
                     </Card>
                   ) : (
                     <Card className="relative border-2 border-princeton_orange shadow-sm">
-                      <CardContent className="pt-0">
+                      <CardContent className="flex items-center justify-center min-h-[100px]">
                         <Button
                           onClick={() => navigate("/speaker-baselines")}
                           className="btn-primary"
                         >
                           Create Baseline
                         </Button>
-                        <div
-                          className="flex items-center justify-end"
-                          id="baseline-help"
-                        >
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <button
-                                className="text-sky_blue_light-500 hover:text-sky_blue_light-700 transition-colors"
-                                aria-label="Baseline help information"
-                              >
-                                <HelpCircle
-                                  className="w-5 h-5"
-                                  aria-hidden="true"
-                                />
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <p className="text-sm">
-                                Create a baseline first, then tweak. Record your
-                                tweaks and star the best one. If you want your
-                                values to persist create a user.
-                              </p>
-                            </PopoverContent>
-                          </Popover>
-                        </div>
                       </CardContent>
                     </Card>
                   )}
