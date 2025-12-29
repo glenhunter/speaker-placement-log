@@ -407,7 +407,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-500" />
                       <div
-                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-between gap-4"
                         role="group"
                         aria-labelledby="bass-label"
                       >
@@ -457,7 +457,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-600" />
                       <div
-                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-between gap-4"
                         role="group"
                         aria-labelledby="treble-label"
                       >
@@ -507,7 +507,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-600" />
                       <div
-                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-between gap-4"
                         role="group"
                         aria-labelledby="vocals-label"
                       >
@@ -557,7 +557,7 @@ function App() {
                       </div>
                       <Separator className="bg-sky_blue_light-600" />
                       <div
-                        className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4"
+                        className="flex flex-wrap md:flex-nowrap items-center justify-between gap-4"
                         role="group"
                         aria-labelledby="soundstage-label"
                       >
