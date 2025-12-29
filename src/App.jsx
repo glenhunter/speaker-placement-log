@@ -220,7 +220,7 @@ function App() {
                           variant="outline"
                           size="sm"
                           onClick={() => navigate("/speaker-baselines")}
-                          className="btn-outline font-semibold"
+                          className="btn-outline font-semibold w-full md:w-auto"
                         >
                           Change Baseline
                         </Button>
