@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnit } from "@/contexts/UnitContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Settings, LogOut } from "lucide-react";
+import { Menu, LogOut, HelpCircle } from "lucide-react";
 import { HelpDialog } from "@/components/HelpDialog";
 import {
   DropdownMenu,
@@ -13,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { formatDistance } from "@/lib/utils";
 
 export function Header({ measurements, baseline }) {
@@ -21,6 +21,7 @@ export function Header({ measurements, baseline }) {
   const { unit, setUnit } = useUnit();
   const navigate = useNavigate();
   const location = useLocation();
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -110,75 +111,76 @@ export function Header({ measurements, baseline }) {
 
   return (
     <header
-      className="sticky top-0 z-50 flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-princeton_orange"
-      style={{
-        height: "60px",
-        minHeight: "60px",
-        maxHeight: "60px",
-      }}
+      className="sticky top-0 z-50 flex items-center justify-between px-8 bg-deep_space_blue-500 border-b-4 border-princeton_orange h-[60px]"
     >
       <h1 className="text-2xl font-bold text-white">Speaker Tweaker</h1>
       {!isAuthPage && (
-        <div className="flex items-center gap-8">
-          {!user && (
-            <Button
-              onClick={() => navigate("/login")}
-              className="btn-primary py-1 px-3 h-8 text-sm"
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="text-white hover:text-sky_blue_light-700 transition-colors"
+              aria-label="Menu"
             >
-              Sign In
-            </Button>
-          )}
-          <HelpDialog />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className="text-white hover:text-sky_blue_light-700 transition-colors"
-                aria-label="Settings menu"
-              >
-                <Settings className="w-6 h-6" aria-hidden="true" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Units</DropdownMenuLabel>
-              <div className="px-2 py-2">
-                <RadioGroup value={unit} onValueChange={setUnit}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="imperial" id="imperial" />
-                    <Label htmlFor="imperial" className="cursor-pointer">
-                      Imperial
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="metric" id="metric" />
-                    <Label htmlFor="metric" className="cursor-pointer">
-                      Metric
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
+              <Menu className="w-6 h-6" aria-hidden="true" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            {!user && (
+              <>
+                <DropdownMenuItem onClick={() => navigate("/login")}>
+                  Sign In
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
 
-              {measurements && measurements.length > 0 && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={exportToMarkdown}>
-                    Export to Markdown
-                  </DropdownMenuItem>
-                </>
-              )}
+            <DropdownMenuItem onClick={() => setHelpOpen(true)}>
+              <HelpCircle className="w-4 h-4 mr-2" aria-hidden="true" />
+              Help
+            </DropdownMenuItem>
 
-              {user && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Units</DropdownMenuLabel>
+            <div className="px-2 py-2">
+              <RadioGroup value={unit} onValueChange={setUnit}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="imperial" id="imperial" />
+                  <Label htmlFor="imperial" className="cursor-pointer">
+                    Imperial
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="metric" id="metric" />
+                  <Label htmlFor="metric" className="cursor-pointer">
+                    Metric
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {measurements && measurements.length > 0 && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={exportToMarkdown}>
+                  Export to Markdown
+                </DropdownMenuItem>
+              </>
+            )}
+
+            {user && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
+                  Sign Out
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
+
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
     </header>
   );
 }

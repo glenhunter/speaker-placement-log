@@ -301,7 +301,7 @@ export function SpeakerBaselines() {
                 <h3 className="text-xl font-semibold text-deep_space_blue">
                   Room Dimensions
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Length */}
                   <div className="flex flex-col gap-2">
                     <Label>Length</Label>
@@ -394,7 +394,7 @@ export function SpeakerBaselines() {
                 <h3 className="text-xl font-semibold text-deep_space_blue">
                   Speaker Type
                 </h3>
-                <div className="flex gap-6">
+                <div className="flex flex-col gap-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
@@ -424,12 +424,12 @@ export function SpeakerBaselines() {
 
           {/* Tabs Section */}
           <Tabs defaultValue="tab1" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="tab1">Golden Ratio</TabsTrigger>
-              <TabsTrigger value="tab2">Planar "Edge"</TabsTrigger>
-              <TabsTrigger value="tab3">Rule of 1/3's</TabsTrigger>
-              <TabsTrigger value="tab4">Nearfield</TabsTrigger>
-              <TabsTrigger value="tab5">Manual</TabsTrigger>
+            <TabsList className="flex w-full overflow-x-auto md:grid md:grid-cols-5">
+              <TabsTrigger value="tab1" className="flex-shrink-0">Golden Ratio</TabsTrigger>
+              <TabsTrigger value="tab2" className="flex-shrink-0">Planar "Edge"</TabsTrigger>
+              <TabsTrigger value="tab3" className="flex-shrink-0">Rule of 1/3's</TabsTrigger>
+              <TabsTrigger value="tab4" className="flex-shrink-0">Nearfield</TabsTrigger>
+              <TabsTrigger value="tab5" className="flex-shrink-0">Manual</TabsTrigger>
             </TabsList>
             <TabsContent value="tab1" className="mt-6">
               <div className="p-4 border-2 border-sky_blue_light-700 rounded-md space-y-4 bg-white">
@@ -515,7 +515,7 @@ export function SpeakerBaselines() {
                   <div className="pt-4 border-t border-sky_blue_light-700">
                     <Button
                       onClick={() => handleUseAsBaseline("cardas-golden-ratio")}
-                      className="btn-primary"
+                      className="btn-primary w-full md:w-auto"
                     >
                       Use as Baseline
                     </Button>
@@ -593,7 +593,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("planar-edge")}
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         Use as Baseline
                       </Button>
@@ -665,7 +665,7 @@ export function SpeakerBaselines() {
                     <div className="pt-4 border-t border-sky_blue_light-700">
                       <Button
                         onClick={() => handleUseAsBaseline("rule-of-thirds")}
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         Use as Baseline
                       </Button>
@@ -780,7 +780,7 @@ export function SpeakerBaselines() {
                         onClick={() =>
                           handleUseAsBaseline("equilateral-triangle")
                         }
-                        className="btn-primary"
+                        className="btn-primary w-full md:w-auto"
                       >
                         Use as Baseline
                       </Button>
@@ -819,7 +819,7 @@ export function SpeakerBaselines() {
                   wall and side walls. The Listening Position input is optional,
                   but recommended.
                 </p>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex flex-col gap-2">
                     <Label>Front Wall</Label>
                     <div className="flex gap-1 items-center">
@@ -913,7 +913,7 @@ export function SpeakerBaselines() {
                 <div className="pt-4 border-t border-sky_blue_light-700">
                   <Button
                     onClick={() => handleUseAsBaseline("manual")}
-                    className="btn-primary"
+                    className="btn-primary w-full md:w-auto"
                   >
                     Submit
                   </Button>

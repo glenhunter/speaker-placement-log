@@ -1,26 +1,13 @@
-import { useState } from "react";
-import { HelpCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
-export function HelpDialog() {
-  const [open, setOpen] = useState(false);
-
+export function HelpDialog({ open, onOpenChange }) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button
-          className="text-white hover:text-sky_blue_light-700 transition-colors"
-          aria-label="Help"
-        >
-          <HelpCircle className="w-6 h-6" aria-hidden="true" />
-        </button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="max-w-2xl max-h-[85vh] overflow-y-auto"
         style={{ backgroundColor: "#e5e7eb" }}
