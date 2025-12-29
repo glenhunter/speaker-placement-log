@@ -98,7 +98,7 @@ npm run preview
 ## Tech Stack
 
 - **Framework**: [React](https://react.dev/) 18
-- **Build Tool**: [Vite](https://vitejs.dev/) 5
+- **Build Tool**: [Vite](https://vitejs.dev/) 7
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) 4
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (Radix UI primitives)
 - **Routing**: [React Router DOM](https://reactrouter.com/)
