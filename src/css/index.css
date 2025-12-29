@@ -52,6 +52,14 @@
   --sidebar-width: 400px;
   --sidebar-width-icon: 3rem;
 
+  /* Rating Colors - for subjective measurement display */
+  --color-rating-positive: #669bbc;
+  --color-rating-negative: #c1121f;
+  --color-rating-neutral: #477fa2;
+
+  /* Dialog background - neutral gray */
+  --color-dialog-background: #e5e7eb;
+
   /* Ocean-Sunset Palette - Sky Blue (Light) */
   --color-sky_blue_light: #8ecae6;
   --color-sky_blue_light-100: #0d2e3d;

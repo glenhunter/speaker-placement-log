@@ -412,10 +412,10 @@ function App() {
                             style={{
                               color:
                                 bass > 0
-                                  ? "#669bbc"
+                                  ? "var(--color-rating-positive)"
                                   : bass < 0
-                                  ? "#c1121f"
-                                  : "#477fa2",
+                                  ? "var(--color-rating-negative)"
+                                  : "var(--color-rating-neutral)",
                             }}
                             aria-live="polite"
                             aria-atomic="true"
@@ -462,10 +462,10 @@ function App() {
                             style={{
                               color:
                                 treble > 0
-                                  ? "#669bbc"
+                                  ? "var(--color-rating-positive)"
                                   : treble < 0
-                                  ? "#c1121f"
-                                  : "#477fa2",
+                                  ? "var(--color-rating-negative)"
+                                  : "var(--color-rating-neutral)",
                             }}
                             aria-live="polite"
                             aria-atomic="true"
@@ -512,10 +512,10 @@ function App() {
                             style={{
                               color:
                                 vocals > 0
-                                  ? "#669bbc"
+                                  ? "var(--color-rating-positive)"
                                   : vocals < 0
-                                  ? "#c1121f"
-                                  : "#477fa2",
+                                  ? "var(--color-rating-negative)"
+                                  : "var(--color-rating-neutral)",
                             }}
                             aria-live="polite"
                             aria-atomic="true"
@@ -564,10 +564,10 @@ function App() {
                             style={{
                               color:
                                 soundstage > 0
-                                  ? "#669bbc"
+                                  ? "var(--color-rating-positive)"
                                   : soundstage < 0
-                                  ? "#c1121f"
-                                  : "#477fa2",
+                                  ? "var(--color-rating-negative)"
+                                  : "var(--color-rating-neutral)",
                             }}
                             aria-live="polite"
                             aria-atomic="true"
