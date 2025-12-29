@@ -23,25 +23,65 @@ export const useMeasurements = () => {
     },
   });
 
-  // Mutation to update a measurement
+  // Mutation to update a measurement with optimistic updates
   const updateMutation = useMutation({
     mutationFn: ({ id, updates }) => storage.update(id, updates, user?.id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
+    onMutate: async ({ id, updates }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['measurements', user?.id] });
+
+      // Snapshot the previous value
+      const previousMeasurements = queryClient.getQueryData(['measurements', user?.id]);
+
+      // Optimistically update the cache
+      queryClient.setQueryData(['measurements', user?.id], (old) =>
+        old?.map((m) => (m.id === id ? { ...m, ...updates } : m))
+      );
+
+      // Return context with the snapshot
+      return { previousMeasurements };
     },
-    onError: (error) => {
+    onError: (error, variables, context) => {
+      // Rollback on error
+      if (context?.previousMeasurements) {
+        queryClient.setQueryData(['measurements', user?.id], context.previousMeasurements);
+      }
       console.error('Failed to update measurement:', error);
+    },
+    onSettled: () => {
+      // Refetch after error or success to ensure consistency
+      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
   });
 
-  // Mutation to delete a single measurement
+  // Mutation to delete a single measurement with optimistic updates
   const deleteMutation = useMutation({
     mutationFn: (id) => storage.delete(id, user?.id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
+    onMutate: async (id) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['measurements', user?.id] });
+
+      // Snapshot the previous value
+      const previousMeasurements = queryClient.getQueryData(['measurements', user?.id]);
+
+      // Optimistically remove from cache
+      queryClient.setQueryData(['measurements', user?.id], (old) =>
+        old?.filter((m) => m.id !== id)
+      );
+
+      // Return context with the snapshot
+      return { previousMeasurements };
     },
-    onError: (error) => {
+    onError: (error, id, context) => {
+      // Rollback on error
+      if (context?.previousMeasurements) {
+        queryClient.setQueryData(['measurements', user?.id], context.previousMeasurements);
+      }
       console.error('Failed to delete measurement:', error);
+    },
+    onSettled: () => {
+      // Refetch after error or success to ensure consistency
+      queryClient.invalidateQueries({ queryKey: ['measurements', user?.id] });
     },
   });
 

@@ -99,8 +99,9 @@ export const storage = {
       if (index !== -1) {
         measurements[index] = { ...measurements[index], ...updates }
         localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(measurements))
+        return measurements[index]
       }
-      return measurements
+      return null
     }
 
     // Use Supabase if logged in
@@ -116,14 +117,29 @@ export const storage = {
     if ('baselineMethodName' in updates) dbUpdates.baseline_method_name = updates.baselineMethodName
     if ('name' in updates) dbUpdates.name = updates.name
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('measurements')
       .update(dbUpdates)
       .eq('id', id)
+      .select()
+      .single()
 
     if (error) throw error
 
-    return storage.getAll(userId)
+    return {
+      id: data.id,
+      distanceFromFrontWall: data.distance_from_front_wall,
+      distanceFromSideWall: data.distance_from_side_wall,
+      listeningPosition: data.listening_position,
+      bass: data.bass,
+      treble: data.treble,
+      vocals: data.vocals,
+      soundstage: data.soundstage,
+      isFavorite: data.is_favorite,
+      createdAt: data.created_at,
+      baselineMethodName: data.baseline_method_name,
+      name: data.name,
+    }
   },
 
   delete: async (id, userId) => {
@@ -132,7 +148,7 @@ export const storage = {
       const measurements = await storage.getAll(null)
       const filtered = measurements.filter(m => m.id !== id)
       localStorage.setItem(STORAGE_KEYS.MEASUREMENTS, JSON.stringify(filtered))
-      return filtered
+      return id
     }
 
     // Use Supabase if logged in
@@ -143,7 +159,7 @@ export const storage = {
 
     if (error) throw error
 
-    return storage.getAll(userId)
+    return id
   },
 
   clear: async (userId) => {
