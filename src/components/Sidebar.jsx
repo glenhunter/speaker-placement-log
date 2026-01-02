@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useUnit } from "@/contexts/UnitContext";
 import { formatDistance } from "@/lib/utils";
-import { PenTool, Pencil, Check } from "lucide-react";
+import { PenTool, Pencil, Check, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 /**
@@ -39,6 +39,9 @@ export function Sidebar({
   updateMeasurement,
   deleteMeasurement,
   baseline,
+  previousBaselines = [],
+  deleteBaseline,
+  saveBaseline,
 }) {
   const { unit } = useUnit();
   const [editingId, setEditingId] = useState(null);
@@ -259,10 +262,85 @@ export function Sidebar({
     );
   };
 
+  const renderBaselineCard = (baselineItem) => {
+    // Handler to use this baseline - creates a copy without the id/createdAt
+    const handleUseBaseline = () => {
+      const { id, createdAt, ...baselineData } = baselineItem;
+      saveBaseline(baselineData);
+    };
+
+    return (
+      <Card
+        key={baselineItem.id}
+        className="border-2 border-sky_blue_light-700 overflow-hidden"
+      >
+        <CardHeader className="p-0">
+          <div className="flex items-center justify-between">
+            {/* Left side: Created date */}
+            <div className="px-3 py-1.5">
+              <time
+                dateTime={baselineItem.createdAt}
+                className="text-xs text-muted-foreground"
+                aria-label={`Created on ${new Date(baselineItem.createdAt).toLocaleString()}`}
+              >
+                {new Date(baselineItem.createdAt).toLocaleDateString()}
+              </time>
+            </div>
+
+            {/* Right side: Method label */}
+            {baselineItem.methodName && (
+              <div className="text-xs text-white bg-sky_blue_light-700 px-3 py-1.5 rounded-bl-lg">
+                {baselineItem.methodName}
+              </div>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="pt-2 px-4 pb-3">
+          <div className="space-y-1">
+            {baselineItem.values?.map((item, index) => {
+              // Convert rawValueInFeet to the selected unit
+              let displayValue = item.value;
+              if (item.rawValueInFeet !== undefined) {
+                displayValue = formatDistance(item.rawValueInFeet, unit);
+              }
+
+              return (
+                <div key={index} className="flex justify-between text-sm">
+                  <span className="text-gray-600">{item.label}:</span>
+                  <span className="font-semibold text-deep_space_blue">
+                    {displayValue}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+        <CardFooter className="px-3 py-2 flex items-center justify-between border-t border-sky_blue_light-700">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleUseBaseline}
+            className="btn-outline text-xs py-1 px-2 h-auto"
+          >
+            Use this Baseline
+          </Button>
+          <button
+            onClick={() => deleteBaseline(baselineItem.id)}
+            className="p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all"
+            aria-label="Delete baseline"
+          >
+            <Trash2 size={16} />
+          </button>
+        </CardFooter>
+      </Card>
+    );
+  };
+
   return (
-    <>
+    <div className="space-y-6">
+      {/* Measurements Sections */}
       {measurements.length > 0 ? (
-        <div className="space-y-6">
+        <>
           {/* Favourites Section */}
           {measurements.filter((m) => m.isFavorite).length > 0 && (
             <div className="space-y-3">
@@ -287,7 +365,7 @@ export function Sidebar({
               .reverse()
               .map((measurement) => renderMeasurementCard(measurement))}
           </div>
-        </div>
+        </>
       ) : (
         <div
           className="text-sm"
@@ -297,6 +375,18 @@ export function Sidebar({
           modifications.
         </div>
       )}
-    </>
+
+      {/* Previous Baselines Section */}
+      {previousBaselines.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-xl font-bold mb-4 text-deep_space_blue">
+            Previous Baselines ({previousBaselines.length})
+          </h2>
+          {previousBaselines.map((baselineItem) =>
+            renderBaselineCard(baselineItem)
+          )}
+        </div>
+      )}
+    </div>
   );
 }
