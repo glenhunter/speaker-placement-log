@@ -16,7 +16,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { formatDistance, devError } from "@/lib/utils";
 
-export function Header({ measurements, baseline }) {
+export function Header({ measurements, baseline, previousBaselines = [] }) {
   const { user, signOut } = useAuth();
   const { unit, setUnit } = useUnit();
   const navigate = useNavigate();
@@ -38,21 +38,46 @@ export function Header({ measurements, baseline }) {
     markdown += `Units: ${unit === "imperial" ? "Imperial (ft/in)" : "Metric (m/cm)"}\n\n`;
     markdown += `Total Measurements: ${measurements?.length || 0}\n\n`;
 
-    // Add baseline if it exists
-    if (baseline?.values) {
-      markdown += "## Baseline\n\n";
-      if (baseline.methodName) {
-        markdown += `**Method:** ${baseline.methodName}\n\n`;
-      }
-
-      baseline.values.forEach((item) => {
-        // Use formatDistance for values that have rawValueInFeet
+    // Helper to format a baseline's values
+    const formatBaselineValues = (baselineData) => {
+      let result = "";
+      baselineData.values?.forEach((item) => {
         const displayValue = item.rawValueInFeet !== undefined
           ? formatDistance(item.rawValueInFeet, unit)
           : item.value;
-        markdown += `- **${item.label}:** ${displayValue}\n`;
+        result += `- **${item.label}:** ${displayValue}\n`;
       });
+      return result;
+    };
+
+    // Add current baseline if it exists
+    if (baseline?.values) {
+      markdown += "## Current Baseline\n\n";
+      if (baseline.name) {
+        markdown += `**Name:** ${baseline.name}\n\n`;
+      }
+      if (baseline.methodName) {
+        markdown += `**Method:** ${baseline.methodName}\n\n`;
+      }
+      markdown += formatBaselineValues(baseline);
       markdown += "\n";
+    }
+
+    // Add previous baselines if they exist
+    if (previousBaselines && previousBaselines.length > 0) {
+      markdown += "## Previous Baselines\n\n";
+      previousBaselines.forEach((prevBaseline, index) => {
+        const title = prevBaseline.name || `Baseline ${index + 1}`;
+        markdown += `### ${title}\n\n`;
+        if (prevBaseline.methodName) {
+          markdown += `**Method:** ${prevBaseline.methodName}\n\n`;
+        }
+        if (prevBaseline.createdAt) {
+          markdown += `**Created:** ${new Date(prevBaseline.createdAt).toLocaleString()}\n\n`;
+        }
+        markdown += formatBaselineValues(prevBaseline);
+        markdown += "\n";
+      });
     }
 
     // Add measurements
@@ -158,7 +183,7 @@ export function Header({ measurements, baseline }) {
               </RadioGroup>
             </div>
 
-            {measurements && measurements.length > 0 && (
+            {((measurements && measurements.length > 0) || baseline || previousBaselines.length > 0) && (
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={exportToMarkdown}>

@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useUnit } from "@/contexts/UnitContext";
 import { formatDistance } from "@/lib/utils";
-import { PenTool, Pencil, Check } from "lucide-react";
+import { PenTool, Pencil, Check, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 /**
@@ -39,19 +39,41 @@ export function Sidebar({
   updateMeasurement,
   deleteMeasurement,
   baseline,
+  previousBaselines = [],
+  deleteBaseline,
+  saveBaseline,
+  updateBaseline,
 }) {
   const { unit } = useUnit();
   const [editingId, setEditingId] = useState(null);
   const [editingName, setEditingName] = useState("");
 
-  const startEditing = (measurement) => {
-    setEditingId(measurement.id);
+  // Measurement editing handlers
+  const startEditingMeasurement = (measurement) => {
+    setEditingId(`measurement-${measurement.id}`);
     setEditingName(measurement.name || "");
   };
 
-  const handleSaveName = async (id) => {
+  const handleSaveMeasurementName = async (id) => {
     if (editingName.trim()) {
       await updateMeasurement({
+        id,
+        updates: { name: editingName.trim() },
+      });
+    }
+    setEditingId(null);
+    setEditingName("");
+  };
+
+  // Baseline editing handlers
+  const startEditingBaseline = (baselineItem) => {
+    setEditingId(`baseline-${baselineItem.id}`);
+    setEditingName(baselineItem.name || "");
+  };
+
+  const handleSaveBaselineName = async (id) => {
+    if (editingName.trim()) {
+      await updateBaseline({
         id,
         updates: { name: editingName.trim() },
       });
@@ -65,10 +87,14 @@ export function Sidebar({
     setEditingName("");
   };
 
-  const handleKeyDown = (e, id) => {
+  const handleKeyDown = (e, id, type = "measurement") => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleSaveName(id);
+      if (type === "baseline") {
+        handleSaveBaselineName(id);
+      } else {
+        handleSaveMeasurementName(id);
+      }
     } else if (e.key === "Escape") {
       cancelEditing();
     }
@@ -86,20 +112,20 @@ export function Sidebar({
           <div className="flex items-center justify-between">
             {/* Left side: Name section */}
             <div className="flex items-center gap-2 px-3 py-1.5">
-              {editingId === measurement.id ? (
+              {editingId === `measurement-${measurement.id}` ? (
                 <>
                   <input
                     type="text"
                     value={editingName}
                     onChange={(e) => setEditingName(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, measurement.id)}
-                    onBlur={() => handleSaveName(measurement.id)}
+                    onKeyDown={(e) => handleKeyDown(e, measurement.id, "measurement")}
+                    onBlur={() => handleSaveMeasurementName(measurement.id)}
                     className="text-sm bg-transparent border-b border-white focus:outline-none"
                     placeholder="Name this modification..."
                     autoFocus
                   />
                   <button
-                    onClick={() => handleSaveName(measurement.id)}
+                    onClick={() => handleSaveMeasurementName(measurement.id)}
                     onMouseDown={(e) => e.preventDefault()}
                     className="text-green-500 hover:text-green-400"
                     aria-label="Save name"
@@ -113,7 +139,7 @@ export function Sidebar({
                     {measurement.name}
                   </span>
                   <button
-                    onClick={() => startEditing(measurement)}
+                    onClick={() => startEditingMeasurement(measurement)}
                     className="text-gray-400 hover:text-white"
                     aria-label="Edit name"
                   >
@@ -122,7 +148,7 @@ export function Sidebar({
                 </>
               ) : (
                 <button
-                  onClick={() => startEditing(measurement)}
+                  onClick={() => startEditingMeasurement(measurement)}
                   className="text-gray-400 hover:text-white"
                   aria-label="Name this modification"
                 >
@@ -259,10 +285,128 @@ export function Sidebar({
     );
   };
 
+  const renderBaselineCard = (baselineItem) => {
+    // Handler to use this baseline - creates a copy without the id/createdAt/name
+    const handleUseBaseline = () => {
+      const { id, createdAt, name, ...baselineData } = baselineItem;
+      saveBaseline(baselineData);
+    };
+
+    return (
+      <Card
+        key={baselineItem.id}
+        className="border-2 border-sky_blue_light-700 overflow-hidden"
+      >
+        <CardHeader className="p-0">
+          <div className="flex items-center justify-between">
+            {/* Left side: Name section */}
+            <div className="flex items-center gap-2 px-3 py-1.5">
+              {editingId === `baseline-${baselineItem.id}` ? (
+                <>
+                  <input
+                    type="text"
+                    value={editingName}
+                    onChange={(e) => setEditingName(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, baselineItem.id, "baseline")}
+                    onBlur={() => handleSaveBaselineName(baselineItem.id)}
+                    className="text-sm bg-transparent border-b border-white focus:outline-none"
+                    placeholder="Name this baseline..."
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => handleSaveBaselineName(baselineItem.id)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    className="text-green-500 hover:text-green-400"
+                    aria-label="Save name"
+                  >
+                    <Check size={16} />
+                  </button>
+                </>
+              ) : baselineItem.name ? (
+                <>
+                  <span className="text-sm font-medium">
+                    {baselineItem.name}
+                  </span>
+                  <button
+                    onClick={() => startEditingBaseline(baselineItem)}
+                    className="text-gray-400 hover:text-white"
+                    aria-label="Edit name"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => startEditingBaseline(baselineItem)}
+                  className="text-gray-400 hover:text-white"
+                  aria-label="Name this baseline"
+                >
+                  <PenTool size={16} />
+                </button>
+              )}
+            </div>
+
+            {/* Right side: Method label */}
+            {baselineItem.methodName && (
+              <div className="text-xs text-white bg-sky_blue_light-700 px-3 py-1.5 rounded-bl-lg">
+                {baselineItem.methodName}
+              </div>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="pt-2 px-4 pb-3">
+          <div className="space-y-1">
+            {baselineItem.values?.map((item, index) => {
+              // Convert rawValueInFeet to the selected unit
+              let displayValue = item.value;
+              if (item.rawValueInFeet !== undefined) {
+                displayValue = formatDistance(item.rawValueInFeet, unit);
+              }
+
+              return (
+                <div key={index} className="flex justify-between text-sm">
+                  <span className="text-gray-600">{item.label}:</span>
+                  <span className="font-semibold text-deep_space_blue">
+                    {displayValue}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+        <CardFooter className="px-3 py-2 grid grid-cols-3 items-center border-t border-sky_blue_light-700">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleUseBaseline}
+            className="btn-outline text-xs py-1 px-2 h-auto justify-self-start"
+          >
+            Use this Baseline
+          </Button>
+          <time
+            dateTime={baselineItem.createdAt}
+            className="text-center text-xs text-muted-foreground"
+            aria-label={`Created on ${new Date(baselineItem.createdAt).toLocaleString()}`}
+          >
+            {new Date(baselineItem.createdAt).toLocaleDateString()}
+          </time>
+          <button
+            onClick={() => deleteBaseline(baselineItem.id)}
+            className="p-1 rounded hover:bg-destructive/10 active:bg-destructive/20 text-destructive transition-all justify-self-end"
+            aria-label="Delete baseline"
+          >
+            <Trash2 size={16} />
+          </button>
+        </CardFooter>
+      </Card>
+    );
+  };
+
   return (
-    <>
+    <div className="space-y-6">
+      {/* Measurements Sections */}
       {measurements.length > 0 ? (
-        <div className="space-y-6">
+        <>
           {/* Favourites Section */}
           {measurements.filter((m) => m.isFavorite).length > 0 && (
             <div className="space-y-3">
@@ -287,7 +431,7 @@ export function Sidebar({
               .reverse()
               .map((measurement) => renderMeasurementCard(measurement))}
           </div>
-        </div>
+        </>
       ) : (
         <div
           className="text-sm"
@@ -297,6 +441,18 @@ export function Sidebar({
           modifications.
         </div>
       )}
-    </>
+
+      {/* Previous Baselines Section */}
+      {previousBaselines.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-xl font-bold mb-4 text-deep_space_blue">
+            Previous Baselines ({previousBaselines.length})
+          </h2>
+          {previousBaselines.map((baselineItem) =>
+            renderBaselineCard(baselineItem)
+          )}
+        </div>
+      )}
+    </div>
   );
 }

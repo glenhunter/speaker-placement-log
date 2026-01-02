@@ -71,7 +71,7 @@ function App() {
     isSaving,
   } = useMeasurements();
 
-  const { baseline } = useBaseline();
+  const { baseline, previousBaselines, deleteBaseline, saveBaseline, updateBaseline } = useBaseline();
   const { unit } = useUnit();
 
   // Format rating with +/- prefix for accessibility (colorblind users)
@@ -131,7 +131,7 @@ function App() {
         </a>
 
         {/* Header spans full width above everything */}
-        <Header measurements={measurements} baseline={baseline} />
+        <Header measurements={measurements} baseline={baseline} previousBaselines={previousBaselines} />
 
         {/* Content and Sidebar container */}
         <div className="flex flex-1">
@@ -624,6 +624,10 @@ function App() {
                 updateMeasurement={updateMeasurement}
                 deleteMeasurement={deleteMeasurement}
                 baseline={baseline}
+                previousBaselines={previousBaselines}
+                deleteBaseline={deleteBaseline}
+                saveBaseline={saveBaseline}
+                updateBaseline={updateBaseline}
               />
             </SidebarContent>
           </SidebarContainer>
