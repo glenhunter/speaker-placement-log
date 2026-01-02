@@ -231,6 +231,7 @@ export const baselineStorage = {
       methodName: b.method_name,
       speakerType: b.speaker_type,
       values: b.values,
+      name: b.name,
       createdAt: b.created_at,
     }))
   },
@@ -284,6 +285,53 @@ export const baselineStorage = {
       methodName: data.method_name,
       speakerType: data.speaker_type,
       values: data.values,
+      name: data.name,
+      createdAt: data.created_at,
+    }
+  },
+
+  /**
+   * Updates a specific baseline by ID.
+   */
+  update: async (id, updates, userId) => {
+    // Use localStorage if not logged in
+    if (!userId) {
+      const all = await baselineStorage.getAll(null)
+      const index = all.findIndex(b => b.id === id)
+      if (index !== -1) {
+        all[index] = { ...all[index], ...updates }
+        localStorage.setItem(STORAGE_KEYS.BASELINE, JSON.stringify(all))
+        return all[index]
+      }
+      return null
+    }
+
+    // Use Supabase if logged in
+    const dbUpdates = {}
+    if ('name' in updates) dbUpdates.name = updates.name
+    if ('calculationType' in updates) dbUpdates.calculation_type = updates.calculationType
+    if ('methodName' in updates) dbUpdates.method_name = updates.methodName
+    if ('speakerType' in updates) dbUpdates.speaker_type = updates.speakerType
+    if ('values' in updates) dbUpdates.values = updates.values
+
+    // Filter by both id and user_id for defense in depth
+    const { data, error } = await supabase
+      .from('baselines')
+      .update(dbUpdates)
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    return {
+      id: data.id,
+      calculationType: data.calculation_type,
+      methodName: data.method_name,
+      speakerType: data.speaker_type,
+      values: data.values,
+      name: data.name,
       createdAt: data.created_at,
     }
   },

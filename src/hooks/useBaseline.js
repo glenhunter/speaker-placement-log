@@ -30,6 +30,17 @@ export function useBaseline() {
     },
   });
 
+  // Mutation to update a specific baseline
+  const updateMutation = useMutation({
+    mutationFn: ({ id, updates }) => baselineStorage.update(id, updates, user?.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['baselines', user?.id] });
+    },
+    onError: (error) => {
+      devError('Failed to update baseline:', error);
+    },
+  });
+
   // Mutation to delete a specific baseline
   const deleteMutation = useMutation({
     mutationFn: (id) => baselineStorage.delete(id, user?.id),
@@ -58,12 +69,15 @@ export function useBaseline() {
     allBaselines,
     isLoading,
     saveBaseline: saveMutation.mutate,
+    updateBaseline: updateMutation.mutate,
     deleteBaseline: deleteMutation.mutate,
     clearBaseline: clearMutation.mutate,
     isSaving: saveMutation.isPending,
+    isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
     isClearing: clearMutation.isPending,
     saveError: saveMutation.error,
+    updateError: updateMutation.error,
     deleteError: deleteMutation.error,
     clearError: clearMutation.error,
   };

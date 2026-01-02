@@ -71,7 +71,7 @@ function App() {
     isSaving,
   } = useMeasurements();
 
-  const { baseline, previousBaselines, deleteBaseline, saveBaseline } = useBaseline();
+  const { baseline, previousBaselines, deleteBaseline, saveBaseline, updateBaseline } = useBaseline();
   const { unit } = useUnit();
 
   // Format rating with +/- prefix for accessibility (colorblind users)
@@ -627,6 +627,7 @@ function App() {
                 previousBaselines={previousBaselines}
                 deleteBaseline={deleteBaseline}
                 saveBaseline={saveBaseline}
+                updateBaseline={updateBaseline}
               />
             </SidebarContent>
           </SidebarContainer>
