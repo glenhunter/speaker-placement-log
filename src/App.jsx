@@ -131,7 +131,7 @@ function App() {
         </a>
 
         {/* Header spans full width above everything */}
-        <Header measurements={measurements} baseline={baseline} />
+        <Header measurements={measurements} baseline={baseline} previousBaselines={previousBaselines} />
 
         {/* Content and Sidebar container */}
         <div className="flex flex-1">
